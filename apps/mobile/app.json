@@ -33,7 +33,8 @@
         {
           "backgroundColor": "#1a1a1a"
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "scheme": "leyenda",
     "experiments": {

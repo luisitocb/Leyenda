@@ -1,6 +1,8 @@
 import type { JSX } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { RNG } from '@leyenda/engine';
+
+import { createSave, listSaves } from '@/persistence/saves.repository';
 
 /**
  * Pantalla inicial - Demo básico del RNG
@@ -12,6 +14,27 @@ export default function HomeScreen(): JSX.Element {
     const randomInt = rng.nextInt(1, 100);
 
     alert(`RNG Test:\n\nFloat: ${randomValue.toFixed(4)}\nInt (1-100): ${randomInt}`);
+  };
+
+  const testCreateSave = (): void => {
+    try {
+      const save = createSave({ seed: Date.now(), gameDate: '2026-08-01', currentMode: 'player' });
+      Alert.alert('Guardado creado', `id: ${save.id}\nseed: ${save.seed}`);
+    } catch (error) {
+      Alert.alert('Error al crear guardado', String(error));
+    }
+  };
+
+  const testListSaves = (): void => {
+    try {
+      const all = listSaves();
+      Alert.alert(
+        `Guardados: ${all.length}`,
+        all.map((save) => `${save.id} · seed ${save.seed}`).join('\n') || '(vacío)'
+      );
+    } catch (error) {
+      Alert.alert('Error al leer guardados', String(error));
+    }
   };
 
   return (
@@ -28,6 +51,14 @@ export default function HomeScreen(): JSX.Element {
 
       <Pressable style={styles.button} onPress={testRNG}>
         <Text style={styles.buttonText}>Probar RNG</Text>
+      </Pressable>
+
+      <Pressable style={styles.button} onPress={testCreateSave}>
+        <Text style={styles.buttonText}>Crear guardado de prueba</Text>
+      </Pressable>
+
+      <Pressable style={styles.button} onPress={testListSaves}>
+        <Text style={styles.buttonText}>Ver guardados</Text>
       </Pressable>
 
       <Text style={styles.phase}>Fase 0: Fundamentos</Text>

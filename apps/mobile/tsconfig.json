@@ -8,6 +8,7 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
+    "types": ["jest", "node"],
     "paths": {
       "@/*": ["./src/*"],
       "@leyenda/shared": ["../../packages/shared/src"],

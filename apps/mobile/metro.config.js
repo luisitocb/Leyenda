@@ -6,6 +6,9 @@ const workspaceRoot = path.resolve(projectRoot, '../..');
 
 const config = getDefaultConfig(projectRoot);
 
+// Migraciones SQL de Drizzle se embeben como texto vía babel-plugin-inline-import
+config.resolver.sourceExts.push('sql');
+
 // Monorepo support: watch workspace packages
 config.watchFolders = [workspaceRoot];
 config.resolver.nodeModulesPaths = [
