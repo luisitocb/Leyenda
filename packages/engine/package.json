@@ -1,0 +1,26 @@
+{
+  "name": "@leyenda/engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Motor de simulación puro (sin dependencias de UI)",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src",
+    "clean": "rm -rf dist coverage *.tsbuildinfo"
+  },
+  "dependencies": {
+    "@leyenda/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@vitest/coverage-v8": "^1.2.0",
+    "fast-check": "^3.15.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  }
+}

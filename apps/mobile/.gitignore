@@ -1,0 +1,19 @@
+# Expo
+.expo/
+dist/
+web-build/
+
+# Dependencies
+node_modules/
+
+# Environment
+.env
+.env.local
+
+# Testing
+coverage/
+
+# Misc
+.DS_Store
+*.pem
+*.log
