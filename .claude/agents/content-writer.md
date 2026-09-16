@@ -54,7 +54,7 @@ choices:
       - weeks: 1
         chance:
           base: 0.35
-          modifier: "-trait.discreet*0.15"
+          modifier: '-trait.discreet*0.15'
         trigger: press_party_photo
 
   - id: stay

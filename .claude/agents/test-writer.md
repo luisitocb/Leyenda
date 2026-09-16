@@ -33,7 +33,7 @@ describe('Player', () => {
   describe('calculateOverall', () => {
     it('debe calcular la media correctamente', () => {
       // Arrange
-      const player = createPlayer({ /* ... */ });
+      const player = createPlayer({/* ... */});
 
       // Act
       const overall = calculateOverall(player);

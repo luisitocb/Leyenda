@@ -7,6 +7,7 @@ Convenciones y reglas del motor de simulación de "Leyenda".
 El motor (`packages/engine`) es **código puro**:
 
 ❌ **PROHIBIDO:**
+
 - Imports de React, React Native, Expo
 - Imports de SQLite, AsyncStorage, FileSystem
 - Imports de APIs de plataforma (window, navigator, etc.)
@@ -17,6 +18,7 @@ El motor (`packages/engine`) es **código puro**:
 - Estado global mutable
 
 ✅ **PERMITIDO:**
+
 - TypeScript puro
 - Imports de `@leyenda/shared`
 - Librerías matemáticas puras (si son necesarias)
@@ -35,11 +37,7 @@ function simulateMatch(home: Team, away: Team) {
 }
 
 // ✅ BIEN: pura, determinista
-function simulateMatch(
-  home: Team,
-  away: Team,
-  rng: RNG
-): MatchResult {
+function simulateMatch(home: Team, away: Team, rng: RNG): MatchResult {
   const homeStrength = calculateStrength(home);
   const awayStrength = calculateStrength(away);
 
@@ -90,11 +88,7 @@ interface TrainCommand {
 }
 
 // Aplicar comando
-function apply(
-  state: GameState,
-  command: Command,
-  rng: RNG
-): CommandResult {
+function apply(state: GameState, command: Command, rng: RNG): CommandResult {
   const newState = { ...state }; // Inmutabilidad
   const events: GameEvent[] = [];
 
@@ -127,6 +121,7 @@ function foo(x: HasBar): string {
 Una jornada completa del mundo debe simularse en < 500ms.
 
 **Optimizaciones:**
+
 - Simular partidos irrelevantes con modelo simplificado
 - Evitar operaciones O(n²) sobre grandes colecciones
 - Cachear cálculos pesados (media de jugadores, fuerzas de equipos)

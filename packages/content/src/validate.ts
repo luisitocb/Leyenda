@@ -11,7 +11,7 @@
 function validateContent(): void {
   console.log('🔍 Validando contenido del juego...\n');
 
-  let errors = 0;
+  const errors = 0;
 
   // TODO: Cargar eventos desde archivos YAML/JSON cuando existan
   // Por ahora, solo un placeholder
