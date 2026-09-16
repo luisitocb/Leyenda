@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { RNG } from '@leyenda/engine';
 
