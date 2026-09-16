@@ -1,7 +1,9 @@
 import type { JSX } from 'react';
-import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { RNG } from '@leyenda/engine';
 
+import { Screen, Button, Text } from '@/components';
+import { theme } from '@/theme';
 import { createSave, listSaves } from '@/persistence/saves.repository';
 
 /**
@@ -38,79 +40,53 @@ export default function HomeScreen(): JSX.Element {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Leyenda</Text>
-      <Text style={styles.subtitle}>De Crack a Míster</Text>
+    <Screen>
+      <Text variant="title" style={styles.title}>
+        Leyenda
+      </Text>
+      <Text variant="subtitle" style={styles.subtitle}>
+        De Crack a Míster
+      </Text>
 
       <View style={styles.info}>
-        <Text style={styles.infoText}>✅ Monorepo configurado</Text>
-        <Text style={styles.infoText}>✅ TypeScript estricto</Text>
-        <Text style={styles.infoText}>✅ Engine funcionando</Text>
-        <Text style={styles.infoText}>✅ Expo + Router</Text>
+        <Text variant="body" color="accent" style={styles.infoText}>
+          ✅ Monorepo configurado
+        </Text>
+        <Text variant="body" color="accent" style={styles.infoText}>
+          ✅ TypeScript estricto
+        </Text>
+        <Text variant="body" color="accent" style={styles.infoText}>
+          ✅ Engine funcionando
+        </Text>
+        <Text variant="body" color="accent" style={styles.infoText}>
+          ✅ Expo + Router
+        </Text>
       </View>
 
-      <Pressable style={styles.button} onPress={testRNG}>
-        <Text style={styles.buttonText}>Probar RNG</Text>
-      </Pressable>
+      <Button label="Probar RNG" onPress={testRNG} />
+      <Button label="Crear guardado de prueba" onPress={testCreateSave} />
+      <Button label="Ver guardados" onPress={testListSaves} />
 
-      <Pressable style={styles.button} onPress={testCreateSave}>
-        <Text style={styles.buttonText}>Crear guardado de prueba</Text>
-      </Pressable>
-
-      <Pressable style={styles.button} onPress={testListSaves}>
-        <Text style={styles.buttonText}>Ver guardados</Text>
-      </Pressable>
-
-      <Text style={styles.phase}>Fase 0: Fundamentos</Text>
-    </View>
+      <Text variant="caption">Fase 0: Fundamentos</Text>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0a0a0a',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-  },
   title: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginBottom: 8,
+    marginBottom: theme.spacing.xs,
   },
   subtitle: {
-    fontSize: 20,
-    color: '#888',
-    marginBottom: 40,
+    marginBottom: theme.spacing.xl,
   },
   info: {
-    backgroundColor: '#1a1a1a',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 32,
+    backgroundColor: theme.colors.surface,
+    padding: theme.spacing.md,
+    borderRadius: theme.radii.md,
+    marginBottom: theme.spacing.lg,
     width: '100%',
   },
   infoText: {
-    color: '#4ade80',
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  button: {
-    backgroundColor: '#3b82f6',
-    paddingHorizontal: 32,
-    paddingVertical: 16,
-    borderRadius: 8,
-    marginBottom: 32,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  phase: {
-    color: '#666',
-    fontSize: 14,
+    marginBottom: theme.spacing.xs,
   },
 });

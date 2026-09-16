@@ -3,6 +3,7 @@ import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import { theme } from '@/theme';
 import { useDatabaseMigrations } from '@/persistence/migrate';
 
 /**
@@ -20,7 +21,7 @@ export default function RootLayout(): JSX.Element {
   if (!success) {
     return (
       <View style={styles.loadingScreen}>
-        <ActivityIndicator size="large" color="#fff" />
+        <ActivityIndicator size="large" color={theme.colors.textPrimary} />
       </View>
     );
   }
@@ -31,9 +32,9 @@ export default function RootLayout(): JSX.Element {
       <Stack
         screenOptions={{
           headerStyle: {
-            backgroundColor: '#1a1a1a',
+            backgroundColor: theme.colors.surface,
           },
-          headerTintColor: '#fff',
+          headerTintColor: theme.colors.textPrimary,
           headerTitleStyle: {
             fontWeight: 'bold',
           },
@@ -53,12 +54,12 @@ export default function RootLayout(): JSX.Element {
 const styles = StyleSheet.create({
   loadingScreen: {
     flex: 1,
-    backgroundColor: '#0a0a0a',
+    backgroundColor: theme.colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
   errorScreen: {
     flex: 1,
-    backgroundColor: '#3a0a0a',
+    backgroundColor: theme.colors.error,
   },
 });

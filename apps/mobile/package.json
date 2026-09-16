@@ -15,6 +15,9 @@
     "lint": "eslint .",
     "clean": "rm -rf .expo node_modules"
   },
+  "jest": {
+    "preset": "jest-expo"
+  },
   "dependencies": {
     "@leyenda/content": "workspace:*",
     "@leyenda/engine": "workspace:*",
