@@ -6,7 +6,7 @@
  * Valida que todos los eventos y textos cumplan con los esquemas Zod
  */
 
-import { GameEventSchema } from './schemas/event';
+// import { GameEventSchema } from './schemas/event';
 
 function validateContent(): void {
   console.log('🔍 Validando contenido del juego...\n');

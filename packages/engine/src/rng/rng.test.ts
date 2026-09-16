@@ -151,7 +151,7 @@ describe('RNG', () => {
       rng.shuffle(array);
 
       // Debe contener los mismos elementos
-      expect(array.sort()).toEqual(original);
+      expect(array.sort((a, b) => a - b)).toEqual(original);
       // Pero probablemente en diferente orden
       // (puede fallar 1 en 10! veces, pero es improbable)
     });
