@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
+import { useRouter } from 'expo-router';
 import { RNG } from '@leyenda/engine';
 
 import { Screen, Button, Text } from '@/components';
@@ -10,6 +11,8 @@ import { createSave, listSaves } from '@/persistence/saves.repository';
  * Pantalla inicial - Demo básico del RNG
  */
 export default function HomeScreen(): JSX.Element {
+  const router = useRouter();
+
   const testRNG = (): void => {
     const rng = new RNG(Date.now());
     const randomValue = rng.next();
@@ -66,6 +69,7 @@ export default function HomeScreen(): JSX.Element {
       <Button label="Probar RNG" onPress={testRNG} />
       <Button label="Crear guardado de prueba" onPress={testCreateSave} />
       <Button label="Ver guardados" onPress={testListSaves} />
+      <Button label="Jugadas en Vivo (demo)" onPress={() => router.push('/live-play-demo')} />
 
       <Text variant="caption">Fase 0: Fundamentos</Text>
     </Screen>

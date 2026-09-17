@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
@@ -15,19 +16,25 @@ export default function RootLayout(): JSX.Element {
   const { success, error } = useDatabaseMigrations();
 
   if (error) {
-    return <View style={styles.errorScreen} />;
+    return (
+      <GestureHandlerRootView style={styles.root}>
+        <View style={styles.errorScreen} />
+      </GestureHandlerRootView>
+    );
   }
 
   if (!success) {
     return (
-      <View style={styles.loadingScreen}>
-        <ActivityIndicator size="large" color={theme.colors.textPrimary} />
-      </View>
+      <GestureHandlerRootView style={styles.root}>
+        <View style={styles.loadingScreen}>
+          <ActivityIndicator size="large" color={theme.colors.textPrimary} />
+        </View>
+      </GestureHandlerRootView>
     );
   }
 
   return (
-    <>
+    <GestureHandlerRootView style={styles.root}>
       <StatusBar style="auto" />
       <Stack
         screenOptions={{
@@ -46,12 +53,21 @@ export default function RootLayout(): JSX.Element {
             title: 'Leyenda',
           }}
         />
+        <Stack.Screen
+          name="live-play-demo"
+          options={{
+            title: 'Jugadas en Vivo',
+          }}
+        />
       </Stack>
-    </>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   loadingScreen: {
     flex: 1,
     backgroundColor: theme.colors.background,
