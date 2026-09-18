@@ -10,6 +10,16 @@ function getShooting(p: BasePlayer): number {
   return 'shooting' in p.technical ? p.technical.shooting : 0;
 }
 
+function applyDayFactor(strength: TeamStrength, rng: RNG): TeamStrength {
+  const factor = rng.nextFloat(1 - MATCH_TUNING.dayFormVariance, 1 + MATCH_TUNING.dayFormVariance);
+  return {
+    defense: strength.defense * factor,
+    midfield: strength.midfield * factor,
+    attack: strength.attack * factor,
+    goalkeeping: strength.goalkeeping * factor,
+  };
+}
+
 function attackingPool(xi: StartingXI): BasePlayer[] {
   return xi.outfield.filter(
     (p) => p.position !== 'CB' && p.position !== 'LB' && p.position !== 'RB'
@@ -71,8 +81,16 @@ export function simulateMatch(
 ): Match {
   const homeXI = selectStartingXI(match.homeTeamId, homeSquad);
   const awayXI = selectStartingXI(match.awayTeamId, awaySquad);
-  const home: TeamStrength = computeTeamStrength(homeXI, true);
-  const away: TeamStrength = computeTeamStrength(awayXI, false);
+
+  // "El día de cada equipo": promediar 11 jugadores reduce mucho la
+  // varianza de la fuerza calculada, así que sin este factor una
+  // ventaja de calidad modesta se traduce en victorias casi seguras
+  // partido tras partido (detectado con balance-sim: clubes ganando
+  // >70% de las temporadas). Ruido multiplicativo por partido y por
+  // equipo, simétrico alrededor de 1.0 así que no mueve la media de
+  // goles, solo añade variabilidad entre partidos.
+  const home = applyDayFactor(computeTeamStrength(homeXI, true), rng);
+  const away = applyDayFactor(computeTeamStrength(awayXI, false), rng);
 
   const events: MatchEvent[] = [];
   const cautionedHome = new Set<string>();

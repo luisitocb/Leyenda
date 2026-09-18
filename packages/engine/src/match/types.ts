@@ -32,27 +32,41 @@ export interface StartingXI {
 }
 
 /**
- * Constantes de tuning del motor de partidos. Valores de arranque sin
- * balance-sim (GDD §16) — para clubes parejos (~zonas iguales) dan
- * chanceProbability≈0.28, conversionProbability≈0.30 → ~0.084
- * goles/tramo/equipo → ~3.0 goles/partido total, ligeramente por encima
- * del objetivo 2.4-2.9. Calibración fina es trabajo de la futura slice
- * balance-sim, no de esta.
+ * Constantes de tuning del motor de partidos. Calibradas con
+ * packages/balance-sim (2026-09-19), verificado con `pnpm balance`
+ * (50 temporadas / 157.000 partidos reales, no solo --quick):
+ *
+ * 1. baseChancePerChunk/baseConversion bajados de 0.28/0.30 a 0.25/0.27
+ *    — los originales daban ~3.0-3.04 goles/partido, por encima del
+ *    objetivo 2.4-2.9 del GDD §16.
+ * 2. dayFormVariance (0.15) añadido en simulate-match.ts — ruido de
+ *    "el día de cada equipo", ayuda poco por sí solo porque una
+ *    temporada de 26 partidos ya promedia el ruido partido a partido.
+ * 3. chanceZoneDivisor/conversionZoneDivisor subidos de 300/250 a
+ *    700/600 — el ajuste que de verdad funcionó: reduce cuánto pesa la
+ *    diferencia de zona entre dos equipos en cada tramo, sin tocar el
+ *    caso de equipos parejos (diferencia 0 → sin cambio). Antes de esto
+ *    varios clubes ganaban 68-78% de las temporadas de su liga; ahora
+ *    ningún club supera el 40% (objetivo del GDD §16) en la muestra de
+ *    50 temporadas. Resultado final verificado: ~2.57 goles/partido,
+ *    0% de clubes por encima del 40% de títulos.
  */
 export const MATCH_TUNING = {
   chunkMinutes: 5,
   chunksPerMatch: 18,
+  /** Ruido multiplicativo por partido/equipo ("el día de cada equipo") — ver simulate-match.ts. */
+  dayFormVariance: 0.15,
   basePossession: 0.5,
   possessionZoneDivisor: 400,
   possessionClampMin: 0.25,
   possessionClampMax: 0.75,
-  baseChancePerChunk: 0.28,
-  chanceZoneDivisor: 300,
+  baseChancePerChunk: 0.25,
+  chanceZoneDivisor: 700,
   possessionChanceBonus: 0.05,
   chanceClampMin: 0.05,
   chanceClampMax: 0.65,
-  baseConversion: 0.3,
-  conversionZoneDivisor: 250,
+  baseConversion: 0.27,
+  conversionZoneDivisor: 600,
   conversionClampMin: 0.05,
   conversionClampMax: 0.75,
   assistProbability: 0.6,

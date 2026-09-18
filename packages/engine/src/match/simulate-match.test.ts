@@ -156,7 +156,12 @@ describe('simulateMatch', () => {
       const result = simulateMatch(match, eliteSquad, weakSquad, new RNG(seed));
       if (result.result.homeGoals > result.result.awayGoals) eliteWins++;
     }
-    expect(eliteWins / trials).toBeGreaterThan(0.8);
+    // Umbral calibrado tras el ajuste de balance-sim (2026-09-19): los
+    // divisores de zona se subieron a propósito para que la diferencia
+    // de nivel pese menos partido a partido (evitar que un club domine
+    // >70% de las temporadas de una liga, GDD §16) — incluso una
+    // diferencia enorme (90 vs 35) ya no gana >80%, gana ~78-79%.
+    expect(eliteWins / trials).toBeGreaterThan(0.7);
   });
 
   it('no lanza con fuerzas extremas (currentAbility 99 vs 1) en varios seeds', () => {
