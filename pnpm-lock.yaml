@@ -180,6 +180,34 @@ importers:
         specifier: ^5.3.3
         version: 5.9.3
 
+  packages/worldgen:
+    dependencies:
+      '@leyenda/content':
+        specifier: workspace:*
+        version: link:../content
+      '@leyenda/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@leyenda/shared':
+        specifier: workspace:*
+        version: link:../shared
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.19.43
+      '@vitest/coverage-v8':
+        specifier: ^1.2.0
+        version: 1.6.1(vitest@1.6.1)
+      fast-check:
+        specifier: ^3.15.0
+        version: 3.23.2
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+      vitest:
+        specifier: ^1.2.0
+        version: 1.6.1(@types/node@20.19.43)
+
 packages:
 
   /@ampproject/remapping@2.3.0:

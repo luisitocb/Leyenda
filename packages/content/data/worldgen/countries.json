@@ -1,0 +1,12 @@
+[
+  { "code": "XA", "name": "Aurelia", "reputationBase": 18 },
+  { "code": "XB", "name": "Borgland", "reputationBase": 16 },
+  { "code": "XC", "name": "Castavia", "reputationBase": 15 },
+  { "code": "XD", "name": "Doravia", "reputationBase": 14 },
+  { "code": "XE", "name": "Estara", "reputationBase": 13 },
+  { "code": "XF", "name": "Fenwick", "reputationBase": 12 },
+  { "code": "XG", "name": "Girondel", "reputationBase": 11 },
+  { "code": "XH", "name": "Halvoria", "reputationBase": 10 },
+  { "code": "XI", "name": "Ithalia", "reputationBase": 9 },
+  { "code": "XJ", "name": "Jarumba", "reputationBase": 8 }
+]

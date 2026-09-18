@@ -1,6 +1,15 @@
 import type { CountryCode, EntityId, ISODate } from './common';
 
 /**
+ * País ficticio
+ */
+export interface Country {
+  code: CountryCode;
+  name: string;
+  reputationBase: number; // 1-20, media de reputación de clubes de este país
+}
+
+/**
  * Club de fútbol
  */
 export interface Club {
