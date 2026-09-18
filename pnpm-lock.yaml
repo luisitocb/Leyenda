@@ -130,6 +130,34 @@ importers:
         specifier: ^6.0.3
         version: 6.0.3
 
+  packages/balance-sim:
+    dependencies:
+      '@leyenda/engine':
+        specifier: workspace:*
+        version: link:../engine
+      '@leyenda/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@leyenda/worldgen':
+        specifier: workspace:*
+        version: link:../worldgen
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.19.43
+      '@vitest/coverage-v8':
+        specifier: ^1.2.0
+        version: 1.6.1(vitest@1.6.1)
+      tsx:
+        specifier: ^4.7.0
+        version: 4.23.13
+      typescript:
+        specifier: ^5.3.3
+        version: 5.9.3
+      vitest:
+        specifier: ^1.2.0
+        version: 1.6.1(@types/node@20.19.43)
+
   packages/content:
     dependencies:
       '@leyenda/shared':

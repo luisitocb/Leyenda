@@ -130,3 +130,44 @@ jobs:
 
       - name: Validate content
         run: pnpm content:validate
+
+  balance-sim:
+    name: Balance Simulation (quick)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Informativo: solo falla si el comando lanza una excepción real.
+      # Los números en sí (goles/partido, dominancia de títulos) todavía
+      # no cumplen los objetivos del GDD §16 — calibrarlos es trabajo de
+      # una historia futura, no algo que deba bloquear el CI ahora.
+      - name: Run quick balance simulation
+        run: pnpm balance --quick
