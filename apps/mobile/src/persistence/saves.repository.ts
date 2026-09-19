@@ -1,5 +1,5 @@
 import { randomUUID } from 'expo-crypto';
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 
 import { saves, type Save } from './schema';
 import { db } from './db';
@@ -42,6 +42,11 @@ export function listSaves(): Save[] {
 
 export function getSave(id: string): Save | undefined {
   return db.select().from(saves).where(eq(saves.id, id)).get();
+}
+
+/** No existe todavía el concepto de "partida activa": por ahora se usa siempre la más reciente. */
+export function getLatestSave(): Save | undefined {
+  return db.select().from(saves).orderBy(desc(saves.createdAt)).limit(1).get();
 }
 
 export function updateSave(id: string, changes: Partial<CreateSaveInput>): Save | undefined {

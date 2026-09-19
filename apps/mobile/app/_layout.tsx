@@ -65,6 +65,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Crear personaje',
           }}
         />
+        <Stack.Screen
+          name="career"
+          options={{
+            title: 'Mi carrera',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

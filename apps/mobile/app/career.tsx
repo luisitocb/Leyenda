@@ -1,0 +1,119 @@
+import { useMemo, type JSX } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { useRouter } from 'expo-router';
+
+import type { ProtagonistPlayer } from '@leyenda/shared';
+
+import { Screen, Button, Text } from '@/components';
+import { theme } from '@/theme';
+import { countries } from '@/content';
+import { FOOT_LABELS, POSITION_LABELS, RELATION_LABELS } from '@/labels';
+import { getLatestSave } from '@/persistence/saves.repository';
+import { getProtagonistBySave } from '@/persistence/protagonists.repository';
+import { generateClubsForCountry } from '@/world/generate-clubs-for-country';
+
+interface StatRowProps {
+  label: string;
+  value: string | number;
+}
+
+function StatRow({ label, value }: StatRowProps): JSX.Element {
+  return (
+    <View style={styles.statRow}>
+      <Text variant="body" color="textSecondary">
+        {label}
+      </Text>
+      <Text variant="body">{value}</Text>
+    </View>
+  );
+}
+
+/** Pantalla de solo lectura del protagonista de la partida más reciente (GDD §4.2-4.4). */
+export default function CareerScreen(): JSX.Element {
+  const router = useRouter();
+
+  const save = useMemo(() => getLatestSave(), []);
+  const protagonist: ProtagonistPlayer | undefined = useMemo(
+    () => (save ? getProtagonistBySave(save.id)?.data : undefined),
+    [save]
+  );
+
+  const club = useMemo(() => {
+    if (!save || !protagonist) return undefined;
+    return generateClubsForCountry(save.seed, protagonist.nationality).find(
+      (c) => c.id === protagonist.clubId
+    );
+  }, [save, protagonist]);
+
+  if (!save || !protagonist) {
+    return (
+      <Screen>
+        <Text variant="subtitle" style={styles.emptyText}>
+          Todavía no tienes ninguna carrera
+        </Text>
+        <Button label="Nueva carrera" onPress={() => router.push('/create-character')} />
+      </Screen>
+    );
+  }
+
+  return (
+    <Screen style={styles.screen}>
+      <View style={styles.scrollContent}>
+        <Text variant="title">
+          {protagonist.firstName} {protagonist.lastName}
+        </Text>
+        <Text variant="body" color="textSecondary" style={styles.sectionLabel}>
+          {POSITION_LABELS[protagonist.position]} · {FOOT_LABELS[protagonist.foot]} ·{' '}
+          {countries.find((c) => c.code === protagonist.nationality)?.name}
+        </Text>
+        <Text variant="body" color="accent">
+          {club?.name ?? 'Sin club'}
+        </Text>
+
+        <Text variant="subtitle" style={styles.sectionLabel}>
+          Atributos
+        </Text>
+        <StatRow label="Media global" value={protagonist.currentAbility} />
+
+        <Text variant="subtitle" style={styles.sectionLabel}>
+          Estados vitales
+        </Text>
+        <StatRow label="Salud física" value={protagonist.health} />
+        <StatRow label="Salud mental" value={protagonist.mentalHealth} />
+        <StatRow label="Forma" value={protagonist.form} />
+        <StatRow label="Energía" value={protagonist.energy} />
+        <StatRow label="Dinero" value={protagonist.money} />
+        <StatRow label="Patrimonio" value={protagonist.assets} />
+
+        <Text variant="subtitle" style={styles.sectionLabel}>
+          Relaciones
+        </Text>
+        {(Object.keys(RELATION_LABELS) as Array<keyof typeof RELATION_LABELS>).map((key) => (
+          <StatRow key={key} label={RELATION_LABELS[key]} value={protagonist.relations[key]} />
+        ))}
+      </View>
+    </Screen>
+  );
+}
+
+const styles = StyleSheet.create({
+  screen: {
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+  scrollContent: {
+    width: '100%',
+  },
+  sectionLabel: {
+    marginTop: theme.spacing.md,
+    marginBottom: theme.spacing.xs,
+  },
+  statRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing.xs,
+  },
+  emptyText: {
+    marginBottom: theme.spacing.md,
+  },
+});

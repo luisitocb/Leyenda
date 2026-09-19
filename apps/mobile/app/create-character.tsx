@@ -17,40 +17,21 @@ import {
 // Import por subruta, no por el barrel `@leyenda/worldgen`: el barrel reexporta
 // generate-world.ts, que arrastra @leyenda/content (node:fs) aunque no se use
 // generateWorld — Metro evalúa todo el grafo estático, no solo lo importado.
-import {
-  CLUBS_PER_DIVISION,
-  DIVISIONS_PER_COUNTRY,
-  SEASON_ONE_START_DATE,
-} from '@leyenda/worldgen/src/constants';
-import { generateClubs } from '@leyenda/worldgen/src/clubs/generate-clubs';
+import { SEASON_ONE_START_DATE } from '@leyenda/worldgen/src/constants';
 import { pickCandidateClubs } from '@leyenda/worldgen/src/clubs/pick-candidate-clubs';
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { clubNamePool, countries, origins } from '@/content';
+import { countries, origins } from '@/content';
+import { FOOT_LABELS, POSITION_LABELS } from '@/labels';
 import { createSave } from '@/persistence/saves.repository';
 import { createProtagonist } from '@/persistence/protagonists.repository';
+import { generateClubsForCountry } from '@/world/generate-clubs-for-country';
 
 type Step = 'basics' | 'origin' | 'points' | 'club' | 'confirm';
 
-const POSITION_OPTIONS: Array<{ value: Position; label: string }> = [
-  { value: 'GK', label: 'Portero' },
-  { value: 'LB', label: 'Lateral izquierdo' },
-  { value: 'CB', label: 'Central' },
-  { value: 'RB', label: 'Lateral derecho' },
-  { value: 'DMF', label: 'Mediocentro defensivo' },
-  { value: 'CMF', label: 'Centrocampista' },
-  { value: 'AMF', label: 'Mediapunta' },
-  { value: 'LW', label: 'Extremo izquierdo' },
-  { value: 'RW', label: 'Extremo derecho' },
-  { value: 'CF', label: 'Delantero centro' },
-];
-
-const FOOT_OPTIONS: Array<{ value: Foot; label: string }> = [
-  { value: 'left', label: 'Izquierdo' },
-  { value: 'right', label: 'Derecho' },
-  { value: 'both', label: 'Ambidiestro' },
-];
+const POSITIONS = Object.keys(POSITION_LABELS) as Position[];
+const FEET = Object.keys(FOOT_LABELS) as Foot[];
 
 const GROUP_LABELS: Record<keyof AttributeGroupAllocation, string> = {
   physical: 'Físico',
@@ -111,17 +92,11 @@ export default function CreateCharacterScreen(): JSX.Element {
 
   const candidateClubs = useMemo<Club[]>(() => {
     if (!nationality) return [];
-    const country = countries.find((c) => c.code === nationality);
-    if (!country) return [];
-    const clubsRng = new RNG(seed);
-    const clubs = generateClubs({
-      rng: clubsRng,
-      country,
-      clubNamePool,
-      divisionsPerCountry: DIVISIONS_PER_COUNTRY,
-      clubsPerDivision: CLUBS_PER_DIVISION,
-    });
-    return pickCandidateClubs(clubs, nationality, clubsRng);
+    const clubs = generateClubsForCountry(seed, nationality);
+    // Seed distinta a la generación de clubes (seed) y a la del personaje
+    // (seed + 1, en handleConfirm) para no reutilizar la misma secuencia de
+    // números "aleatorios" en dos pasos independientes.
+    return pickCandidateClubs(clubs, nationality, new RNG(seed + 2));
   }, [nationality, seed]);
 
   const canLeaveBasics =
@@ -161,7 +136,7 @@ export default function CreateCharacterScreen(): JSX.Element {
       Alert.alert(
         'Carrera creada',
         `${character.firstName} ${character.lastName} ha empezado su carrera.`,
-        [{ text: 'OK', onPress: () => router.replace('/') }]
+        [{ text: 'OK', onPress: () => router.replace('/career') }]
       );
     } catch (error) {
       Alert.alert('Error al crear el personaje', String(error));
@@ -204,24 +179,24 @@ export default function CreateCharacterScreen(): JSX.Element {
             <Text variant="body" style={styles.sectionLabel}>
               Posición
             </Text>
-            {POSITION_OPTIONS.map((option) => (
+            {POSITIONS.map((value) => (
               <SelectableRow
-                key={option.value}
-                label={option.label}
-                selected={position === option.value}
-                onPress={() => setPosition(option.value)}
+                key={value}
+                label={POSITION_LABELS[value]}
+                selected={position === value}
+                onPress={() => setPosition(value)}
               />
             ))}
 
             <Text variant="body" style={styles.sectionLabel}>
               Pie dominante
             </Text>
-            {FOOT_OPTIONS.map((option) => (
+            {FEET.map((value) => (
               <SelectableRow
-                key={option.value}
-                label={option.label}
-                selected={foot === option.value}
-                onPress={() => setFoot(option.value)}
+                key={value}
+                label={FOOT_LABELS[value]}
+                selected={foot === value}
+                onPress={() => setFoot(value)}
               />
             ))}
 
@@ -293,8 +268,7 @@ export default function CreateCharacterScreen(): JSX.Element {
             </Text>
             <Text variant="body" color="textSecondary">
               {countries.find((c) => c.code === nationality)?.name} ·{' '}
-              {POSITION_OPTIONS.find((p) => p.value === position)?.label} ·{' '}
-              {FOOT_OPTIONS.find((f) => f.value === foot)?.label}
+              {position && POSITION_LABELS[position]} · {foot && FOOT_LABELS[foot]}
             </Text>
             <Text variant="body" color="textSecondary">
               Origen: {origins.find((o) => o.id === originId)?.name}
