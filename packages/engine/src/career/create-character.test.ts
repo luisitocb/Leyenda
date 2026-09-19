@@ -5,7 +5,13 @@ import type { GoalkeeperAttributes, TechnicalAttributes } from '@leyenda/shared'
 import { RNG } from '../rng';
 
 import { createCharacter } from './create-character';
-import { GROUP_MAX, GROUP_MIN, POINT_POOL, type CreateCharacterInput, type OriginModifier } from './types';
+import {
+  GROUP_MAX,
+  GROUP_MIN,
+  POINT_POOL,
+  type CreateCharacterInput,
+  type OriginModifier,
+} from './types';
 
 /** Object.values sobre una interfaz sin índice devuelve any[]; forzamos el tipo aquí. */
 function numberValues(obj: object): number[] {
@@ -49,13 +55,19 @@ describe('createCharacter', () => {
 
   it('rechaza un grupo fuera de [GROUP_MIN, GROUP_MAX]', () => {
     const input = baseInput({
-      groupAllocation: { physical: GROUP_MAX + 10, technical: 50, mental: POINT_POOL - (GROUP_MAX + 10) - 50 },
+      groupAllocation: {
+        physical: GROUP_MAX + 10,
+        technical: 50,
+        mental: POINT_POOL - (GROUP_MAX + 10) - 50,
+      },
     });
     expect(() => createCharacter(input, new RNG(1))).toThrow();
   });
 
   it('un grupo con más puntos produce atributos de ese grupo más altos de media', () => {
-    const highPhysical = baseInput({ groupAllocation: { physical: 70, technical: 40, mental: 40 } });
+    const highPhysical = baseInput({
+      groupAllocation: { physical: 70, technical: 40, mental: 40 },
+    });
     const lowPhysical = baseInput({ groupAllocation: { physical: 40, technical: 40, mental: 70 } });
 
     const avg = (values: number[]): number => values.reduce((a, b) => a + b, 0) / values.length;
@@ -108,7 +120,8 @@ describe('createCharacter', () => {
       reference.getUTCFullYear() -
       birth.getUTCFullYear() -
       (reference.getUTCMonth() < birth.getUTCMonth() ||
-      (reference.getUTCMonth() === birth.getUTCMonth() && reference.getUTCDate() < birth.getUTCDate())
+      (reference.getUTCMonth() === birth.getUTCMonth() &&
+        reference.getUTCDate() < birth.getUTCDate())
         ? 1
         : 0);
     expect(ageAtReference).toBe(19);

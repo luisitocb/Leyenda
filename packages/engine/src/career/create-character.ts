@@ -56,7 +56,9 @@ function validateGroupAllocation(allocation: CreateCharacterInput['groupAllocati
   const { physical, technical, mental } = allocation;
   for (const [group, value] of Object.entries({ physical, technical, mental })) {
     if (value < GROUP_MIN || value > GROUP_MAX) {
-      throw new Error(`El grupo "${group}" (${value}) debe estar entre ${GROUP_MIN} y ${GROUP_MAX}`);
+      throw new Error(
+        `El grupo "${group}" (${value}) debe estar entre ${GROUP_MIN} y ${GROUP_MAX}`
+      );
     }
   }
   const total = physical + technical + mental;

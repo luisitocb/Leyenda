@@ -4,11 +4,10 @@ import journal from './meta/_journal.json';
 import m0000 from './0000_init_saves.sql';
 import m0001 from './0001_add_protagonists.sql';
 
-  export default {
-    journal,
-    migrations: {
-      m0000,
-m0001
-    }
-  }
-  
+export default {
+  journal,
+  migrations: {
+    m0000,
+    m0001,
+  },
+};

@@ -17,7 +17,11 @@ import {
 // Import por subruta, no por el barrel `@leyenda/worldgen`: el barrel reexporta
 // generate-world.ts, que arrastra @leyenda/content (node:fs) aunque no se use
 // generateWorld — Metro evalúa todo el grafo estático, no solo lo importado.
-import { CLUBS_PER_DIVISION, DIVISIONS_PER_COUNTRY, SEASON_ONE_START_DATE } from '@leyenda/worldgen/src/constants';
+import {
+  CLUBS_PER_DIVISION,
+  DIVISIONS_PER_COUNTRY,
+  SEASON_ONE_START_DATE,
+} from '@leyenda/worldgen/src/constants';
 import { generateClubs } from '@leyenda/worldgen/src/clubs/generate-clubs';
 import { pickCandidateClubs } from '@leyenda/worldgen/src/clubs/pick-candidate-clubs';
 
@@ -120,7 +124,8 @@ export default function CreateCharacterScreen(): JSX.Element {
     return pickCandidateClubs(clubs, nationality, clubsRng);
   }, [nationality, seed]);
 
-  const canLeaveBasics = firstName.trim().length > 0 && lastName.trim().length > 0 && nationality && position && foot;
+  const canLeaveBasics =
+    firstName.trim().length > 0 && lastName.trim().length > 0 && nationality && position && foot;
 
   const adjustGroup = (group: keyof AttributeGroupAllocation, delta: number): void => {
     setGroups((current) => {
@@ -153,9 +158,11 @@ export default function CreateCharacterScreen(): JSX.Element {
       const character = createCharacter(input, new RNG(seed + 1));
       const save = createSave({ seed, gameDate: SEASON_ONE_START_DATE, currentMode: 'player' });
       createProtagonist({ saveId: save.id, data: character });
-      Alert.alert('Carrera creada', `${character.firstName} ${character.lastName} ha empezado su carrera.`, [
-        { text: 'OK', onPress: () => router.replace('/') },
-      ]);
+      Alert.alert(
+        'Carrera creada',
+        `${character.firstName} ${character.lastName} ha empezado su carrera.`,
+        [{ text: 'OK', onPress: () => router.replace('/') }]
+      );
     } catch (error) {
       Alert.alert('Error al crear el personaje', String(error));
     }

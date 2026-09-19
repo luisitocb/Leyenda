@@ -49,12 +49,8 @@
           "name": "protagonists_save_id_saves_id_fk",
           "tableFrom": "protagonists",
           "tableTo": "saves",
-          "columnsFrom": [
-            "save_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["save_id"],
+          "columnsTo": ["id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
