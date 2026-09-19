@@ -78,6 +78,7 @@ export default function CareerScreen(): JSX.Element {
         </Text>
 
         <Button label="Semana" onPress={() => router.push('/week')} />
+        <Button label="Clasificación" onPress={() => router.push('/standings')} />
 
         {lastMatch && (
           <>

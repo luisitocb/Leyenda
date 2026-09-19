@@ -89,6 +89,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Decisión',
           }}
         />
+        <Stack.Screen
+          name="standings"
+          options={{
+            title: 'Clasificación',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

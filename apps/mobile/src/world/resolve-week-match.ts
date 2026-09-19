@@ -1,21 +1,9 @@
-import { RNG, generateSeasonCalendar, simulateMatch } from '@leyenda/engine';
+import { RNG, simulateMatch } from '@leyenda/engine';
 import type { Club, Country, ISODate, MatchResult, ProtagonistPlayer } from '@leyenda/shared';
-// Import por subruta, no por el barrel `@leyenda/worldgen`: ver generate-clubs-for-country.ts.
-import { DIVISIONS_PER_COUNTRY, SEASON_ONE_START_DATE } from '@leyenda/worldgen/src/constants';
-import { generateCompetitions } from '@leyenda/worldgen/src/competitions/generate-competitions';
 
 import { countries } from '@/content';
-import { generateClubsForCountry } from './generate-clubs-for-country';
+import { resolveDivisionCalendar } from './resolve-division-calendar';
 import { generateSquadForClub } from './generate-squad-for-club';
-
-/**
- * Registro de offsets de seed reservados sobre la seed del save (mismo
- * patrón que create-character.tsx: `seed` = clubes candidatos, `seed+1` =
- * personaje, `seed+2` = elección de club). El siguiente offset libre es 4.
- */
-const CALENDAR_SEED_OFFSET = 3;
-
-const SEASON_YEAR = 2026;
 
 export interface WeekMatchResolution {
   homeClub: Club;
@@ -36,26 +24,9 @@ export function resolveWeekMatch(
   date: ISODate,
   allCountries: Country[] = countries
 ): WeekMatchResolution | null {
-  const clubsInCountry = generateClubsForCountry(seed, protagonist.nationality);
-  const myClub = clubsInCountry.find((c) => c.id === protagonist.clubId);
-  if (!myClub) return null;
-
-  const divisionClubs = clubsInCountry.filter((c) => c.divisionLevel === myClub.divisionLevel);
-  const country = allCountries.find((c) => c.code === protagonist.nationality);
-  if (!country) return null;
-
-  const competition = generateCompetitions(country, DIVISIONS_PER_COUNTRY).find(
-    (c) => c.level === myClub.divisionLevel
-  );
-  if (!competition) return null;
-
-  const calendar = generateSeasonCalendar({
-    competition,
-    clubs: divisionClubs,
-    year: SEASON_YEAR,
-    seasonStartDate: SEASON_ONE_START_DATE,
-    rng: new RNG(seed + CALENDAR_SEED_OFFSET),
-  });
+  const resolved = resolveDivisionCalendar(seed, protagonist, allCountries);
+  if (!resolved) return null;
+  const { myClub, divisionClubs, calendar } = resolved;
 
   const match = calendar.matches.find(
     (m) => m.date === date && (m.homeTeamId === myClub.id || m.awayTeamId === myClub.id)
