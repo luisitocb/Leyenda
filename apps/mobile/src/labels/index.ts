@@ -1,4 +1,4 @@
-import type { Foot, Position, ProtagonistPlayer } from '@leyenda/shared';
+import type { Foot, PlayerTrait, Position, ProtagonistPlayer } from '@leyenda/shared';
 
 /** Etiquetas en español para valores de enum que no vienen de contenido data-driven. */
 export const POSITION_LABELS: Record<Position, string> = {
@@ -30,4 +30,15 @@ export const RELATION_LABELS: Record<keyof ProtagonistPlayer['relations'], strin
   family: 'Familia',
   agent: 'Agente',
   sponsors: 'Patrocinadores',
+};
+
+export const TRAIT_LABELS: Record<PlayerTrait, string> = {
+  partyAnimal: 'Fiestero',
+  exemplary: 'Ejemplar',
+  controversial: 'Polémico',
+  leader: 'Líder',
+  discreet: 'Discreto',
+  'media-friendly': 'Mediático',
+  hothead: 'Cabeza caliente',
+  clutch: 'Decisivo',
 };

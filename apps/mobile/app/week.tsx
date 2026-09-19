@@ -9,12 +9,13 @@ import {
   advanceWeek,
   applyWeeklyAction,
   createRandomSeed,
+  selectEvent,
   WEEKLY_ENERGY_RESET,
 } from '@leyenda/engine';
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { countries, weeklyActions } from '@/content';
+import { countries, events, weeklyActions } from '@/content';
 import { RELATION_LABELS } from '@/labels';
 import { getLatestSave, updateSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
@@ -121,11 +122,19 @@ export default function WeekScreen(): JSX.Element {
   const handleAdvanceWeek = (): void => {
     const thisWeekDate = save.gameDate;
     const match = resolveWeekMatch(save.seed, workingProtagonist, thisWeekDate, countries);
+    const event = selectEvent(events, new RNG(createRandomSeed()));
 
     updateProtagonist(protagonistRow.id, { ...workingProtagonist, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
 
-    if (match) {
+    if (event) {
+      router.replace({
+        pathname: '/event',
+        params: match
+          ? { eventId: event.id, nextPath: '/match', date: thisWeekDate }
+          : { eventId: event.id, nextPath: '/career' },
+      });
+    } else if (match) {
       router.replace({ pathname: '/match', params: { date: thisWeekDate } });
     } else {
       router.replace('/career');

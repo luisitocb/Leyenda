@@ -131,3 +131,6 @@ export const SUCCESS_CHANCE_MAX = 0.9;
 export const MATCH_RATING_FORM_BOOST_THRESHOLD = 7;
 export const MATCH_RATING_FORM_PENALTY_THRESHOLD = 4;
 export const MATCH_RATING_FORM_DELTA = 3;
+
+/** Probabilidad de que toque un evento de decisión (GDD §4.6) al avanzar una semana. */
+export const EVENT_CHANCE_PER_WEEK = 0.6;

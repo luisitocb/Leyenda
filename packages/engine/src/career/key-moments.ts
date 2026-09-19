@@ -1,7 +1,7 @@
 import type { KeyMoment, Position, ProtagonistPlayer } from '@leyenda/shared';
 import { RNG } from '../rng';
 
-import { clamp } from './math';
+import { clamp, getAttributeValue } from './math';
 import {
   ATTRIBUTE_SUCCESS_WEIGHT,
   BASE_MATCH_RATING,
@@ -26,23 +26,6 @@ export function selectKeyMoments(
     (moment) => moment.positions === 'any' || moment.positions.includes(position)
   );
   return rng.shuffle([...applicable]).slice(0, count);
-}
-
-function numberFields(obj: object): Record<string, number> {
-  return obj as unknown as Record<string, number>;
-}
-
-function getAttributeValue(protagonist: ProtagonistPlayer, attribute: string): number {
-  if (attribute in protagonist.physical) {
-    return numberFields(protagonist.physical)[attribute]!;
-  }
-  if (attribute in protagonist.technical) {
-    return numberFields(protagonist.technical)[attribute]!;
-  }
-  if (attribute in protagonist.mental) {
-    return numberFields(protagonist.mental)[attribute]!;
-  }
-  throw new Error(`Atributo desconocido en un momento clave: ${attribute}`);
 }
 
 /**

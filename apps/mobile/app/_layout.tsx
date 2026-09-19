@@ -83,6 +83,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Partido',
           }}
         />
+        <Stack.Screen
+          name="event"
+          options={{
+            title: 'Decisión',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

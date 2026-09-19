@@ -1,62 +1,8 @@
-import type { AttributeValue, ProtagonistPlayer } from '@leyenda/shared';
+import type { ProtagonistPlayer } from '@leyenda/shared';
 import { RNG } from '../rng';
 
-import { clamp } from './math';
-import { TRAINING_GAIN_MAX, TRAINING_GAIN_MIN, type WeeklyActionEffect } from './types';
-
-function trainAttribute(current: AttributeValue, rng: RNG): AttributeValue {
-  return clamp(current + rng.nextInt(TRAINING_GAIN_MIN, TRAINING_GAIN_MAX), 1, 99);
-}
-
-function trainGroup(
-  group: 'physical' | 'technical' | 'mental',
-  protagonist: ProtagonistPlayer,
-  rng: RNG
-): Pick<ProtagonistPlayer, 'physical' | 'technical' | 'mental'> {
-  if (group === 'physical') {
-    return {
-      physical: {
-        speed: trainAttribute(protagonist.physical.speed, rng),
-        stamina: trainAttribute(protagonist.physical.stamina, rng),
-        strength: trainAttribute(protagonist.physical.strength, rng),
-        jumping: trainAttribute(protagonist.physical.jumping, rng),
-      },
-      technical: protagonist.technical,
-      mental: protagonist.mental,
-    };
-  }
-
-  if (group === 'mental') {
-    return {
-      physical: protagonist.physical,
-      technical: protagonist.technical,
-      mental: {
-        vision: trainAttribute(protagonist.mental.vision, rng),
-        composure: trainAttribute(protagonist.mental.composure, rng),
-        leadership: trainAttribute(protagonist.mental.leadership, rng),
-        teamwork: trainAttribute(protagonist.mental.teamwork, rng),
-      },
-    };
-  }
-
-  const technical =
-    'reflexes' in protagonist.technical
-      ? {
-          reflexes: trainAttribute(protagonist.technical.reflexes, rng),
-          positioning: trainAttribute(protagonist.technical.positioning, rng),
-          aerialAbility: trainAttribute(protagonist.technical.aerialAbility, rng),
-        }
-      : {
-          passing: trainAttribute(protagonist.technical.passing, rng),
-          dribbling: trainAttribute(protagonist.technical.dribbling, rng),
-          shooting: trainAttribute(protagonist.technical.shooting, rng),
-          ballControl: trainAttribute(protagonist.technical.ballControl, rng),
-          defending: trainAttribute(protagonist.technical.defending, rng),
-          heading: trainAttribute(protagonist.technical.heading, rng),
-        };
-
-  return { physical: protagonist.physical, technical, mental: protagonist.mental };
-}
+import { clamp, trainGroup } from './math';
+import type { WeeklyActionEffect } from './types';
 
 /**
  * Aplica una acción semanal (GDD §4.5) al protagonista. Función pura y

@@ -105,3 +105,74 @@ export const KeyMomentSchema = z.object({
 // Sin `export type KeyMoment = z.infer<...>`: la forma canónica ya vive en
 // @leyenda/shared (KeyMoment/KeyMomentChoice) — este esquema solo valida
 // que el JSON de contenido encaje en ella, no define un tipo paralelo.
+
+const PERSONALITY_KEYS = ['professionalism', 'charisma', 'ego', 'temperament'] as const;
+
+/**
+ * `check.determinedBy` de un evento de decisión puede apuntar a Personalidad
+ * además de físico/técnico/mental (a diferencia de un momento clave de
+ * partido, que solo usa atributos deportivos) — el GDD lo pide explícitamente
+ * ("check: { attribute: professionalism, difficulty: 55 }").
+ */
+const EVENT_CHECK_ATTRIBUTE_NAMES = [...ATTRIBUTE_NAMES, ...PERSONALITY_KEYS] as const;
+
+const PLAYER_TRAITS = [
+  'partyAnimal',
+  'exemplary',
+  'controversial',
+  'leader',
+  'discreet',
+  'media-friendly',
+  'hothead',
+  'clutch',
+] as const;
+
+const DecisionEventEffectsSchema = z.object({
+  attributeGroup: z.enum(['physical', 'technical', 'mental']).nullable(),
+  personalityDelta: z.record(z.enum(PERSONALITY_KEYS), z.number().int()),
+  vitalStateDelta: z.object({
+    health: z.number().int(),
+    mentalHealth: z.number().int(),
+    form: z.number().int(),
+    fitness: z.number().int(),
+  }),
+  relationsDelta: z.record(z.enum(RELATION_KEYS), z.number().int()),
+  moneyDelta: z.number().int(),
+});
+
+/**
+ * Esquema de un evento de decisión (GDD §4.6): tarjeta semanal con 2-4
+ * opciones. Si `check` es `null` en una opción, `effects` se aplica
+ * siempre; si no, `effects` es la rama de éxito y `onFailEffects` la de
+ * fallo. Sin condiciones de disparo ni consecuencias diferidas todavía —
+ * fuera de alcance de este primer slice.
+ */
+export const DecisionEventSchema = z.object({
+  id: z.string().min(1),
+  category: z.string().min(1),
+  text: z.string().min(1),
+  weight: z.number().positive(),
+  choices: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        label: z.string().min(1),
+        check: z
+          .object({
+            determinedBy: z.enum(EVENT_CHECK_ATTRIBUTE_NAMES),
+            baseSuccessChance: z.number().min(0).max(1),
+          })
+          .nullable(),
+        effects: DecisionEventEffectsSchema,
+        onFailEffects: DecisionEventEffectsSchema.nullable(),
+        grantsTrait: z
+          .object({ trait: z.enum(PLAYER_TRAITS), chance: z.number().min(0).max(1) })
+          .nullable(),
+      })
+    )
+    .min(2)
+    .max(4),
+});
+
+// Sin `export type DecisionEvent = z.infer<...>`: mismo motivo que KeyMoment
+// — la forma canónica vive en @leyenda/shared.

@@ -6,7 +6,7 @@
  * Valida que todos los eventos y textos cumplan con los esquemas Zod
  */
 
-import { loadKeyMoments, loadOrigins, loadWeeklyActions } from './career/load';
+import { loadEvents, loadKeyMoments, loadOrigins, loadWeeklyActions } from './career/load';
 import { loadClubNamePool, loadCountries, loadPersonNamePool } from './worldgen/load';
 
 function validateContent(): void {
@@ -54,8 +54,15 @@ function validateContent(): void {
     console.error('❌ Error validando momentos clave:', error);
   }
 
-  // TODO: Cargar eventos desde archivos YAML/JSON cuando existan
-  console.log('📁 Eventos de jugador: 0 archivos');
+  try {
+    const events = loadEvents();
+    console.log(`📁 Eventos de decisión (carrera): ${events.length} válidos`);
+  } catch (error) {
+    errors++;
+    console.error('❌ Error validando eventos de decisión:', error);
+  }
+
+  // TODO: Eventos de entrenador (Fase 4) y traducciones (Fase 6) cuando existan
   console.log('📁 Eventos de entrenador: 0 archivos');
   console.log('📁 Traducciones ES: 0 claves');
   console.log('📁 Traducciones EN: 0 claves\n');

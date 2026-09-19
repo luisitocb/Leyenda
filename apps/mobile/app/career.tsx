@@ -8,7 +8,7 @@ import { addDays, DAYS_PER_WEEK } from '@leyenda/engine';
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
 import { countries } from '@/content';
-import { FOOT_LABELS, POSITION_LABELS, RELATION_LABELS } from '@/labels';
+import { FOOT_LABELS, POSITION_LABELS, RELATION_LABELS, TRAIT_LABELS } from '@/labels';
 import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave } from '@/persistence/protagonists.repository';
 import { generateClubsForCountry } from '@/world/generate-clubs-for-country';
@@ -87,6 +87,17 @@ export default function CareerScreen(): JSX.Element {
             <Text variant="body">
               {lastMatch.homeClub.name} {lastMatch.result.homeGoals} - {lastMatch.result.awayGoals}{' '}
               {lastMatch.awayClub.name}
+            </Text>
+          </>
+        )}
+
+        {protagonist.traits.length > 0 && (
+          <>
+            <Text variant="subtitle" style={styles.sectionLabel}>
+              Rasgos
+            </Text>
+            <Text variant="body">
+              {protagonist.traits.map((trait) => TRAIT_LABELS[trait]).join(' · ')}
             </Text>
           </>
         )}

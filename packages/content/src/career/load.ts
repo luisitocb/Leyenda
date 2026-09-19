@@ -3,9 +3,10 @@ import { join } from 'node:path';
 
 import { z } from 'zod';
 
-import type { KeyMoment } from '@leyenda/shared';
+import type { DecisionEvent, KeyMoment } from '@leyenda/shared';
 
 import {
+  DecisionEventSchema,
   KeyMomentSchema,
   OriginSchema,
   WeeklyActionSchema,
@@ -32,4 +33,9 @@ export function loadWeeklyActions(): WeeklyAction[] {
 export function loadKeyMoments(): KeyMoment[] {
   const raw = readJson(join(DATA_ROOT, 'key-moments.json'));
   return z.array(KeyMomentSchema).parse(raw) as KeyMoment[];
+}
+
+export function loadEvents(): DecisionEvent[] {
+  const raw = readJson(join(DATA_ROOT, 'events.json'));
+  return z.array(DecisionEventSchema).parse(raw) as DecisionEvent[];
 }
