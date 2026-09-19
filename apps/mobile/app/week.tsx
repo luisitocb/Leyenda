@@ -1,5 +1,5 @@
 import { useMemo, useState, type JSX } from 'react';
-import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import type { WeeklyAction } from '@leyenda/content';
@@ -14,10 +14,11 @@ import {
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { weeklyActions } from '@/content';
+import { countries, weeklyActions } from '@/content';
 import { RELATION_LABELS } from '@/labels';
 import { getLatestSave, updateSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
+import { resolveWeekMatch } from '@/world/resolve-week-match';
 
 function describeEffects(action: WeeklyAction): string {
   const parts: string[] = [];
@@ -118,9 +119,21 @@ export default function WeekScreen(): JSX.Element {
   };
 
   const handleAdvanceWeek = (): void => {
+    const match = resolveWeekMatch(save.seed, workingProtagonist, save.gameDate, countries);
+
     updateProtagonist(protagonistRow.id, { ...workingProtagonist, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
-    router.replace('/career');
+
+    if (match) {
+      const { homeClub, awayClub, result } = match;
+      Alert.alert(
+        match.isHome ? 'Jugaste en casa' : 'Jugaste fuera',
+        `${homeClub.name} ${result.homeGoals} - ${result.awayGoals} ${awayClub.name}`,
+        [{ text: 'OK', onPress: () => router.replace('/career') }]
+      );
+    } else {
+      router.replace('/career');
+    }
   };
 
   return (

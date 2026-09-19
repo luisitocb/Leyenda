@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import type { ProtagonistPlayer } from '@leyenda/shared';
+import { addDays, DAYS_PER_WEEK } from '@leyenda/engine';
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
@@ -11,6 +12,7 @@ import { FOOT_LABELS, POSITION_LABELS, RELATION_LABELS } from '@/labels';
 import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave } from '@/persistence/protagonists.repository';
 import { generateClubsForCountry } from '@/world/generate-clubs-for-country';
+import { resolveWeekMatch } from '@/world/resolve-week-match';
 
 interface StatRowProps {
   label: string;
@@ -45,6 +47,11 @@ export default function CareerScreen(): JSX.Element {
     );
   }, [save, protagonist]);
 
+  const lastMatch = useMemo(() => {
+    if (!save || !protagonist) return null;
+    return resolveWeekMatch(save.seed, protagonist, addDays(save.gameDate, -DAYS_PER_WEEK));
+  }, [save, protagonist]);
+
   if (!save || !protagonist) {
     return (
       <Screen>
@@ -71,6 +78,18 @@ export default function CareerScreen(): JSX.Element {
         </Text>
 
         <Button label="Semana" onPress={() => router.push('/week')} />
+
+        {lastMatch && (
+          <>
+            <Text variant="subtitle" style={styles.sectionLabel}>
+              Último resultado
+            </Text>
+            <Text variant="body">
+              {lastMatch.homeClub.name} {lastMatch.result.homeGoals} - {lastMatch.result.awayGoals}{' '}
+              {lastMatch.awayClub.name}
+            </Text>
+          </>
+        )}
 
         <Text variant="subtitle" style={styles.sectionLabel}>
           Atributos
