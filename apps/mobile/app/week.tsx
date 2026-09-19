@@ -1,5 +1,5 @@
 import { useMemo, useState, type JSX } from 'react';
-import { View, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import type { WeeklyAction } from '@leyenda/content';
@@ -119,18 +119,14 @@ export default function WeekScreen(): JSX.Element {
   };
 
   const handleAdvanceWeek = (): void => {
-    const match = resolveWeekMatch(save.seed, workingProtagonist, save.gameDate, countries);
+    const thisWeekDate = save.gameDate;
+    const match = resolveWeekMatch(save.seed, workingProtagonist, thisWeekDate, countries);
 
     updateProtagonist(protagonistRow.id, { ...workingProtagonist, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
 
     if (match) {
-      const { homeClub, awayClub, result } = match;
-      Alert.alert(
-        match.isHome ? 'Jugaste en casa' : 'Jugaste fuera',
-        `${homeClub.name} ${result.homeGoals} - ${result.awayGoals} ${awayClub.name}`,
-        [{ text: 'OK', onPress: () => router.replace('/career') }]
-      );
+      router.replace({ pathname: '/match', params: { date: thisWeekDate } });
     } else {
       router.replace('/career');
     }

@@ -77,6 +77,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Semana',
           }}
         />
+        <Stack.Screen
+          name="match"
+          options={{
+            title: 'Partido',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

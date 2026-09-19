@@ -1,0 +1,140 @@
+[
+  {
+    "id": "ocasion-clara",
+    "situation": "Te plantas solo ante el portero.",
+    "positions": ["CF", "LW", "RW", "AMF", "CMF"],
+    "choices": [
+      {
+        "id": "chutar-fuerte",
+        "label": "Chutar fuerte",
+        "determinedBy": "shooting",
+        "baseSuccessChance": 0.5,
+        "ratingDelta": { "onSuccess": 2, "onFail": -1 },
+        "fanRelationDelta": { "onSuccess": 6, "onFail": -2 }
+      },
+      {
+        "id": "colocar",
+        "label": "Colocar el disparo",
+        "determinedBy": "composure",
+        "baseSuccessChance": 0.55,
+        "ratingDelta": { "onSuccess": 1.5, "onFail": -0.5 },
+        "fanRelationDelta": { "onSuccess": 4, "onFail": -1 }
+      }
+    ]
+  },
+  {
+    "id": "duelo-defensivo",
+    "situation": "El delantero rival te encara en el área.",
+    "positions": ["CB", "LB", "RB", "DMF"],
+    "choices": [
+      {
+        "id": "entrada",
+        "label": "Entrar al balón",
+        "determinedBy": "defending",
+        "baseSuccessChance": 0.5,
+        "ratingDelta": { "onSuccess": 2, "onFail": -1.5 },
+        "fanRelationDelta": { "onSuccess": 5, "onFail": -3 }
+      },
+      {
+        "id": "contener",
+        "label": "Contener sin arriesgar",
+        "determinedBy": "composure",
+        "baseSuccessChance": 0.6,
+        "ratingDelta": { "onSuccess": 1, "onFail": -0.5 },
+        "fanRelationDelta": { "onSuccess": 2, "onFail": -1 }
+      }
+    ]
+  },
+  {
+    "id": "pase-clave",
+    "situation": "Ves un hueco para un pase decisivo.",
+    "positions": ["CMF", "AMF", "LW", "RW", "DMF"],
+    "choices": [
+      {
+        "id": "pase-filtrado",
+        "label": "Buscar el pase filtrado",
+        "determinedBy": "passing",
+        "baseSuccessChance": 0.45,
+        "ratingDelta": { "onSuccess": 2, "onFail": -1 },
+        "fanRelationDelta": { "onSuccess": 5, "onFail": -2 }
+      },
+      {
+        "id": "jugada-segura",
+        "label": "Jugada segura",
+        "determinedBy": "vision",
+        "baseSuccessChance": 0.65,
+        "ratingDelta": { "onSuccess": 0.5, "onFail": 0 },
+        "fanRelationDelta": { "onSuccess": 1, "onFail": 0 }
+      }
+    ]
+  },
+  {
+    "id": "intervencion-portero",
+    "situation": "Un disparo lejano viaja hacia tu portería.",
+    "positions": ["GK"],
+    "choices": [
+      {
+        "id": "estirada",
+        "label": "Estirada al máximo",
+        "determinedBy": "reflexes",
+        "baseSuccessChance": 0.5,
+        "ratingDelta": { "onSuccess": 2, "onFail": -1.5 },
+        "fanRelationDelta": { "onSuccess": 6, "onFail": -3 }
+      },
+      {
+        "id": "colocacion",
+        "label": "Colocación previa",
+        "determinedBy": "positioning",
+        "baseSuccessChance": 0.6,
+        "ratingDelta": { "onSuccess": 1.5, "onFail": -1 },
+        "fanRelationDelta": { "onSuccess": 3, "onFail": -2 }
+      }
+    ]
+  },
+  {
+    "id": "presion-rival",
+    "situation": "El público aprieta y el rival presiona fuerte.",
+    "positions": "any",
+    "choices": [
+      {
+        "id": "mantener-calma",
+        "label": "Mantener la calma",
+        "determinedBy": "composure",
+        "baseSuccessChance": 0.55,
+        "ratingDelta": { "onSuccess": 1.5, "onFail": -1 },
+        "fanRelationDelta": { "onSuccess": 3, "onFail": -2 }
+      },
+      {
+        "id": "arriesgar",
+        "label": "Arriesgar para salir jugando",
+        "determinedBy": "dribbling",
+        "baseSuccessChance": 0.4,
+        "ratingDelta": { "onSuccess": 2, "onFail": -1.5 },
+        "fanRelationDelta": { "onSuccess": 4, "onFail": -3 }
+      }
+    ]
+  },
+  {
+    "id": "liderazgo-vestuario",
+    "situation": "Un compañero comete un error y el equipo se viene abajo.",
+    "positions": "any",
+    "choices": [
+      {
+        "id": "animar",
+        "label": "Animar al equipo",
+        "determinedBy": "leadership",
+        "baseSuccessChance": 0.5,
+        "ratingDelta": { "onSuccess": 1, "onFail": -0.5 },
+        "fanRelationDelta": { "onSuccess": 2, "onFail": -1 }
+      },
+      {
+        "id": "ignorar",
+        "label": "Centrarte en tu juego",
+        "determinedBy": "teamwork",
+        "baseSuccessChance": 0.6,
+        "ratingDelta": { "onSuccess": 0.5, "onFail": 0 },
+        "fanRelationDelta": { "onSuccess": 0, "onFail": 0 }
+      }
+    ]
+  }
+]

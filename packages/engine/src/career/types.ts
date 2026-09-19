@@ -104,3 +104,30 @@ export const DAYS_PER_WEEK = 7;
 
 /** Energía semanal con la que se llega a cada nueva semana. */
 export const WEEKLY_ENERGY_RESET = 100;
+
+/** Resultado de resolver la elección del protagonista en un momento clave (GDD §4.7). */
+export interface KeyMomentOutcome {
+  momentId: string;
+  choiceId: string;
+  success: boolean;
+  ratingDelta: number;
+  fanRelationDelta: number;
+}
+
+/** Cuántos momentos clave vive el protagonista por partido normal (GDD §4.7: "2-4"). */
+export const KEY_MOMENTS_PER_MATCH = 3;
+
+/** Nota de partido de partida, antes de sumar los `ratingDelta` de cada momento. */
+export const BASE_MATCH_RATING = 6;
+
+/** Cuánto pesan el atributo, la forma y la moral sobre `baseSuccessChance` (GDD §4.7). */
+export const ATTRIBUTE_SUCCESS_WEIGHT = 200;
+export const FORM_SUCCESS_WEIGHT = 300;
+export const MORALE_SUCCESS_WEIGHT = 300;
+export const SUCCESS_CHANCE_MIN = 0.1;
+export const SUCCESS_CHANCE_MAX = 0.9;
+
+/** Ajuste de forma tras el partido según la nota final. */
+export const MATCH_RATING_FORM_BOOST_THRESHOLD = 7;
+export const MATCH_RATING_FORM_PENALTY_THRESHOLD = 4;
+export const MATCH_RATING_FORM_DELTA = 3;

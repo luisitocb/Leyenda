@@ -6,7 +6,7 @@
  * Valida que todos los eventos y textos cumplan con los esquemas Zod
  */
 
-import { loadOrigins, loadWeeklyActions } from './career/load';
+import { loadKeyMoments, loadOrigins, loadWeeklyActions } from './career/load';
 import { loadClubNamePool, loadCountries, loadPersonNamePool } from './worldgen/load';
 
 function validateContent(): void {
@@ -44,6 +44,14 @@ function validateContent(): void {
   } catch (error) {
     errors++;
     console.error('❌ Error validando acciones semanales:', error);
+  }
+
+  try {
+    const keyMoments = loadKeyMoments();
+    console.log(`📁 Momentos clave (carrera): ${keyMoments.length} válidos`);
+  } catch (error) {
+    errors++;
+    console.error('❌ Error validando momentos clave:', error);
   }
 
   // TODO: Cargar eventos desde archivos YAML/JSON cuando existan

@@ -1,4 +1,4 @@
-import { clubNamePool, countries, namePools, origins, weeklyActions } from './index';
+import { clubNamePool, countries, keyMoments, namePools, origins, weeklyActions } from './index';
 
 describe('content adapter (import estático, sin fs)', () => {
   it('carga los 10 países', () => {
@@ -23,5 +23,10 @@ describe('content adapter (import estático, sin fs)', () => {
   it('carga los pools de nombres de los 10 países', () => {
     expect(Object.keys(namePools)).toHaveLength(10);
     expect(namePools.XA?.firstNames.length).toBeGreaterThan(0);
+  });
+
+  it('carga los 6 momentos clave', () => {
+    expect(keyMoments).toHaveLength(6);
+    expect(keyMoments.map((m) => m.id)).toContain('intervencion-portero');
   });
 });

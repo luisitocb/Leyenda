@@ -56,3 +56,52 @@ export const WeeklyActionSchema = z.object({
 });
 
 export type WeeklyAction = z.infer<typeof WeeklyActionSchema>;
+
+const POSITIONS = ['GK', 'LB', 'CB', 'RB', 'DMF', 'CMF', 'AMF', 'LW', 'RW', 'CF'] as const;
+
+const ATTRIBUTE_NAMES = [
+  'speed',
+  'stamina',
+  'strength',
+  'jumping',
+  'passing',
+  'dribbling',
+  'shooting',
+  'ballControl',
+  'defending',
+  'heading',
+  'reflexes',
+  'positioning',
+  'aerialAbility',
+  'vision',
+  'composure',
+  'leadership',
+  'teamwork',
+] as const;
+
+/**
+ * Esquema de un momento clave (GDD §4.7): tarjeta de decisión durante un
+ * partido normal. `baseSuccessChance` es el punto de partida antes de que
+ * el motor sume el atributo relevante, la forma y la moral.
+ */
+export const KeyMomentSchema = z.object({
+  id: z.string().min(1),
+  situation: z.string().min(1),
+  positions: z.union([z.literal('any'), z.array(z.enum(POSITIONS)).min(1)]),
+  choices: z
+    .array(
+      z.object({
+        id: z.string().min(1),
+        label: z.string().min(1),
+        determinedBy: z.enum(ATTRIBUTE_NAMES),
+        baseSuccessChance: z.number().min(0).max(1),
+        ratingDelta: z.object({ onSuccess: z.number(), onFail: z.number() }),
+        fanRelationDelta: z.object({ onSuccess: z.number().int(), onFail: z.number().int() }),
+      })
+    )
+    .min(2),
+});
+
+// Sin `export type KeyMoment = z.infer<...>`: la forma canónica ya vive en
+// @leyenda/shared (KeyMoment/KeyMomentChoice) — este esquema solo valida
+// que el JSON de contenido encaje en ella, no define un tipo paralelo.

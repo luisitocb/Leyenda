@@ -1,4 +1,4 @@
-import type { EntityId, ISODate, Seed } from './common';
+import type { EntityId, ISODate, Position, Seed } from './common';
 
 /**
  * Resultado de un partido
@@ -50,22 +50,29 @@ export interface Match {
 }
 
 /**
- * Momento clave (decisión rápida en el partido)
+ * Momento clave (decisión rápida en el partido, GDD §4.7): el protagonista
+ * vive esta situación durante un partido normal. `positions` filtra a
+ * quién le puede tocar ('any' = cualquier posición).
  */
 export interface KeyMoment {
-  minute: number;
-  situation: string; // Clave i18n de la situación
+  id: string;
+  situation: string;
+  positions: Position[] | 'any';
   choices: KeyMomentChoice[];
 }
 
 /**
- * Opción en un momento clave
+ * Opción en un momento clave. `baseSuccessChance` es el punto de partida
+ * antes de sumar el atributo relevante, la forma y la moral (GDD §4.7):
+ * la probabilidad final no es un literal fijo, se calcula.
  */
 export interface KeyMomentChoice {
   id: string;
-  label: string; // Clave i18n
-  successProbability: number; // 0-1
-  determinedBy: string; // Atributo que determina el éxito
+  label: string;
+  determinedBy: string; // nombre de un atributo físico/técnico/mental
+  baseSuccessChance: number; // 0-1
+  ratingDelta: { onSuccess: number; onFail: number };
+  fanRelationDelta: { onSuccess: number; onFail: number };
 }
 
 /**
