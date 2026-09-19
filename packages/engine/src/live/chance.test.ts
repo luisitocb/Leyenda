@@ -5,7 +5,7 @@ import { RNG } from '../rng';
 import { resolveChance } from './chance';
 import type { SwipeGestureData } from './types';
 
-function situation(pressure: number): LiveSituation {
+function situation(pressure: number, shooting = 50, composure = 50): LiveSituation {
   return {
     type: 'chance',
     minute: 45,
@@ -13,6 +13,8 @@ function situation(pressure: number): LiveSituation {
     team: 'home',
     seed: 1,
     pressure,
+    shooterShooting: shooting,
+    shooterComposure: composure,
   };
 }
 
@@ -101,5 +103,20 @@ describe('resolveChance', () => {
       }
     }
     expect(goalsAtNoPressure).toBeGreaterThan(goalsAtMaxPressure);
+  });
+
+  it('un tirador con Tiro/Compostura altos acierta más que uno bajo con el mismo gesto', () => {
+    let goalsHighSkill = 0;
+    let goalsLowSkill = 0;
+    const trials = 200;
+    for (let seed = 0; seed < trials; seed++) {
+      if (resolveChance(situation(30, 95, 95), BOUNDARY_GESTURE, new RNG(seed)).type === 'goal') {
+        goalsHighSkill++;
+      }
+      if (resolveChance(situation(30, 5, 5), BOUNDARY_GESTURE, new RNG(seed)).type === 'goal') {
+        goalsLowSkill++;
+      }
+    }
+    expect(goalsHighSkill).toBeGreaterThan(goalsLowSkill);
   });
 });

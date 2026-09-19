@@ -134,3 +134,24 @@ export const MATCH_RATING_FORM_DELTA = 3;
 
 /** Probabilidad de que toque un evento de decisión (GDD §4.6) al avanzar una semana. */
 export const EVENT_CHANCE_PER_WEEK = 0.6;
+
+/** Probabilidad de que un partido incluya una Jugada en Vivo (GDD §7B.2: "1 cada 5-8 partidos"). */
+export const LIVE_PLAY_MATCH_CHANCE = 0.15;
+
+/**
+ * Ajuste de nota/afición por el resultado de una Jugada en Vivo — pesa más
+ * que un momento clave normal (GDD §7B.6: un gol en Jugada en Vivo es
+ * "momento histórico"). `miss`/`foul` no los devuelve ningún resolver de
+ * penalti/ocasión todavía; se cubren solo por exhaustividad de tipos.
+ */
+export const LIVE_PLAY_OUTCOME_EFFECTS: Record<
+  'goal' | 'save' | 'miss' | 'post' | 'foul' | 'out',
+  { ratingDelta: number; fanRelationDelta: number }
+> = {
+  goal: { ratingDelta: 3, fanRelationDelta: 15 },
+  save: { ratingDelta: -1.5, fanRelationDelta: -3 },
+  post: { ratingDelta: -1, fanRelationDelta: -2 },
+  out: { ratingDelta: -2, fanRelationDelta: -5 },
+  miss: { ratingDelta: -2, fanRelationDelta: -5 },
+  foul: { ratingDelta: -1, fanRelationDelta: -2 },
+};

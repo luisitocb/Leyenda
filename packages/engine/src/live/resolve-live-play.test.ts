@@ -14,6 +14,8 @@ const penaltySituation: LiveSituation = {
   team: 'home',
   seed: 1,
   pressure: 20,
+  shooterShooting: 50,
+  shooterComposure: 50,
 };
 
 const penaltyGesture: PenaltyGestureData = {
@@ -29,6 +31,8 @@ const chanceSituation: LiveSituation = {
   team: 'home',
   seed: 1,
   pressure: 20,
+  shooterShooting: 50,
+  shooterComposure: 50,
 };
 
 const chanceGesture: SwipeGestureData = {

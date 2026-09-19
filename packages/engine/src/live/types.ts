@@ -24,6 +24,14 @@ export interface SwipeGestureData {
 export type GestureData = PenaltyGestureData | SwipeGestureData;
 
 /**
+ * Cuánto pesa la media de Tiro/Compostura del protagonista sobre la
+ * precisión final (GDD §7B.4). Empuje acotado (±0.16 en los extremos, 1 y
+ * 99) para respetar la "regla de oro": el gesto humano sigue pesando más
+ * que el atributo, no convierte a un jugador malo en un crack.
+ */
+export const SHOOTER_SKILL_WEIGHT = 300;
+
+/**
  * Constantes de tuning para el penalti. Valores de arranque sin balanceo
  * previo (no existe balance-sim para Jugadas en Vivo todavía); ajustar
  * tras la prueba en dispositivo real (ADR-002).

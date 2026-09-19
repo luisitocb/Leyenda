@@ -85,6 +85,9 @@ export interface LiveSituation {
   team: 'home' | 'away';
   seed: Seed;
   pressure: number; // 0-100 (afecta dificultad)
+  /** Atributos del protagonista que dispara (GDD §7B.4: Tiro/Compostura). */
+  shooterShooting: number;
+  shooterComposure: number;
   // ... más datos según el tipo de jugada
 }
 

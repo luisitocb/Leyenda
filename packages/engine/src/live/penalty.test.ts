@@ -5,7 +5,7 @@ import { RNG } from '../rng';
 import { resolvePenalty } from './penalty';
 import type { PenaltyGestureData } from './types';
 
-function situation(pressure: number): LiveSituation {
+function situation(pressure: number, shooting = 50, composure = 50): LiveSituation {
   return {
     type: 'penalty',
     minute: 90,
@@ -13,6 +13,8 @@ function situation(pressure: number): LiveSituation {
     team: 'home',
     seed: 1,
     pressure,
+    shooterShooting: shooting,
+    shooterComposure: composure,
   };
 }
 
@@ -96,5 +98,25 @@ describe('resolvePenalty', () => {
       }
     }
     expect(goalsAtNoPressure).toBeGreaterThan(goalsAtMaxPressure);
+  });
+
+  it('un tirador con Tiro/Compostura altos acierta más que uno bajo con el mismo gesto', () => {
+    const boundaryGesture: PenaltyGestureData = {
+      type: 'penalty',
+      aimTarget: { x: 0.2, y: 0.5 },
+      barValue: 0.85,
+    };
+    let goalsHighSkill = 0;
+    let goalsLowSkill = 0;
+    const trials = 200;
+    for (let seed = 0; seed < trials; seed++) {
+      if (resolvePenalty(situation(30, 95, 95), boundaryGesture, new RNG(seed)).type === 'goal') {
+        goalsHighSkill++;
+      }
+      if (resolvePenalty(situation(30, 5, 5), boundaryGesture, new RNG(seed)).type === 'goal') {
+        goalsLowSkill++;
+      }
+    }
+    expect(goalsHighSkill).toBeGreaterThan(goalsLowSkill);
   });
 });

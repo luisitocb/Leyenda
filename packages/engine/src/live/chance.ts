@@ -2,7 +2,7 @@ import type { LiveOutcome, LiveSituation } from '@leyenda/shared';
 import type { RNG } from '../rng';
 
 import { clamp } from './math';
-import { CHANCE_TUNING as T, type SwipeGestureData } from './types';
+import { CHANCE_TUNING as T, SHOOTER_SKILL_WEIGHT, type SwipeGestureData } from './types';
 
 /**
  * Centro de la portería en el sistema de coordenadas normalizado del
@@ -13,7 +13,8 @@ const GOAL_CENTER = { x: 0.5, y: 1 };
 /**
  * Resuelve una ocasión de gol (GDD §7B.3): un único swipe hacia la
  * portería, donde la velocidad marca la potencia y el ángulo marca la
- * colocación. Solo usa `pressure` como modificador de dificultad.
+ * colocación. El gesto manda; Tiro/Compostura del protagonista dan un
+ * empujón acotado encima (GDD §7B.4).
  */
 export function resolveChance(
   situation: LiveSituation,
@@ -41,8 +42,12 @@ export function resolveChance(
         : 0;
 
   const basePrecision = clamp(1 - placementError - powerPenalty, 0, 1);
+  const skillBonus =
+    ((situation.shooterShooting + situation.shooterComposure) / 2 - 50) / SHOOTER_SKILL_WEIGHT;
   const noisyPrecision = clamp(
-    basePrecision - rng.nextFloat(0, (situation.pressure / 100) * T.pressureNoiseFactor),
+    basePrecision +
+      skillBonus -
+      rng.nextFloat(0, (situation.pressure / 100) * T.pressureNoiseFactor),
     0,
     1
   );

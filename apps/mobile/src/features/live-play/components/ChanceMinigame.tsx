@@ -1,10 +1,10 @@
-import { useCallback, useState, type JSX } from 'react';
+import { useCallback, type JSX } from 'react';
 import { useWindowDimensions } from 'react-native';
 import { Canvas, Circle } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import { runOnJS, useSharedValue } from 'react-native-reanimated';
 import type { LiveOutcome, LiveSituation } from '@leyenda/shared';
-import { RNG, createRandomSeed, resolveLivePlay, type SwipeGestureData } from '@leyenda/engine';
+import { RNG, resolveLivePlay, type SwipeGestureData } from '@leyenda/engine';
 
 import { theme } from '@/theme';
 import { DrawField } from '../drawing/field';
@@ -15,10 +15,11 @@ function toNormalized(pixelX: number, pixelY: number, width: number, height: num
 }
 
 export interface ChanceMinigameProps {
+  situation: LiveSituation;
   onResult: (outcome: LiveOutcome) => void;
 }
 
-export function ChanceMinigame({ onResult }: ChanceMinigameProps): JSX.Element {
+export function ChanceMinigame({ situation, onResult }: ChanceMinigameProps): JSX.Element {
   const { width } = useWindowDimensions();
   const canvasHeight = width;
   const startPixel = { x: width / 2, y: canvasHeight * 0.85 };
@@ -26,15 +27,6 @@ export function ChanceMinigame({ onResult }: ChanceMinigameProps): JSX.Element {
   const ballX = useSharedValue(startPixel.x);
   const ballY = useSharedValue(startPixel.y);
   const startTime = useSharedValue(0);
-
-  const [situation] = useState<LiveSituation>(() => ({
-    type: 'chance',
-    minute: 60,
-    playerId: 'demo-player',
-    team: 'home',
-    seed: createRandomSeed(),
-    pressure: 40,
-  }));
 
   const handleRelease = useCallback(
     (endPixelX: number, endPixelY: number, durationMs: number) => {

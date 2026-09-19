@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, type JSX } from 'react';
+import { useCallback, useEffect, type JSX } from 'react';
 import { View, StyleSheet, useWindowDimensions } from 'react-native';
 import { Canvas, Circle } from '@shopify/react-native-skia';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
@@ -12,7 +12,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import type { LiveOutcome, LiveSituation } from '@leyenda/shared';
-import { RNG, createRandomSeed, resolveLivePlay, type PenaltyGestureData } from '@leyenda/engine';
+import { RNG, resolveLivePlay, type PenaltyGestureData } from '@leyenda/engine';
 
 import { theme } from '@/theme';
 import { DrawField, getGoalBounds } from '../drawing/field';
@@ -20,10 +20,11 @@ import { DrawField, getGoalBounds } from '../drawing/field';
 const POWER_BAR_HALF_PERIOD_MS = 900;
 
 export interface PenaltyMinigameProps {
+  situation: LiveSituation;
   onResult: (outcome: LiveOutcome) => void;
 }
 
-export function PenaltyMinigame({ onResult }: PenaltyMinigameProps): JSX.Element {
+export function PenaltyMinigame({ situation, onResult }: PenaltyMinigameProps): JSX.Element {
   const { width } = useWindowDimensions();
   const canvasHeight = width; // lienzo cuadrado
   const goal = getGoalBounds({ width, height: canvasHeight });
@@ -33,15 +34,6 @@ export function PenaltyMinigame({ onResult }: PenaltyMinigameProps): JSX.Element
   const aimX = useSharedValue(goalCenterX);
   const aimY = useSharedValue(goalCenterY);
   const barValue = useSharedValue(0);
-
-  const [situation] = useState<LiveSituation>(() => ({
-    type: 'penalty',
-    minute: 90,
-    playerId: 'demo-player',
-    team: 'home',
-    seed: createRandomSeed(),
-    pressure: 40,
-  }));
 
   useEffect(() => {
     barValue.value = withRepeat(
