@@ -71,6 +71,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Mi carrera',
           }}
         />
+        <Stack.Screen
+          name="week"
+          options={{
+            title: 'Semana',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

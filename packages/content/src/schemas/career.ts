@@ -20,3 +20,39 @@ export const OriginSchema = z.object({
 });
 
 export type Origin = z.infer<typeof OriginSchema>;
+
+const RELATION_KEYS = [
+  'coach',
+  'squad',
+  'fans',
+  'board',
+  'press',
+  'partner',
+  'family',
+  'agent',
+  'sponsors',
+] as const;
+
+/**
+ * Esquema de una acción semanal (GDD §4.5): gasta (o recupera, si es
+ * negativo) Energía y aplica un efecto sobre el protagonista.
+ */
+export const WeeklyActionSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().min(1),
+  energyCost: z.number().int(),
+  effects: z.object({
+    attributeGroup: z.enum(['physical', 'technical', 'mental']).nullable(),
+    vitalStateDelta: z.object({
+      health: z.number().int(),
+      mentalHealth: z.number().int(),
+      form: z.number().int(),
+      fitness: z.number().int(),
+    }),
+    relationsDelta: z.record(z.enum(RELATION_KEYS), z.number().int()),
+    moneyDelta: z.number().int(),
+  }),
+});
+
+export type WeeklyAction = z.infer<typeof WeeklyActionSchema>;

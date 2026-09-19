@@ -62,3 +62,45 @@ export const POTENTIAL_MARGIN_MAX = 30;
 
 /** Duración del primer contrato al fichar por el club inicial. */
 export const INITIAL_CONTRACT_YEARS = 2;
+
+/**
+ * Efecto de una acción semanal (GDD §4.5), ya resuelto (sin id/nombre/descripción):
+ * el motor no depende de @leyenda/content, igual que `OriginModifier` — quien llama
+ * a `applyWeeklyAction` pasa la acción ya cargada (estructuralmente compatible).
+ */
+export interface WeeklyActionEffect {
+  energyCost: number;
+  effects: {
+    attributeGroup: 'physical' | 'technical' | 'mental' | null;
+    vitalStateDelta: {
+      health: number;
+      mentalHealth: number;
+      form: number;
+      fitness: number;
+    };
+    relationsDelta: Partial<Record<keyof ProtagonistRelations, number>>;
+    moneyDelta: number;
+  };
+}
+
+export interface ProtagonistRelations {
+  coach: number;
+  squad: number;
+  fans: number;
+  board: number;
+  press: number;
+  partner: number;
+  family: number;
+  agent: number;
+  sponsors: number;
+}
+
+/** Ganancia por sesión de entrenamiento, por atributo individual del grupo entrenado. */
+export const TRAINING_GAIN_MIN = 0;
+export const TRAINING_GAIN_MAX = 2;
+
+/** Días que avanza `advanceWeek` en cada llamada. */
+export const DAYS_PER_WEEK = 7;
+
+/** Energía semanal con la que se llega a cada nueva semana. */
+export const WEEKLY_ENERGY_RESET = 100;

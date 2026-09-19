@@ -9,6 +9,7 @@ import type {
 } from '@leyenda/shared';
 import { RNG } from '../rng';
 
+import { clamp } from './math';
 import {
   ATTRIBUTE_NOISE,
   BASE_AGE,
@@ -24,10 +25,6 @@ import {
   POTENTIAL_MARGIN_MIN,
   type CreateCharacterInput,
 } from './types';
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(Math.max(value, min), max);
-}
 
 function weighted(groupValue: number, rng: RNG): AttributeValue {
   return clamp(Math.round(groupValue + rng.nextInt(-ATTRIBUTE_NOISE, ATTRIBUTE_NOISE)), 1, 99);

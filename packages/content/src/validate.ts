@@ -6,7 +6,7 @@
  * Valida que todos los eventos y textos cumplan con los esquemas Zod
  */
 
-import { loadOrigins } from './career/load';
+import { loadOrigins, loadWeeklyActions } from './career/load';
 import { loadClubNamePool, loadCountries, loadPersonNamePool } from './worldgen/load';
 
 function validateContent(): void {
@@ -36,6 +36,14 @@ function validateContent(): void {
   } catch (error) {
     errors++;
     console.error('❌ Error validando orígenes de carrera:', error);
+  }
+
+  try {
+    const weeklyActions = loadWeeklyActions();
+    console.log(`📁 Acciones semanales (carrera): ${weeklyActions.length} válidas`);
+  } catch (error) {
+    errors++;
+    console.error('❌ Error validando acciones semanales:', error);
   }
 
   // TODO: Cargar eventos desde archivos YAML/JSON cuando existan

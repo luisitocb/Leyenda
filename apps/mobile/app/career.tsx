@@ -70,6 +70,8 @@ export default function CareerScreen(): JSX.Element {
           {club?.name ?? 'Sin club'}
         </Text>
 
+        <Button label="Semana" onPress={() => router.push('/week')} />
+
         <Text variant="subtitle" style={styles.sectionLabel}>
           Atributos
         </Text>

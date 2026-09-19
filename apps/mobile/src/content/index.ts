@@ -9,13 +9,15 @@
  * contenido ya está validado en CI vía `pnpm content:validate`, así que no hace falta
  * revalidar con Zod en cada dispositivo.
  */
-import type { ClubNamePool, Origin } from '@leyenda/content';
+import type { ClubNamePool, Origin, WeeklyAction } from '@leyenda/content';
 import type { Country } from '@leyenda/shared';
 
 import countriesData from '@leyenda/content/data/worldgen/countries.json';
 import clubNamePoolData from '@leyenda/content/data/worldgen/club-names.json';
 import originsData from '@leyenda/content/data/career/origins.json';
+import weeklyActionsData from '@leyenda/content/data/career/weekly-actions.json';
 
 export const countries = countriesData as Country[];
 export const clubNamePool = clubNamePoolData as ClubNamePool;
 export const origins = originsData as Origin[];
+export const weeklyActions = weeklyActionsData as WeeklyAction[];

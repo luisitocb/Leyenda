@@ -35,3 +35,12 @@ export function createProtagonist(input: CreateProtagonistInput): ProtagonistRow
 export function getProtagonistBySave(saveId: string): ProtagonistRow | undefined {
   return db.select().from(protagonists).where(eq(protagonists.saveId, saveId)).get();
 }
+
+export function updateProtagonist(id: string, data: ProtagonistPlayer): ProtagonistRow | undefined {
+  return db
+    .update(protagonists)
+    .set({ data, updatedAt: new Date() })
+    .where(eq(protagonists.id, id))
+    .returning()
+    .get();
+}

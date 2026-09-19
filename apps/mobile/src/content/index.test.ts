@@ -1,4 +1,4 @@
-import { clubNamePool, countries, origins } from './index';
+import { clubNamePool, countries, origins, weeklyActions } from './index';
 
 describe('content adapter (import estático, sin fs)', () => {
   it('carga los 10 países', () => {
@@ -13,5 +13,10 @@ describe('content adapter (import estático, sin fs)', () => {
   it('carga los 4 orígenes', () => {
     expect(origins).toHaveLength(4);
     expect(origins.map((o) => o.id)).toContain('barrio-humilde');
+  });
+
+  it('carga las 6 acciones semanales', () => {
+    expect(weeklyActions).toHaveLength(6);
+    expect(weeklyActions.map((a) => a.id)).toContain('descanso-activo');
   });
 });

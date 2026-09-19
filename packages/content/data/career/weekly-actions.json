@@ -1,0 +1,74 @@
+[
+  {
+    "id": "entrenar-fisico",
+    "name": "Entrenamiento físico",
+    "description": "Sesión centrada en velocidad, resistencia, fuerza y salto.",
+    "energyCost": 30,
+    "effects": {
+      "attributeGroup": "physical",
+      "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": -5 },
+      "relationsDelta": {},
+      "moneyDelta": 0
+    }
+  },
+  {
+    "id": "entrenar-tecnico",
+    "name": "Entrenamiento técnico",
+    "description": "Sesión centrada en pase, regate, tiro y control.",
+    "energyCost": 30,
+    "effects": {
+      "attributeGroup": "technical",
+      "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": -5 },
+      "relationsDelta": {},
+      "moneyDelta": 0
+    }
+  },
+  {
+    "id": "entrenar-mental",
+    "name": "Entrenamiento táctico",
+    "description": "Sesión centrada en visión, compostura, liderazgo y trabajo en equipo.",
+    "energyCost": 30,
+    "effects": {
+      "attributeGroup": "mental",
+      "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": -5 },
+      "relationsDelta": {},
+      "moneyDelta": 0
+    }
+  },
+  {
+    "id": "descanso-activo",
+    "name": "Descanso activo",
+    "description": "Recuperación, estiramientos y sueño. Te devuelve Energía para el resto de la semana.",
+    "energyCost": -30,
+    "effects": {
+      "attributeGroup": null,
+      "vitalStateDelta": { "health": 3, "mentalHealth": 2, "form": 0, "fitness": 5 },
+      "relationsDelta": {},
+      "moneyDelta": 0
+    }
+  },
+  {
+    "id": "vida-social",
+    "name": "Vida social",
+    "description": "Tiempo con el vestuario y la familia fuera del campo.",
+    "energyCost": 20,
+    "effects": {
+      "attributeGroup": null,
+      "vitalStateDelta": { "health": 0, "mentalHealth": 2, "form": 3, "fitness": -2 },
+      "relationsDelta": { "squad": 5, "family": 5 },
+      "moneyDelta": 0
+    }
+  },
+  {
+    "id": "fisioterapeuta",
+    "name": "Fisioterapeuta",
+    "description": "Sesión privada de recuperación física.",
+    "energyCost": 15,
+    "effects": {
+      "attributeGroup": null,
+      "vitalStateDelta": { "health": 8, "mentalHealth": 0, "form": 0, "fitness": 8 },
+      "relationsDelta": {},
+      "moneyDelta": -100
+    }
+  }
+]
