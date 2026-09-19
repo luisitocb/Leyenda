@@ -59,6 +59,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Jugadas en Vivo',
           }}
         />
+        <Stack.Screen
+          name="create-character"
+          options={{
+            title: 'Crear personaje',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

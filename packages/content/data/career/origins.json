@@ -1,0 +1,38 @@
+[
+  {
+    "id": "barrio-humilde",
+    "name": "Barrio humilde",
+    "description": "Creciste jugando en la calle, sin academia detrás. Eso te ha dado carácter, pero empiezas con lo puesto.",
+    "attributeGroupBonus": { "physical": 0, "technical": 0, "mental": 6 },
+    "startingAgeOverride": null,
+    "startingMoney": 200,
+    "agentRelationBonus": 0
+  },
+  {
+    "id": "hijo-exfutbolista",
+    "name": "Hijo de exfutbolista",
+    "description": "Tu apellido abre puertas: contactos y comodidad desde el primer día, aunque también expectativas altas.",
+    "attributeGroupBonus": { "physical": 0, "technical": 0, "mental": 0 },
+    "startingAgeOverride": null,
+    "startingMoney": 800,
+    "agentRelationBonus": 15
+  },
+  {
+    "id": "canterano-academia",
+    "name": "Canterano de academia",
+    "description": "Años de formación en una cantera te han dado una base técnica sólida.",
+    "attributeGroupBonus": { "physical": 0, "technical": 6, "mental": 0 },
+    "startingAgeOverride": null,
+    "startingMoney": 400,
+    "agentRelationBonus": 0
+  },
+  {
+    "id": "tardio",
+    "name": "Tardío",
+    "description": "Debutas más tarde de lo habitual, pero llegas físicamente más maduro que el resto.",
+    "attributeGroupBonus": { "physical": 6, "technical": 0, "mental": 0 },
+    "startingAgeOverride": 19,
+    "startingMoney": 400,
+    "agentRelationBonus": 0
+  }
+]

@@ -41,6 +41,9 @@ importers:
       '@leyenda/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@leyenda/worldgen':
+        specifier: workspace:*
+        version: link:../../packages/worldgen
       '@shopify/react-native-skia':
         specifier: 2.6.2
         version: 2.6.2(react-native-reanimated@4.5.1)(react-native@0.86.3)(react@19.3.0)

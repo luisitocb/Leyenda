@@ -1,5 +1,7 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
+import type { ProtagonistPlayer } from '@leyenda/shared';
+
 /**
  * GDD §14 — entidad Save: id, versión de esquema, semilla, fecha de juego, modo actual.
  * Este fichero no importa expo-sqlite para poder ejecutarse tanto en el runtime
@@ -17,3 +19,22 @@ export const saves = sqliteTable('saves', {
 
 export type Save = typeof saves.$inferSelect;
 export type NewSave = typeof saves.$inferInsert;
+
+/**
+ * GDD §4.1 — protagonista del Modo Jugador. `data` guarda el `ProtagonistPlayer`
+ * completo como JSON: el acceso siempre es "cargar el protagonista entero de
+ * este save", no hay consultas parciales por columna que justifiquen
+ * normalizar ~30 campos anidados todavía.
+ */
+export const protagonists = sqliteTable('protagonists', {
+  id: text('id').primaryKey(),
+  saveId: text('save_id')
+    .notNull()
+    .references(() => saves.id),
+  data: text('data', { mode: 'json' }).$type<ProtagonistPlayer>().notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
+});
+
+export type ProtagonistRow = typeof protagonists.$inferSelect;
+export type NewProtagonistRow = typeof protagonists.$inferInsert;

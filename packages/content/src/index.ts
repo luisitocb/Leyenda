@@ -8,4 +8,6 @@
 export * from './schemas/event';
 export * from './schemas/i18n';
 export * from './schemas/worldgen';
+export * from './schemas/career';
 export * from './worldgen/load';
+export * from './career/load';

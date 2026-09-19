@@ -4,7 +4,9 @@ import initSqlJs from 'sql.js';
 import { drizzle, type SQLJsDatabase } from 'drizzle-orm/sql-js';
 import { migrate } from 'drizzle-orm/sql-js/migrator';
 
-import { saves } from './schema';
+import type { ProtagonistPlayer } from '@leyenda/shared';
+
+import { protagonists, saves } from './schema';
 
 /**
  * Pauta para futuras migraciones (regla 8 de CLAUDE.md): cuando exista una
@@ -62,5 +64,82 @@ describe('saves schema', () => {
     expect(() => {
       migrate(db, { migrationsFolder: path.join(__dirname, '../../drizzle') });
     }).not.toThrow();
+  });
+});
+
+function makeProtagonist(): ProtagonistPlayer {
+  return {
+    id: 'protagonist-1',
+    firstName: 'Test',
+    lastName: 'Player',
+    nationality: 'XA',
+    dateOfBirth: '2008-08-01',
+    position: 'CF',
+    foot: 'right',
+    physical: { speed: 50, stamina: 50, strength: 50, jumping: 50 },
+    technical: { passing: 50, dribbling: 50, shooting: 50, ballControl: 50, defending: 50, heading: 50 },
+    mental: { vision: 50, composure: 50, leadership: 50, teamwork: 50 },
+    personality: { professionalism: 50, charisma: 50, ego: 50, temperament: 50 },
+    potential: 60,
+    currentAbility: 50,
+    form: 80,
+    morale: 80,
+    fitness: 80,
+    clubId: 'club-1',
+    contractExpiry: '2028-08-01',
+    value: 50_000,
+    health: 80,
+    mentalHealth: 80,
+    energy: 100,
+    money: 400,
+    assets: 0,
+    relations: {
+      coach: 0,
+      squad: 0,
+      fans: 0,
+      board: 0,
+      press: 0,
+      partner: 0,
+      family: 0,
+      agent: 0,
+      sponsors: 0,
+    },
+    traits: [],
+    gamesPlayed: 0,
+    goalsScored: 0,
+    assists: 0,
+    titlesWon: [],
+  };
+}
+
+describe('protagonists schema', () => {
+  it('persiste y relee un protagonista con su ProtagonistPlayer completo como JSON', async () => {
+    const db = await createMigratedDb();
+    const createdAt = new Date('2026-09-19T12:00:00.000Z');
+
+    await db.insert(saves).values({
+      id: 'save-1',
+      schemaVersion: 1,
+      seed: 1,
+      gameDate: '2026-08-01',
+      currentMode: 'player',
+      createdAt,
+      updatedAt: createdAt,
+    });
+
+    const protagonist = makeProtagonist();
+    await db.insert(protagonists).values({
+      id: 'protagonist-1',
+      saveId: 'save-1',
+      data: protagonist,
+      createdAt,
+      updatedAt: createdAt,
+    });
+
+    const [row] = await db.select().from(protagonists);
+
+    expect(row).toBeDefined();
+    expect(row?.saveId).toBe('save-1');
+    expect(row?.data).toEqual(protagonist);
   });
 });

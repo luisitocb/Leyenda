@@ -70,6 +70,7 @@ export default function HomeScreen(): JSX.Element {
       <Button label="Crear guardado de prueba" onPress={testCreateSave} />
       <Button label="Ver guardados" onPress={testListSaves} />
       <Button label="Jugadas en Vivo (demo)" onPress={() => router.push('/live-play-demo')} />
+      <Button label="Nueva carrera" onPress={() => router.push('/create-character')} />
 
       <Text variant="caption">Fase 0: Fundamentos</Text>
     </Screen>
