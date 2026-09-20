@@ -23,6 +23,7 @@ import {
   POINT_POOL,
   POTENTIAL_MARGIN_MAX,
   POTENTIAL_MARGIN_MIN,
+  SALARY_PER_ABILITY,
   type CreateCharacterInput,
 } from './types';
 
@@ -162,6 +163,7 @@ export function createCharacter(input: CreateCharacterInput, rng: RNG): Protagon
     energy: 100,
     money: input.origin.startingMoney,
     assets: 0,
+    salary: currentAbility * SALARY_PER_ABILITY,
     relations: {
       coach: 0,
       squad: 0,

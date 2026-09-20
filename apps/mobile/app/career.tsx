@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import type { ProtagonistPlayer } from '@leyenda/shared';
-import { addDays, DAYS_PER_WEEK } from '@leyenda/engine';
+import { addDays, DAYS_PER_WEEK, isContractExpiringSoon } from '@leyenda/engine';
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
@@ -17,15 +17,18 @@ import { resolveWeekMatch } from '@/world/resolve-week-match';
 interface StatRowProps {
   label: string;
   value: string | number;
+  valueColor?: 'accent';
 }
 
-function StatRow({ label, value }: StatRowProps): JSX.Element {
+function StatRow({ label, value, valueColor }: StatRowProps): JSX.Element {
   return (
     <View style={styles.statRow}>
       <Text variant="body" color="textSecondary">
         {label}
       </Text>
-      <Text variant="body">{value}</Text>
+      <Text variant="body" color={valueColor}>
+        {value}
+      </Text>
     </View>
   );
 }
@@ -109,6 +112,18 @@ export default function CareerScreen(): JSX.Element {
         <StatRow label="Partidos jugados" value={protagonist.gamesPlayed} />
         <StatRow label="Goles" value={protagonist.goalsScored} />
         <StatRow label="Asistencias" value={protagonist.assists} />
+
+        <Text variant="subtitle" style={styles.sectionLabel}>
+          Contrato
+        </Text>
+        <StatRow label="Sueldo semanal" value={`${protagonist.salary}€`} />
+        <StatRow
+          label="Contrato hasta"
+          value={protagonist.contractExpiry ?? 'Sin contrato'}
+          valueColor={
+            isContractExpiringSoon(protagonist.contractExpiry, save.gameDate) ? 'accent' : undefined
+          }
+        />
 
         <Text variant="subtitle" style={styles.sectionLabel}>
           Atributos

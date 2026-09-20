@@ -100,6 +100,7 @@ function makeProtagonist(): ProtagonistPlayer {
     energy: 100,
     money: 400,
     assets: 0,
+    salary: 500,
     relations: {
       coach: 0,
       squad: 0,

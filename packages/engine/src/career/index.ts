@@ -6,3 +6,4 @@ export * from './key-moments';
 export * from './events';
 export * from './live-play-trigger';
 export * from './season-end';
+export * from './contract';

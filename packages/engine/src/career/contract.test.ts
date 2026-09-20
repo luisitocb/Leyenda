@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import type { ProtagonistPlayer } from '@leyenda/shared';
 
-import { applySeasonEndResult } from './season-end';
+import { isContractExpiringSoon, paySalary } from './contract';
 
 function baseProtagonist(overrides: Partial<ProtagonistPlayer> = {}): ProtagonistPlayer {
   return {
@@ -58,23 +58,32 @@ function baseProtagonist(overrides: Partial<ProtagonistPlayer> = {}): Protagonis
   };
 }
 
-describe('applySeasonEndResult', () => {
-  it('sin título no cambia nada', () => {
-    const protagonist = baseProtagonist();
-    const result = applySeasonEndResult(protagonist, null);
-    expect(result).toBe(protagonist);
+describe('paySalary', () => {
+  it('suma exactamente el sueldo semanal al dinero', () => {
+    const protagonist = baseProtagonist({ money: 1000, salary: 500 });
+    const result = paySalary(protagonist);
+    expect(result.money).toBe(1500);
+  });
+});
+
+describe('isContractExpiringSoon', () => {
+  it('es falso sin fecha de contrato', () => {
+    expect(isContractExpiringSoon(null, '2026-01-01')).toBe(false);
   });
 
-  it('añade el título si no lo tenía', () => {
-    const protagonist = baseProtagonist();
-    const result = applySeasonEndResult(protagonist, 'season-liga-a-2026');
-    expect(result.titlesWon).toEqual(['season-liga-a-2026']);
+  it('es falso mucho antes de la ventana de aviso', () => {
+    expect(isContractExpiringSoon('2028-08-01', '2028-01-01')).toBe(false);
   });
 
-  it('no duplica un título ya ganado', () => {
-    const protagonist = baseProtagonist({ titlesWon: ['season-liga-a-2026'] });
-    const result = applySeasonEndResult(protagonist, 'season-liga-a-2026');
-    expect(result).toBe(protagonist);
-    expect(result.titlesWon).toEqual(['season-liga-a-2026']);
+  it('es verdadero dentro de las 8 semanas previas a la expiración', () => {
+    expect(isContractExpiringSoon('2028-08-01', '2028-06-10')).toBe(true);
+  });
+
+  it('es verdadero justo en la fecha de expiración', () => {
+    expect(isContractExpiringSoon('2028-08-01', '2028-08-01')).toBe(true);
+  });
+
+  it('sigue siendo verdadero después de expirar', () => {
+    expect(isContractExpiringSoon('2028-08-01', '2028-09-01')).toBe(true);
   });
 });

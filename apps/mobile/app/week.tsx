@@ -9,6 +9,7 @@ import {
   advanceWeek,
   applyWeeklyAction,
   createRandomSeed,
+  paySalary,
   selectEvent,
   WEEKLY_ENERGY_RESET,
 } from '@leyenda/engine';
@@ -127,7 +128,10 @@ export default function WeekScreen(): JSX.Element {
     const division = resolveDivisionCalendar(save.seed, workingProtagonist, countries);
     const seasonJustEnded = division !== null && isSeasonJustEnded(division.calendar, thisWeekDate);
 
-    updateProtagonist(protagonistRow.id, { ...workingProtagonist, energy: WEEKLY_ENERGY_RESET });
+    updateProtagonist(protagonistRow.id, {
+      ...paySalary(workingProtagonist),
+      energy: WEEKLY_ENERGY_RESET,
+    });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
 
     if (seasonJustEnded) {

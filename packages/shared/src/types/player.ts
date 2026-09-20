@@ -107,6 +107,7 @@ export interface ProtagonistPlayer extends BasePlayer {
   energy: number; // Energía semanal (0-100)
   money: number;
   assets: number; // Patrimonio total
+  salary: number; // Sueldo semanal del contrato actual
 
   // Relaciones
   relations: {
