@@ -1,5 +1,11 @@
-import { RNG, generateSeasonCalendar, type SeasonCalendar } from '@leyenda/engine';
-import type { Club, Country, ProtagonistPlayer } from '@leyenda/shared';
+import {
+  addDays,
+  DAYS_PER_WEEK,
+  RNG,
+  generateSeasonCalendar,
+  type SeasonCalendar,
+} from '@leyenda/engine';
+import type { Club, Country, ISODate, ProtagonistPlayer } from '@leyenda/shared';
 // Import por subruta, no por el barrel `@leyenda/worldgen`: ver generate-clubs-for-country.ts.
 import { DIVISIONS_PER_COUNTRY, SEASON_ONE_START_DATE } from '@leyenda/worldgen/src/constants';
 import { generateCompetitions } from '@leyenda/worldgen/src/competitions/generate-competitions';
@@ -54,4 +60,14 @@ export function resolveDivisionCalendar(
   });
 
   return { myClub, divisionClubs, calendar };
+}
+
+/**
+ * La temporada no tiene huecos dentro de sí misma (ida y vuelta entre los
+ * mismos clubes cada semana), así que "sin partido" empieza a pasar justo
+ * la semana siguiente a `season.endDate` y ya no para — es el único momento
+ * en que hay que reconocer explícitamente el fin de temporada.
+ */
+export function isSeasonJustEnded(calendar: SeasonCalendar, thisWeekDate: ISODate): boolean {
+  return thisWeekDate === addDays(calendar.season.endDate, DAYS_PER_WEEK);
 }

@@ -95,6 +95,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Clasificación',
           }}
         />
+        <Stack.Screen
+          name="season-end"
+          options={{
+            title: 'Fin de temporada',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

@@ -20,6 +20,7 @@ import { RELATION_LABELS } from '@/labels';
 import { getLatestSave, updateSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
 import { resolveWeekMatch } from '@/world/resolve-week-match';
+import { isSeasonJustEnded, resolveDivisionCalendar } from '@/world/resolve-division-calendar';
 
 function describeEffects(action: WeeklyAction): string {
   const parts: string[] = [];
@@ -123,11 +124,15 @@ export default function WeekScreen(): JSX.Element {
     const thisWeekDate = save.gameDate;
     const match = resolveWeekMatch(save.seed, workingProtagonist, thisWeekDate, countries);
     const event = selectEvent(events, new RNG(createRandomSeed()));
+    const division = resolveDivisionCalendar(save.seed, workingProtagonist, countries);
+    const seasonJustEnded = division !== null && isSeasonJustEnded(division.calendar, thisWeekDate);
 
     updateProtagonist(protagonistRow.id, { ...workingProtagonist, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
 
-    if (event) {
+    if (seasonJustEnded) {
+      router.replace('/season-end');
+    } else if (event) {
       router.replace({
         pathname: '/event',
         params: match
