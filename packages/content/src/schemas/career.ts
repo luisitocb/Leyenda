@@ -97,6 +97,7 @@ export const KeyMomentSchema = z.object({
         baseSuccessChance: z.number().min(0).max(1),
         ratingDelta: z.object({ onSuccess: z.number(), onFail: z.number() }),
         fanRelationDelta: z.object({ onSuccess: z.number().int(), onFail: z.number().int() }),
+        implies: z.enum(['goal', 'assist']).nullable(),
       })
     )
     .min(2),

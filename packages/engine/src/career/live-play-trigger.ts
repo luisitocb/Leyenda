@@ -28,5 +28,7 @@ export function convertLiveOutcomeToKeyMomentOutcome(outcome: LiveOutcome): KeyM
     success: outcome.success,
     ratingDelta: effects.ratingDelta,
     fanRelationDelta: effects.fanRelationDelta,
+    // Un gol en Jugada en Vivo también cuenta para las estadísticas de carrera.
+    implies: outcome.type === 'goal' ? 'goal' : null,
   };
 }

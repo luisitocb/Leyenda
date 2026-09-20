@@ -73,6 +73,8 @@ export interface KeyMomentChoice {
   baseSuccessChance: number; // 0-1
   ratingDelta: { onSuccess: number; onFail: number };
   fanRelationDelta: { onSuccess: number; onFail: number };
+  /** Si un acierto en esta opción cuenta como gol o asistencia del protagonista (estadísticas de carrera). */
+  implies: 'goal' | 'assist' | null;
 }
 
 /**

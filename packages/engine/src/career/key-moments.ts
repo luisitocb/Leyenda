@@ -61,6 +61,8 @@ export function resolveKeyMomentChoice(
     success,
     ratingDelta: success ? choice.ratingDelta.onSuccess : choice.ratingDelta.onFail,
     fanRelationDelta: success ? choice.fanRelationDelta.onSuccess : choice.fanRelationDelta.onFail,
+    // Un fallo nunca cuenta como gol/asistencia, aunque la opción esté etiquetada.
+    implies: success ? choice.implies : null,
   };
 }
 
@@ -70,7 +72,12 @@ export function computeMatchRating(outcomes: KeyMomentOutcome[]): number {
   return clamp(Math.round(total * 10) / 10, 1, 10);
 }
 
-/** Aplica los efectos acumulados de un partido (afición, forma) al protagonista. */
+/**
+ * Aplica los efectos acumulados de un partido (afición, forma, estadísticas
+ * de carrera) al protagonista. Solo se llama cuando ha habido partido, así
+ * que `gamesPlayed` sube siempre; `goalsScored`/`assists` solo con los
+ * momentos marcados `implies` que hayan tenido éxito.
+ */
 export function applyMatchExperience(
   protagonist: ProtagonistPlayer,
   outcomes: KeyMomentOutcome[],
@@ -83,6 +90,8 @@ export function applyMatchExperience(
       : rating <= MATCH_RATING_FORM_PENALTY_THRESHOLD
         ? -MATCH_RATING_FORM_DELTA
         : 0;
+  const goals = outcomes.filter((o) => o.implies === 'goal').length;
+  const assists = outcomes.filter((o) => o.implies === 'assist').length;
 
   return {
     ...protagonist,
@@ -91,5 +100,8 @@ export function applyMatchExperience(
       ...protagonist.relations,
       fans: clamp(protagonist.relations.fans + fanRelationDelta, -100, 100),
     },
+    gamesPlayed: protagonist.gamesPlayed + 1,
+    goalsScored: protagonist.goalsScored + goals,
+    assists: protagonist.assists + assists,
   };
 }

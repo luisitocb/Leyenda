@@ -55,4 +55,15 @@ describe('convertLiveOutcomeToKeyMomentOutcome', () => {
     expect(result.choiceId).toBe('save');
     expect(result.momentId).toBe('live-play');
   });
+
+  it('un gol lleva implies "goal"; el resto de resultados, null', () => {
+    const goal: LiveOutcome = { success: true, type: 'goal' };
+    const save: LiveOutcome = { success: false, type: 'save' };
+    const post: LiveOutcome = { success: false, type: 'post' };
+    const out: LiveOutcome = { success: false, type: 'out' };
+    expect(convertLiveOutcomeToKeyMomentOutcome(goal).implies).toBe('goal');
+    expect(convertLiveOutcomeToKeyMomentOutcome(save).implies).toBeNull();
+    expect(convertLiveOutcomeToKeyMomentOutcome(post).implies).toBeNull();
+    expect(convertLiveOutcomeToKeyMomentOutcome(out).implies).toBeNull();
+  });
 });

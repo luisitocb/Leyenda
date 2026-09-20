@@ -77,6 +77,7 @@ const MOMENT_ATTACKING: KeyMoment = {
       baseSuccessChance: 0.5,
       ratingDelta: { onSuccess: 2, onFail: -1 },
       fanRelationDelta: { onSuccess: 5, onFail: -2 },
+      implies: 'goal',
     },
   ],
 };
@@ -93,6 +94,7 @@ const MOMENT_GK: KeyMoment = {
       baseSuccessChance: 0.5,
       ratingDelta: { onSuccess: 2, onFail: -1 },
       fanRelationDelta: { onSuccess: 5, onFail: -2 },
+      implies: null,
     },
   ],
 };
@@ -109,6 +111,7 @@ const MOMENT_ANY: KeyMoment = {
       baseSuccessChance: 0.5,
       ratingDelta: { onSuccess: 1, onFail: -0.5 },
       fanRelationDelta: { onSuccess: 2, onFail: -1 },
+      implies: null,
     },
   ],
 };
@@ -182,6 +185,22 @@ describe('resolveKeyMomentChoice', () => {
       resolveKeyMomentChoice(baseProtagonist(), MOMENT_ATTACKING, 'choice-inexistente', new RNG(1))
     ).toThrow();
   });
+
+  it('implies solo se propaga si hay éxito', () => {
+    for (let seed = 0; seed < 50; seed++) {
+      const result = resolveKeyMomentChoice(
+        baseProtagonist(),
+        MOMENT_ATTACKING,
+        'choice-shoot',
+        new RNG(seed)
+      );
+      if (result.success) {
+        expect(result.implies).toBe('goal');
+      } else {
+        expect(result.implies).toBeNull();
+      }
+    }
+  });
 });
 
 describe('computeMatchRating', () => {
@@ -199,6 +218,7 @@ describe('computeMatchRating', () => {
             success: true,
             ratingDelta: p.ratingDelta,
             fanRelationDelta: 0,
+            implies: null,
           }));
           const rating = computeMatchRating(outcomes);
           expect(rating).toBeGreaterThanOrEqual(1);
@@ -219,7 +239,14 @@ describe('applyMatchExperience', () => {
       relations: { ...baseProtagonist().relations, fans: 98 },
     });
     const outcomes: KeyMomentOutcome[] = [
-      { momentId: 'm1', choiceId: 'c1', success: true, ratingDelta: 1, fanRelationDelta: 10 },
+      {
+        momentId: 'm1',
+        choiceId: 'c1',
+        success: true,
+        ratingDelta: 1,
+        fanRelationDelta: 10,
+        implies: null,
+      },
     ];
     const result = applyMatchExperience(protagonist, outcomes, 8);
     expect(result.relations.fans).toBe(100);
@@ -231,5 +258,44 @@ describe('applyMatchExperience', () => {
     const badMatch = applyMatchExperience(protagonist, [], 2);
     expect(goodMatch.form).toBeGreaterThan(protagonist.form);
     expect(badMatch.form).toBeLessThan(protagonist.form);
+  });
+
+  it('gamesPlayed sube siempre, haya o no momentos con éxito', () => {
+    const protagonist = baseProtagonist({ gamesPlayed: 5 });
+    const result = applyMatchExperience(protagonist, [], 6);
+    expect(result.gamesPlayed).toBe(6);
+  });
+
+  it('goalsScored/assists suman solo los outcomes con implies y éxito', () => {
+    const protagonist = baseProtagonist({ goalsScored: 2, assists: 1 });
+    const outcomes: KeyMomentOutcome[] = [
+      {
+        momentId: 'm1',
+        choiceId: 'c1',
+        success: true,
+        ratingDelta: 1,
+        fanRelationDelta: 0,
+        implies: 'goal',
+      },
+      {
+        momentId: 'm2',
+        choiceId: 'c2',
+        success: true,
+        ratingDelta: 1,
+        fanRelationDelta: 0,
+        implies: 'assist',
+      },
+      {
+        momentId: 'm3',
+        choiceId: 'c3',
+        success: false,
+        ratingDelta: -1,
+        fanRelationDelta: 0,
+        implies: null,
+      },
+    ];
+    const result = applyMatchExperience(protagonist, outcomes, 6);
+    expect(result.goalsScored).toBe(3);
+    expect(result.assists).toBe(2);
   });
 });

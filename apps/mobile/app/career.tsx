@@ -104,6 +104,13 @@ export default function CareerScreen(): JSX.Element {
         )}
 
         <Text variant="subtitle" style={styles.sectionLabel}>
+          Carrera
+        </Text>
+        <StatRow label="Partidos jugados" value={protagonist.gamesPlayed} />
+        <StatRow label="Goles" value={protagonist.goalsScored} />
+        <StatRow label="Asistencias" value={protagonist.assists} />
+
+        <Text variant="subtitle" style={styles.sectionLabel}>
           Atributos
         </Text>
         <StatRow label="Media global" value={protagonist.currentAbility} />

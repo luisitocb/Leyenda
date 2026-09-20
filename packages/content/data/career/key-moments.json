@@ -10,7 +10,8 @@
         "determinedBy": "shooting",
         "baseSuccessChance": 0.5,
         "ratingDelta": { "onSuccess": 2, "onFail": -1 },
-        "fanRelationDelta": { "onSuccess": 6, "onFail": -2 }
+        "fanRelationDelta": { "onSuccess": 6, "onFail": -2 },
+        "implies": "goal"
       },
       {
         "id": "colocar",
@@ -18,7 +19,8 @@
         "determinedBy": "composure",
         "baseSuccessChance": 0.55,
         "ratingDelta": { "onSuccess": 1.5, "onFail": -0.5 },
-        "fanRelationDelta": { "onSuccess": 4, "onFail": -1 }
+        "fanRelationDelta": { "onSuccess": 4, "onFail": -1 },
+        "implies": "goal"
       }
     ]
   },
@@ -33,7 +35,8 @@
         "determinedBy": "defending",
         "baseSuccessChance": 0.5,
         "ratingDelta": { "onSuccess": 2, "onFail": -1.5 },
-        "fanRelationDelta": { "onSuccess": 5, "onFail": -3 }
+        "fanRelationDelta": { "onSuccess": 5, "onFail": -3 },
+        "implies": null
       },
       {
         "id": "contener",
@@ -41,7 +44,8 @@
         "determinedBy": "composure",
         "baseSuccessChance": 0.6,
         "ratingDelta": { "onSuccess": 1, "onFail": -0.5 },
-        "fanRelationDelta": { "onSuccess": 2, "onFail": -1 }
+        "fanRelationDelta": { "onSuccess": 2, "onFail": -1 },
+        "implies": null
       }
     ]
   },
@@ -56,7 +60,8 @@
         "determinedBy": "passing",
         "baseSuccessChance": 0.45,
         "ratingDelta": { "onSuccess": 2, "onFail": -1 },
-        "fanRelationDelta": { "onSuccess": 5, "onFail": -2 }
+        "fanRelationDelta": { "onSuccess": 5, "onFail": -2 },
+        "implies": "assist"
       },
       {
         "id": "jugada-segura",
@@ -64,7 +69,8 @@
         "determinedBy": "vision",
         "baseSuccessChance": 0.65,
         "ratingDelta": { "onSuccess": 0.5, "onFail": 0 },
-        "fanRelationDelta": { "onSuccess": 1, "onFail": 0 }
+        "fanRelationDelta": { "onSuccess": 1, "onFail": 0 },
+        "implies": null
       }
     ]
   },
@@ -79,7 +85,8 @@
         "determinedBy": "reflexes",
         "baseSuccessChance": 0.5,
         "ratingDelta": { "onSuccess": 2, "onFail": -1.5 },
-        "fanRelationDelta": { "onSuccess": 6, "onFail": -3 }
+        "fanRelationDelta": { "onSuccess": 6, "onFail": -3 },
+        "implies": null
       },
       {
         "id": "colocacion",
@@ -87,7 +94,8 @@
         "determinedBy": "positioning",
         "baseSuccessChance": 0.6,
         "ratingDelta": { "onSuccess": 1.5, "onFail": -1 },
-        "fanRelationDelta": { "onSuccess": 3, "onFail": -2 }
+        "fanRelationDelta": { "onSuccess": 3, "onFail": -2 },
+        "implies": null
       }
     ]
   },
@@ -102,7 +110,8 @@
         "determinedBy": "composure",
         "baseSuccessChance": 0.55,
         "ratingDelta": { "onSuccess": 1.5, "onFail": -1 },
-        "fanRelationDelta": { "onSuccess": 3, "onFail": -2 }
+        "fanRelationDelta": { "onSuccess": 3, "onFail": -2 },
+        "implies": null
       },
       {
         "id": "arriesgar",
@@ -110,7 +119,8 @@
         "determinedBy": "dribbling",
         "baseSuccessChance": 0.4,
         "ratingDelta": { "onSuccess": 2, "onFail": -1.5 },
-        "fanRelationDelta": { "onSuccess": 4, "onFail": -3 }
+        "fanRelationDelta": { "onSuccess": 4, "onFail": -3 },
+        "implies": null
       }
     ]
   },
@@ -125,7 +135,8 @@
         "determinedBy": "leadership",
         "baseSuccessChance": 0.5,
         "ratingDelta": { "onSuccess": 1, "onFail": -0.5 },
-        "fanRelationDelta": { "onSuccess": 2, "onFail": -1 }
+        "fanRelationDelta": { "onSuccess": 2, "onFail": -1 },
+        "implies": null
       },
       {
         "id": "ignorar",
@@ -133,7 +144,8 @@
         "determinedBy": "teamwork",
         "baseSuccessChance": 0.6,
         "ratingDelta": { "onSuccess": 0.5, "onFail": 0 },
-        "fanRelationDelta": { "onSuccess": 0, "onFail": 0 }
+        "fanRelationDelta": { "onSuccess": 0, "onFail": 0 },
+        "implies": null
       }
     ]
   }

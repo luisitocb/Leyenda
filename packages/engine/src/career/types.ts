@@ -112,6 +112,8 @@ export interface KeyMomentOutcome {
   success: boolean;
   ratingDelta: number;
   fanRelationDelta: number;
+  /** Si un acierto cuenta como gol o asistencia del protagonista (estadísticas de carrera). */
+  implies: 'goal' | 'assist' | null;
 }
 
 /** Cuántos momentos clave vive el protagonista por partido normal (GDD §4.7: "2-4"). */
