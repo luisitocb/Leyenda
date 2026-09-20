@@ -135,6 +135,11 @@ export interface ProtagonistPlayer extends BasePlayer {
   assists: number;
   titlesWon: string[]; // IDs de títulos
 
+  // Selección nacional (namespace propio, distinto del de club)
+  nationalTeamCaps: number;
+  nationalTeamGoals: number;
+  nationalTeamAssists: number;
+
   // Lesión activa, si la hay
   activeInjury: PlayerInjury | null;
 

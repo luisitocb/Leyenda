@@ -21,6 +21,7 @@ import {
   selectEvent,
   shouldForceRetirement,
   shouldReceiveBrandDealOffer,
+  shouldReceiveCallUp,
   shouldReceiveTransferOffer,
   WEEKLY_ENERGY_RESET,
   type EarlyReturnResult,
@@ -211,7 +212,6 @@ export default function WeekScreen(): JSX.Element {
     if (injuryJustOccurred) {
       updated = applyInjuryOnset(updated, injuries, new RNG(createRandomSeed()));
     }
-    const matchAvailable = match !== null && !injuryJustOccurred;
 
     updated = advanceBrandDeal(updated, brandDeals);
     const brandDealOfferWeek =
@@ -221,6 +221,16 @@ export default function WeekScreen(): JSX.Element {
       !updated.activeBrandDeal &&
       !updated.traits.includes('controversial') &&
       shouldReceiveBrandDealOffer(new RNG(createRandomSeed()));
+
+    const callUpWeek =
+      !seasonJustEnded &&
+      !renewalWeek &&
+      !transferOfferWeek &&
+      !brandDealOfferWeek &&
+      !injuryJustOccurred &&
+      shouldReceiveCallUp(updated, new RNG(createRandomSeed()));
+
+    const matchAvailable = match !== null && !injuryJustOccurred && !callUpWeek;
 
     updateProtagonist(protagonistRow.id, { ...updated, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
@@ -235,6 +245,8 @@ export default function WeekScreen(): JSX.Element {
       router.replace({ pathname: '/contract-offer', params: { type: 'transfer' } });
     } else if (brandDealOfferWeek) {
       router.replace('/brand-deal-offer');
+    } else if (callUpWeek) {
+      router.replace('/national-team-match');
     } else if (event) {
       router.replace({
         pathname: '/event',

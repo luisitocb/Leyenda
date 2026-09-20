@@ -120,6 +120,9 @@ function makeProtagonist(): ProtagonistPlayer {
     activeInjury: null,
     relationshipStatus: 'single',
     activeBrandDeal: null,
+    nationalTeamCaps: 0,
+    nationalTeamGoals: 0,
+    nationalTeamAssists: 0,
   };
 }
 

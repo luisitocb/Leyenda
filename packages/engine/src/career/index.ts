@@ -13,3 +13,4 @@ export * from './decline';
 export * from './assets';
 export * from './relationship';
 export * from './brand-deal';
+export * from './national-team';

@@ -193,3 +193,9 @@ export const AGE_DECLINE_PER_YEAR = 2;
 
 /** Probabilidad de recibir una oferta de acuerdo de marca en una semana cualquiera (GDD §4.10). */
 export const BRAND_DEAL_CHANCE_PER_WEEK = 0.08;
+
+/** Media global mínima para ser convocable con la selección nacional — una convocatoria debe sentirse ganada. */
+export const NATIONAL_TEAM_MIN_ABILITY = 65;
+
+/** Probabilidad de convocatoria en una semana cualquiera, una vez se cumple `NATIONAL_TEAM_MIN_ABILITY`. */
+export const NATIONAL_TEAM_CALLUP_CHANCE_PER_WEEK = 0.05;

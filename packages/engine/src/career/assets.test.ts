@@ -57,6 +57,9 @@ function baseProtagonist(overrides: Partial<ProtagonistPlayer> = {}): Protagonis
     activeInjury: null,
     relationshipStatus: 'single',
     activeBrandDeal: null,
+    nationalTeamCaps: 0,
+    nationalTeamGoals: 0,
+    nationalTeamAssists: 0,
     ...overrides,
   };
 }

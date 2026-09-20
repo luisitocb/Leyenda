@@ -141,6 +141,17 @@ export default function CareerScreen(): JSX.Element {
         <StatRow label="Goles" value={protagonist.goalsScored} />
         <StatRow label="Asistencias" value={protagonist.assists} />
 
+        {protagonist.nationalTeamCaps > 0 && (
+          <>
+            <Text variant="subtitle" style={styles.sectionLabel}>
+              Selección nacional
+            </Text>
+            <StatRow label="Convocatorias" value={protagonist.nationalTeamCaps} />
+            <StatRow label="Goles" value={protagonist.nationalTeamGoals} />
+            <StatRow label="Asistencias" value={protagonist.nationalTeamAssists} />
+          </>
+        )}
+
         <Text variant="subtitle" style={styles.sectionLabel}>
           Contrato
         </Text>

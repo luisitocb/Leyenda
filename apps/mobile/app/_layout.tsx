@@ -131,6 +131,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Oferta de marca',
           }}
         />
+        <Stack.Screen
+          name="national-team-match"
+          options={{
+            title: 'Selección nacional',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );
