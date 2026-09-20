@@ -29,3 +29,26 @@ export const PersonNamePoolSchema = z.object({
 export type CountryData = z.infer<typeof CountrySchema>;
 export type ClubNamePool = z.infer<typeof ClubNamePoolSchema>;
 export type PersonNamePool = z.infer<typeof PersonNamePoolSchema>;
+
+/**
+ * Esquema de un club real autorado a mano (ADR-004): a diferencia de los
+ * clubes ficticios, el nombre y la reputación no se generan, se deciden a
+ * mano — los clubes reales de una misma división no son igual de fuertes.
+ */
+export const RealClubSchema = z.object({
+  name: z.string().min(1),
+  shortName: z.string().min(1),
+  reputation: z.number().min(1).max(20),
+});
+
+/**
+ * Plantilla real de un país (ADR-004): claves = nivel de división como
+ * string ("1", "2"), valores = lista de clubes de esa división.
+ */
+export const RealClubRosterSchema = z.record(
+  z.string().regex(/^\d+$/),
+  z.array(RealClubSchema).min(1)
+);
+
+export type RealClub = z.infer<typeof RealClubSchema>;
+export type RealClubRoster = z.infer<typeof RealClubRosterSchema>;

@@ -20,7 +20,7 @@ Juego móvil de decisiones y gestión: el usuario vive una carrera como futbolis
 3. **Sin `any`.** Usa tipos de `packages/shared` y esquemas Zod para datos externos.
 4. **Ningún texto visible en código:** todo va a los archivos de i18n (es, en).
 5. **Contenido en datos:** los eventos van en `packages/content`, nunca codificados en la lógica.
-6. **Nombres ficticios siempre:** prohibido usar nombres reales de jugadores, clubes, ligas, competiciones o marcas.
+6. **Nombres de jugadores generados: siempre ficticios/genéricos**, nunca el nombre de un futbolista real concreto. **Clubes, ligas y países pueden usar nombres reales** cuando se autoran explícitamente en `packages/content/data/worldgen/real-clubs/<país>.json` (decisión de Luis del 2026-09-20, ver ADR-004 — asume riesgo de marca/IP y mantenimiento anual de las plantillas). Los países sin plantilla real siguen siendo ficticios y procedurales como siempre.
 7. **Pruebas primero** para la lógica del motor; cada historia incluye sus pruebas.
 8. **Cambios de esquema de guardado** → nueva migración + prueba de carga de partidas antiguas.
 9. **Rendimiento:** una jornada completa del mundo debe simularse en < 500 ms; no bloquees el hilo de UI.

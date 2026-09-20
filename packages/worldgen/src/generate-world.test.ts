@@ -1,5 +1,7 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 
+import { loadRealClubRoster } from '@leyenda/content';
+
 import type { World } from './types';
 import { generateWorld } from './generate-world';
 
@@ -58,11 +60,12 @@ describe('generateWorld', () => {
     expect(other.clubs[0]?.name).not.toBe(world.clubs[0]?.name);
   });
 
-  it('genera exactamente 10 países, 260 clubes, 20 competiciones y 7280 jugadores', () => {
-    expect(world.countries).toHaveLength(10);
-    expect(world.clubs).toHaveLength(260);
-    expect(world.competitions).toHaveLength(20);
-    expect(world.players).toHaveLength(7280);
+  it('genera exactamente 11 países, 302 clubes, 22 competiciones y 8456 jugadores', () => {
+    // 10 países ficticios (260 clubes) + España con plantilla real (ADR-004: 20+22=42 clubes).
+    expect(world.countries).toHaveLength(11);
+    expect(world.clubs).toHaveLength(302);
+    expect(world.competitions).toHaveLength(22);
+    expect(world.players).toHaveLength(8456);
   });
 
   it('cada club tiene exactamente 28 jugadores', () => {
@@ -127,8 +130,12 @@ describe('generateWorld', () => {
     }
   });
 
-  it('no genera nombres de club coincidentes con clubes reales conocidos', () => {
-    for (const club of world.clubs) {
+  it('los clubes procedurales/ficticios no coinciden con clubes reales conocidos', () => {
+    // España (ADR-004) usa nombres reales a propósito, por eso se excluye
+    // aquí — esta prueba solo protege a los países todavía procedurales.
+    const proceduralClubs = world.clubs.filter((c) => loadRealClubRoster(c.countryCode) === null);
+    expect(proceduralClubs.length).toBeGreaterThan(0);
+    for (const club of proceduralClubs) {
       const lowerName = club.name.toLowerCase();
       for (const realName of REAL_CLUB_NAMES) {
         expect(lowerName.includes(realName)).toBe(false);

@@ -8,5 +8,6 @@
   { "code": "XG", "name": "Girondel", "reputationBase": 11 },
   { "code": "XH", "name": "Halvoria", "reputationBase": 10 },
   { "code": "XI", "name": "Ithalia", "reputationBase": 9 },
-  { "code": "XJ", "name": "Jarumba", "reputationBase": 8 }
+  { "code": "XJ", "name": "Jarumba", "reputationBase": 8 },
+  { "code": "ES", "name": "España", "reputationBase": 19 }
 ]

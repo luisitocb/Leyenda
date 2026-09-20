@@ -8,13 +8,21 @@ import {
   namePools,
   origins,
   purchasableAssets,
+  realClubRosters,
   weeklyActions,
 } from './index';
 
 describe('content adapter (import estático, sin fs)', () => {
-  it('carga los 10 países', () => {
-    expect(countries).toHaveLength(10);
+  it('carga los 11 países (10 ficticios + España)', () => {
+    expect(countries).toHaveLength(11);
     expect(countries[0]?.code).toBe('XA');
+    expect(countries.map((c) => c.code)).toContain('ES');
+  });
+
+  it('carga la plantilla real de España (ADR-004)', () => {
+    expect(realClubRosters.ES?.['1']).toHaveLength(20);
+    expect(realClubRosters.ES?.['2']).toHaveLength(22);
+    expect(realClubRosters.ES?.['1']?.map((c) => c.name)).toContain('Real Madrid CF');
   });
 
   it('carga el pool de nombres de club', () => {
@@ -31,9 +39,10 @@ describe('content adapter (import estático, sin fs)', () => {
     expect(weeklyActions.map((a) => a.id)).toContain('descanso-activo');
   });
 
-  it('carga los pools de nombres de los 10 países', () => {
-    expect(Object.keys(namePools)).toHaveLength(10);
+  it('carga los pools de nombres de los 11 países', () => {
+    expect(Object.keys(namePools)).toHaveLength(11);
     expect(namePools.XA?.firstNames.length).toBeGreaterThan(0);
+    expect(namePools.ES?.firstNames.length).toBeGreaterThan(0);
   });
 
   it('carga los 6 momentos clave', () => {

@@ -1,4 +1,9 @@
-import { loadClubNamePool, loadPersonNamePool, type PersonNamePool } from '@leyenda/content';
+import {
+  loadClubNamePool,
+  loadPersonNamePool,
+  loadRealClubRoster,
+  type PersonNamePool,
+} from '@leyenda/content';
 import { RNG } from '@leyenda/engine';
 import type { BasePlayer, Club, Competition, CountryCode } from '@leyenda/shared';
 
@@ -34,6 +39,7 @@ export function generateWorld(seed: number, config: Partial<WorldgenConfig> = {}
   const competitions: Competition[] = [];
 
   for (const country of countries) {
+    const realRoster = loadRealClubRoster(country.code);
     clubs.push(
       ...generateClubs({
         rng,
@@ -41,6 +47,7 @@ export function generateWorld(seed: number, config: Partial<WorldgenConfig> = {}
         clubNamePool,
         divisionsPerCountry: finalConfig.divisionsPerCountry,
         clubsPerDivision: finalConfig.clubsPerDivision,
+        realRoster,
       })
     );
     competitions.push(...generateCompetitions(country, finalConfig.divisionsPerCountry));

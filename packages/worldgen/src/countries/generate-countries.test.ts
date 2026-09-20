@@ -3,8 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { generateCountries } from './generate-countries';
 
 describe('generateCountries', () => {
-  it('carga exactamente 10 países', () => {
-    expect(generateCountries()).toHaveLength(10);
+  it('carga exactamente 11 países', () => {
+    // 10 ficticios + España (ADR-004: primer país con plantilla real de club).
+    expect(generateCountries()).toHaveLength(11);
   });
 
   it('todos los países tienen código de 2 letras mayúsculas y reputationBase 1-20', () => {
@@ -21,7 +22,9 @@ describe('generateCountries', () => {
     expect(new Set(codes).size).toBe(codes.length);
   });
 
-  it('no coincide con códigos ISO-3166 reales de países reconocibles', () => {
+  it('los países ficticios (código X_) no coinciden con códigos ISO-3166 reales', () => {
+    // España (ADR-004) usa su código ISO real a propósito, por eso se excluye
+    // aquí — esta prueba solo protege a los países todavía ficticios.
     const realCodes = new Set([
       'ES',
       'FR',
@@ -44,7 +47,9 @@ describe('generateCountries', () => {
       'MX',
       'CA',
     ]);
-    for (const country of generateCountries()) {
+    const ficticios = generateCountries().filter((c) => c.code.startsWith('X'));
+    expect(ficticios.length).toBeGreaterThan(0);
+    for (const country of ficticios) {
       expect(realCodes.has(country.code)).toBe(false);
     }
   });

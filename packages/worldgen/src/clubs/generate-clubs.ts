@@ -1,4 +1,4 @@
-import type { ClubNamePool } from '@leyenda/content';
+import type { ClubNamePool, RealClubRoster } from '@leyenda/content';
 import { RNG } from '@leyenda/engine';
 import type { Club, Country } from '@leyenda/shared';
 
@@ -10,11 +10,22 @@ export interface GenerateClubsInput {
   clubNamePool: ClubNamePool;
   divisionsPerCountry: number;
   clubsPerDivision: Record<number, number>;
+  /**
+   * Plantilla real de club (ADR-004), si el país la tiene. Cuando está
+   * presente, sustituye por completo la generación procedural: nombre,
+   * nombre corto y reputación salen de la lista autorada, y el número de
+   * clubes por división lo decide el tamaño de la lista, no
+   * `clubsPerDivision` (los países reales no tienen por qué coincidir con
+   * el tamaño de división por defecto de los países ficticios).
+   */
+  realRoster?: RealClubRoster | null;
 }
 
 /**
- * Genera los clubes de un país repartidos en divisiones. La reputación de
- * división 1 ronda `reputationBase`; división 2 es sistemáticamente peor.
+ * Genera los clubes de un país repartidos en divisiones. Sin `realRoster`:
+ * ficticio y procedural, reputación de división 1 ronda `reputationBase`
+ * (división 2 sistemáticamente peor). Con `realRoster` (ADR-004): nombres y
+ * reputación ya decididos a mano club a club.
  */
 export function generateClubs({
   rng,
@@ -22,7 +33,12 @@ export function generateClubs({
   clubNamePool,
   divisionsPerCountry,
   clubsPerDivision,
+  realRoster,
 }: GenerateClubsInput): Club[] {
+  if (realRoster) {
+    return generateRealClubs(rng, country, realRoster);
+  }
+
   const totalClubs = Array.from({ length: divisionsPerCountry }, (_, i) => i + 1).reduce(
     (sum, level) => sum + (clubsPerDivision[level] ?? 0),
     0
@@ -57,6 +73,27 @@ export function generateClubs({
         money: reputation * rng.nextInt(80_000, 150_000),
       });
     }
+  }
+
+  return clubs;
+}
+
+function generateRealClubs(rng: RNG, country: Country, realRoster: RealClubRoster): Club[] {
+  const clubs: Club[] = [];
+
+  for (const [divisionKey, roster] of Object.entries(realRoster)) {
+    const divisionLevel = Number(divisionKey);
+    roster.forEach((realClub, i) => {
+      clubs.push({
+        id: `club-${country.code}-${divisionLevel}-${i + 1}`,
+        name: realClub.name,
+        shortName: realClub.shortName,
+        countryCode: country.code,
+        reputation: realClub.reputation,
+        divisionLevel,
+        money: realClub.reputation * rng.nextInt(80_000, 150_000),
+      });
+    });
   }
 
   return clubs;

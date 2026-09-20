@@ -15,7 +15,12 @@ import {
   loadOrigins,
   loadWeeklyActions,
 } from './career/load';
-import { loadClubNamePool, loadCountries, loadPersonNamePool } from './worldgen/load';
+import {
+  loadClubNamePool,
+  loadCountries,
+  loadPersonNamePool,
+  loadRealClubRoster,
+} from './worldgen/load';
 
 function validateContent(): void {
   console.log('🔍 Validando contenido del juego...\n');
@@ -33,6 +38,11 @@ function validateContent(): void {
       loadPersonNamePool(country.code);
     }
     console.log(`📁 Pools de nombres de persona (worldgen): ${countries.length} archivos válidos`);
+
+    const realRosterCountries = countries.filter((c) => loadRealClubRoster(c.code) !== null);
+    console.log(
+      `📁 Plantillas reales de club (ADR-004): ${realRosterCountries.length} países válidos`
+    );
   } catch (error) {
     errors++;
     console.error('❌ Error validando datos de worldgen:', error);

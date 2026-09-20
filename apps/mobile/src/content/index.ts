@@ -9,7 +9,13 @@
  * contenido ya está validado en CI vía `pnpm content:validate`, así que no hace falta
  * revalidar con Zod en cada dispositivo.
  */
-import type { ClubNamePool, Origin, PersonNamePool, WeeklyAction } from '@leyenda/content';
+import type {
+  ClubNamePool,
+  Origin,
+  PersonNamePool,
+  RealClubRoster,
+  WeeklyAction,
+} from '@leyenda/content';
 import type {
   BrandDeal,
   Country,
@@ -39,6 +45,8 @@ import namesXG from '@leyenda/content/data/worldgen/person-names/XG.json';
 import namesXH from '@leyenda/content/data/worldgen/person-names/XH.json';
 import namesXI from '@leyenda/content/data/worldgen/person-names/XI.json';
 import namesXJ from '@leyenda/content/data/worldgen/person-names/XJ.json';
+import namesES from '@leyenda/content/data/worldgen/person-names/ES.json';
+import realClubsES from '@leyenda/content/data/worldgen/real-clubs/ES.json';
 
 export const countries = countriesData as Country[];
 export const clubNamePool = clubNamePoolData as ClubNamePool;
@@ -62,4 +70,15 @@ export const namePools: Record<CountryCode, PersonNamePool> = {
   XH: namesXH as PersonNamePool,
   XI: namesXI as PersonNamePool,
   XJ: namesXJ as PersonNamePool,
+  ES: namesES as PersonNamePool,
+};
+
+/**
+ * Plantillas reales de club por país (ADR-004), importadas de forma
+ * estática por el mismo motivo que el resto de este archivo — nunca vía
+ * `loadRealClubRoster` (usa `node:fs`). Países sin entrada aquí siguen
+ * siendo ficticios y procedurales.
+ */
+export const realClubRosters: Partial<Record<CountryCode, RealClubRoster>> = {
+  ES: realClubsES as RealClubRoster,
 };

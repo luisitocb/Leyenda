@@ -6,7 +6,7 @@ import type { Club, CountryCode } from '@leyenda/shared';
 import { CLUBS_PER_DIVISION, DIVISIONS_PER_COUNTRY } from '@leyenda/worldgen/src/constants';
 import { generateClubs } from '@leyenda/worldgen/src/clubs/generate-clubs';
 
-import { clubNamePool, countries } from '@/content';
+import { clubNamePool, countries, realClubRosters } from '@/content';
 
 /**
  * Regenera los clubes de un país a partir de la seed del save. El `World`
@@ -22,5 +22,6 @@ export function generateClubsForCountry(seed: number, countryCode: CountryCode):
     clubNamePool,
     divisionsPerCountry: DIVISIONS_PER_COUNTRY,
     clubsPerDivision: CLUBS_PER_DIVISION,
+    realRoster: realClubRosters[countryCode] ?? null,
   });
 }
