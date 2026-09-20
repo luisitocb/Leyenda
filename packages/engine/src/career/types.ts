@@ -69,6 +69,9 @@ export const SALARY_PER_ABILITY = 10;
 /** Semanas antes de `contractExpiry` en las que se avisa de expiración próxima. */
 export const CONTRACT_EXPIRY_WARNING_WEEKS = 8;
 
+/** Probabilidad de recibir una oferta de fichaje de otro club en una semana cualquiera (GDD §4.8). */
+export const TRANSFER_OFFER_CHANCE_PER_WEEK = 0.05;
+
 /**
  * Efecto de una acción semanal (GDD §4.5), ya resuelto (sin id/nombre/descripción):
  * el motor no depende de @leyenda/content, igual que `OriginModifier` — quien llama

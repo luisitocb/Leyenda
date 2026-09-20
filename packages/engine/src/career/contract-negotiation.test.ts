@@ -1,9 +1,16 @@
 import { describe, expect, it } from 'vitest';
 
-import type { ProtagonistPlayer } from '@leyenda/shared';
+import type { Club, ProtagonistPlayer } from '@leyenda/shared';
 import { RNG } from '../rng';
 
-import { acceptContractOffer, generateRenewalOffer, negotiateOffer } from './contract-negotiation';
+import {
+  acceptContractOffer,
+  acceptTransferOffer,
+  generateRenewalOffer,
+  generateTransferOffer,
+  negotiateOffer,
+  shouldReceiveTransferOffer,
+} from './contract-negotiation';
 
 function baseProtagonist(overrides: Partial<ProtagonistPlayer> = {}): ProtagonistPlayer {
   return {
@@ -116,5 +123,76 @@ describe('acceptContractOffer', () => {
     expect(result.salary).toBe(800);
     expect(result.contractExpiry).toBe('2029-01-01');
     expect(result.money).toBe(1300);
+  });
+});
+
+describe('shouldReceiveTransferOffer', () => {
+  it('a veces toca y a veces no', () => {
+    const results = new Set<boolean>();
+    for (let seed = 0; seed < 200; seed++) {
+      results.add(shouldReceiveTransferOffer(new RNG(seed)));
+    }
+    expect(results.has(true)).toBe(true);
+    expect(results.has(false)).toBe(true);
+  });
+});
+
+function club(overrides: Partial<Club> = {}): Club {
+  return {
+    id: 'club-x',
+    name: 'Club X',
+    shortName: 'CX',
+    countryCode: 'XA',
+    reputation: 10,
+    divisionLevel: 2,
+    money: 100_000,
+    ...overrides,
+  };
+}
+
+describe('generateTransferOffer', () => {
+  const divisionClubs = [
+    club({ id: 'club-1', reputation: 5 }),
+    club({ id: 'club-2', reputation: 15 }),
+    club({ id: 'club-3', reputation: 10 }),
+  ];
+
+  it('nunca elige el club actual del protagonista', () => {
+    const protagonist = baseProtagonist({ clubId: 'club-2' });
+    for (let seed = 0; seed < 50; seed++) {
+      const offer = generateTransferOffer(protagonist, divisionClubs, new RNG(seed));
+      expect(offer.clubId).not.toBe('club-2');
+    }
+  });
+
+  it('el sueldo ofrecido siempre es mayor que el actual', () => {
+    const protagonist = baseProtagonist({ clubId: 'club-1', salary: 500 });
+    for (let seed = 0; seed < 50; seed++) {
+      const offer = generateTransferOffer(protagonist, divisionClubs, new RNG(seed));
+      expect(offer.salary).toBeGreaterThan(500);
+    }
+  });
+
+  it('lanza si no hay clubes rivales', () => {
+    const protagonist = baseProtagonist({ clubId: 'club-1' });
+    expect(() =>
+      generateTransferOffer(protagonist, [club({ id: 'club-1' })], new RNG(1))
+    ).toThrow();
+  });
+});
+
+describe('acceptTransferOffer', () => {
+  it('cambia de club y resetea las relaciones ligadas al club anterior', () => {
+    const protagonist = baseProtagonist({
+      clubId: 'club-1',
+      relations: { ...baseProtagonist().relations, coach: 50, squad: 60, fans: 70, family: 20 },
+    });
+    const offer = { clubId: 'club-2', salary: 900, durationYears: 3, signingBonus: 400 };
+    const result = acceptTransferOffer(protagonist, offer, '2027-01-01');
+    expect(result.clubId).toBe('club-2');
+    expect(result.relations.coach).toBe(0);
+    expect(result.relations.squad).toBe(0);
+    expect(result.relations.fans).toBe(0);
+    expect(result.relations.family).toBe(20);
   });
 });

@@ -12,6 +12,7 @@ import {
   isContractRenewalWeek,
   paySalary,
   selectEvent,
+  shouldReceiveTransferOffer,
   WEEKLY_ENERGY_RESET,
 } from '@leyenda/engine';
 
@@ -129,6 +130,8 @@ export default function WeekScreen(): JSX.Element {
     const division = resolveDivisionCalendar(save.seed, workingProtagonist, countries);
     const seasonJustEnded = division !== null && isSeasonJustEnded(division.calendar, thisWeekDate);
     const renewalWeek = isContractRenewalWeek(workingProtagonist.contractExpiry, thisWeekDate);
+    const transferOfferWeek =
+      !seasonJustEnded && !renewalWeek && shouldReceiveTransferOffer(new RNG(createRandomSeed()));
 
     updateProtagonist(protagonistRow.id, {
       ...paySalary(workingProtagonist),
@@ -140,6 +143,8 @@ export default function WeekScreen(): JSX.Element {
       router.replace('/season-end');
     } else if (renewalWeek) {
       router.replace('/contract-offer');
+    } else if (transferOfferWeek) {
+      router.replace({ pathname: '/contract-offer', params: { type: 'transfer' } });
     } else if (event) {
       router.replace({
         pathname: '/event',
