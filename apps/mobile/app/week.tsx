@@ -9,6 +9,7 @@ import {
   advanceWeek,
   applyWeeklyAction,
   createRandomSeed,
+  isContractRenewalWeek,
   paySalary,
   selectEvent,
   WEEKLY_ENERGY_RESET,
@@ -127,6 +128,7 @@ export default function WeekScreen(): JSX.Element {
     const event = selectEvent(events, new RNG(createRandomSeed()));
     const division = resolveDivisionCalendar(save.seed, workingProtagonist, countries);
     const seasonJustEnded = division !== null && isSeasonJustEnded(division.calendar, thisWeekDate);
+    const renewalWeek = isContractRenewalWeek(workingProtagonist.contractExpiry, thisWeekDate);
 
     updateProtagonist(protagonistRow.id, {
       ...paySalary(workingProtagonist),
@@ -136,6 +138,8 @@ export default function WeekScreen(): JSX.Element {
 
     if (seasonJustEnded) {
       router.replace('/season-end');
+    } else if (renewalWeek) {
+      router.replace('/contract-offer');
     } else if (event) {
       router.replace({
         pathname: '/event',

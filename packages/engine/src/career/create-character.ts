@@ -9,6 +9,7 @@ import type {
 } from '@leyenda/shared';
 import { RNG } from '../rng';
 
+import { addYears } from '../world/date-utils';
 import { clamp } from './math';
 import {
   ATTRIBUTE_NOISE,
@@ -40,13 +41,6 @@ function dateOfBirthForAge(referenceDate: string, age: number, dayOffset: number
   const birth = new Date(Date.UTC(ref.getUTCFullYear() - age, ref.getUTCMonth(), ref.getUTCDate()));
   birth.setUTCDate(birth.getUTCDate() - dayOffset);
   return birth.toISOString().slice(0, 10);
-}
-
-function addYears(date: string, years: number): string {
-  const d = new Date(date);
-  return new Date(Date.UTC(d.getUTCFullYear() + years, d.getUTCMonth(), d.getUTCDate()))
-    .toISOString()
-    .slice(0, 10);
 }
 
 /** Valida el reparto de puntos: es entrada de usuario (frontera del sistema), a diferencia del resto del cálculo interno. */

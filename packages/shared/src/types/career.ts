@@ -1,3 +1,4 @@
+import type { EntityId } from './common';
 import type { PlayerTrait } from './player';
 
 /**
@@ -48,4 +49,16 @@ export interface DecisionEvent {
   text: string;
   weight: number;
   choices: DecisionEventChoice[];
+}
+
+/**
+ * Oferta de contrato (GDD §4.8): renovación con el club actual o fichaje de
+ * otro. `clubId` distingue el caso — si coincide con el club actual del
+ * protagonista es una renovación, si no, un fichaje.
+ */
+export interface ContractOffer {
+  clubId: EntityId;
+  salary: number;
+  durationYears: number;
+  signingBonus: number;
 }

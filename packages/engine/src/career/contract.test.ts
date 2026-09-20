@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
 import type { ProtagonistPlayer } from '@leyenda/shared';
+import { addDays } from '../world/date-utils';
 
-import { isContractExpiringSoon, paySalary } from './contract';
+import { isContractExpiringSoon, isContractRenewalWeek, paySalary } from './contract';
 
 function baseProtagonist(overrides: Partial<ProtagonistPlayer> = {}): ProtagonistPlayer {
   return {
@@ -85,5 +86,26 @@ describe('isContractExpiringSoon', () => {
 
   it('sigue siendo verdadero después de expirar', () => {
     expect(isContractExpiringSoon('2028-08-01', '2028-09-01')).toBe(true);
+  });
+});
+
+describe('isContractRenewalWeek', () => {
+  const contractExpiry = '2028-08-01';
+  const boundary = addDays(contractExpiry, -8 * 7);
+
+  it('es falso sin fecha de contrato', () => {
+    expect(isContractRenewalWeek(null, '2026-01-01')).toBe(false);
+  });
+
+  it('es falso muchas semanas antes de la ventana', () => {
+    expect(isContractRenewalWeek(contractExpiry, addDays(boundary, -21))).toBe(false);
+  });
+
+  it('es verdadero exactamente en la semana en que empieza la ventana', () => {
+    expect(isContractRenewalWeek(contractExpiry, boundary)).toBe(true);
+  });
+
+  it('es falso la semana siguiente (ya se avisó la semana anterior)', () => {
+    expect(isContractRenewalWeek(contractExpiry, addDays(boundary, 7))).toBe(false);
   });
 });

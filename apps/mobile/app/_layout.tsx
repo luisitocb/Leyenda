@@ -101,6 +101,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Fin de temporada',
           }}
         />
+        <Stack.Screen
+          name="contract-offer"
+          options={{
+            title: 'Oferta de contrato',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

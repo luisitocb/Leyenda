@@ -9,3 +9,9 @@ export function addDays(date: ISODate, days: number): ISODate {
   const d = new Date(date);
   return toISODate(new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate() + days)));
 }
+
+/** Añade `years` años a una fecha ISO. */
+export function addYears(date: ISODate, years: number): ISODate {
+  const d = new Date(date);
+  return toISODate(new Date(Date.UTC(d.getUTCFullYear() + years, d.getUTCMonth(), d.getUTCDate())));
+}
