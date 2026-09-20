@@ -38,8 +38,8 @@ describe('content adapter (import estático, sin fs)', () => {
     expect(keyMoments.map((m) => m.id)).toContain('intervencion-portero');
   });
 
-  it('carga los 17 eventos de decisión', () => {
-    expect(events).toHaveLength(17);
+  it('carga los 30 eventos de decisión', () => {
+    expect(events).toHaveLength(30);
     expect(events.map((e) => e.id)).toContain('fiesta-antes-del-partido');
   });
 });
