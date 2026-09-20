@@ -1256,5 +1256,797 @@
         "grantsTrait": null
       }
     ]
+  },
+  {
+    "id": "paparazzi-en-la-puerta",
+    "category": "press",
+    "text": "Un fotógrafo te espera a la puerta de tu casa buscando una foto comprometida.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "ignorar-y-entrar",
+        "label": "Ignorarlo y entrar en casa",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "hacerle-una-broma",
+        "label": "Hacerle una broma y posar un momento",
+        "check": { "determinedBy": "charisma", "baseSuccessChance": 0.5 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": 4, "fans": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -5 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "rival-te-provoca",
+    "category": "social",
+    "text": "Un rival te provoca verbalmente durante el calentamiento antes del partido.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "ignorarlo",
+        "label": "Ignorarlo y concentrarte",
+        "check": { "determinedBy": "temperament", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 2, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": { "ego": 2 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": -3, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "responderle",
+        "label": "Responderle en el mismo tono",
+        "check": { "determinedBy": "temperament", "baseSuccessChance": 0.3 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 3 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": -2, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "grantsTrait": { "trait": "hothead", "chance": 0.4 }
+      }
+    ]
+  },
+  {
+    "id": "oferta-curso-idiomas",
+    "category": "personal",
+    "text": "El club te ofrece pagar un curso de idiomas para cuando llegue una oferta del extranjero.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "apuntarte",
+        "label": "Apuntarte",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "professionalism": 2 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": 3 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, ahora no tienes tiempo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": -1 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "medico-recomienda-descanso",
+    "category": "health",
+    "text": "El médico del club te recomienda un descanso extra tras varias semanas de carga.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "seguir-el-consejo",
+        "label": "Seguir el consejo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 5, "mentalHealth": 2, "form": 0, "fitness": 5 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "seguir-entrenando",
+        "label": "Seguir entrenando al máximo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": -5, "mentalHealth": 0, "form": 0, "fitness": -3 },
+          "relationsDelta": { "coach": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "nino-aficionado-pide-consejo",
+    "category": "social",
+    "text": "Un niño que juega en tu misma posición te pide consejo tras un entrenamiento.",
+    "weight": 3,
+    "choices": [
+      {
+        "id": "dedicarle-tiempo",
+        "label": "Dedicarle un rato de verdad",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 3, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 5 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "un-consejo-rapido",
+        "label": "Darle un consejo rápido y seguir",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 1 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "propuesta-podcast-propio",
+    "category": "business",
+    "text": "Una productora te propone lanzar tu propio podcast semanal.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "aceptar",
+        "label": "Aceptar",
+        "check": { "determinedBy": "charisma", "baseSuccessChance": 0.5 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 5, "press": 2 },
+          "moneyDelta": 400
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -2, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -3 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": { "trait": "media-friendly", "chance": 0.3 }
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, prefieres centrarte en el fútbol",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "professionalism": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "discusion-por-minutos",
+    "category": "social",
+    "text": "Un compañero te reprocha que le estás quitando minutos de juego.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "hablarlo-con-calma",
+        "label": "Hablarlo con calma",
+        "check": { "determinedBy": "teamwork", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": 5 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": -3 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "no-es-mi-problema",
+        "label": "No es tu problema, tú entrenas para jugar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "ego": 2 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": -4 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "oferta-embajador-marca-deportiva",
+    "category": "business",
+    "text": "Una gran marca deportiva te propone ser embajador de su próxima colección.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "aceptar",
+        "label": "Aceptar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 4 },
+          "moneyDelta": 600
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, ya tienes patrocinadores de sobra",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "academia-pide-donacion",
+    "category": "personal",
+    "text": "La academia donde empezaste a jugar te pide una donación para renovar sus instalaciones.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "donar",
+        "label": "Donar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 3, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 4, "press": 2 },
+          "moneyDelta": -400
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "no-puedes-ahora",
+        "label": "No puedes ayudar ahora mismo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -1, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "periodista-pide-exclusiva",
+    "category": "press",
+    "text": "Un periodista de confianza te pide una entrevista exclusiva sobre tu futuro.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "concederla",
+        "label": "Concederla",
+        "check": { "determinedBy": "professionalism", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": 6 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -3, "board": -2 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "declinar",
+        "label": "Declinar por ahora",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -1 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "entrenador-pide-opinion-tactica",
+    "category": "career",
+    "text": "El entrenador te pide tu opinión sobre la táctica antes de un partido clave.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "dar-tu-opinion",
+        "label": "Dar tu opinión con sinceridad",
+        "check": { "determinedBy": "vision", "baseSuccessChance": 0.5 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "coach": 5 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "coach": -3 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "confiar-en-el",
+        "label": "Decirle que confías en su criterio",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "coach": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "companero-se-retira",
+    "category": "social",
+    "text": "Un compañero veterano anuncia su retirada al final de temporada.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "organizar-homenaje",
+        "label": "Ayudar a organizarle un homenaje",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 2, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": 6, "fans": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "felicitarlo-y-seguir",
+        "label": "Felicitarlo y seguir con tu rutina",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": 1 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "clase-magistral-cantera",
+    "category": "training",
+    "text": "El club te pide dar una clase magistral a los chavales de la cantera.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "aceptar",
+        "label": "Aceptar",
+        "check": { "determinedBy": "leadership", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": "mental",
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": 4, "fans": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": -3 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, prefieres descansar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": -2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "vecino-se-queja-ruido",
+    "category": "personal",
+    "text": "Un vecino se queja de que los coches de tus visitas hacen ruido por la noche.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "disculparte",
+        "label": "Disculparte y ser más discreto",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "professionalism": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "ignorar-la-queja",
+        "label": "Ignorar la queja",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "ego": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": -1, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "rumor-vida-privada-prensa",
+    "category": "press",
+    "text": "Una revista publica un rumor sin confirmar sobre tu vida privada.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "desmentir-publicamente",
+        "label": "Desmentirlo públicamente",
+        "check": { "determinedBy": "composure", "baseSuccessChance": 0.5 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": 2, "partner": 3 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -3, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -4 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "no-hacer-caso",
+        "label": "No hacer caso",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -1, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "propuesta-inversion-inmobiliaria",
+    "category": "business",
+    "text": "Un conocido te propone invertir en un proyecto inmobiliario junto a otros jugadores.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "invertir",
+        "label": "Invertir",
+        "check": { "determinedBy": "composure", "baseSuccessChance": 0.45 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 800
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -3, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": -600
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, prefieres no arriesgar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "professionalism": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "companero-pide-prestamo",
+    "category": "personal",
+    "text": "Un compañero con problemas económicos te pide un préstamo personal.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "prestarle",
+        "label": "Prestarle el dinero",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": 8 },
+          "moneyDelta": -300
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "decirle-que-no",
+        "label": "Decirle que no puedes",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": -4 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "photoshoot-revista",
+    "category": "image",
+    "text": "Una revista deportiva te propone un photoshoot para su portada.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "aceptar",
+        "label": "Aceptar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "charisma": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 5, "press": 3 },
+          "moneyDelta": 300
+        },
+        "onFailEffects": null,
+        "grantsTrait": { "trait": "media-friendly", "chance": 0.3 }
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, prefieres discreción",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": { "trait": "discreet", "chance": 0.2 }
+      }
+    ]
+  },
+  {
+    "id": "baja-forma-preocupa-directiva",
+    "category": "career",
+    "text": "La directiva te cita para hablar de tu bajón de forma en las últimas semanas.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "asumir-responsabilidad",
+        "label": "Asumir la responsabilidad y pedir tiempo",
+        "check": { "determinedBy": "professionalism", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 2, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": 4 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": -2 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "poner-excusas",
+        "label": "Poner excusas externas",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "ego": 2 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": -5 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "oferta-conferencia-motivacional",
+    "category": "image",
+    "text": "Un instituto te invita a dar una charla motivacional a estudiantes.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "aceptar",
+        "label": "Aceptar",
+        "check": { "determinedBy": "charisma", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 2, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 4, "press": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -1 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": { "trait": "leader", "chance": 0.2 }
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar por falta de tiempo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
   }
 ]
