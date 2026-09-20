@@ -123,6 +123,9 @@ export interface ProtagonistPlayer extends BasePlayer {
     sponsors: number;
   };
 
+  // Vida personal
+  relationshipStatus: 'single' | 'dating' | 'relationship' | 'married';
+
   // Rasgos adquiridos
   traits: PlayerTrait[];
 

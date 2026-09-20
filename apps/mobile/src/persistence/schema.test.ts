@@ -118,6 +118,7 @@ function makeProtagonist(): ProtagonistPlayer {
     assists: 0,
     titlesWon: [],
     activeInjury: null,
+    relationshipStatus: 'single',
   };
 }
 

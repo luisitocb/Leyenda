@@ -11,3 +11,4 @@ export * from './contract-negotiation';
 export * from './injury';
 export * from './decline';
 export * from './assets';
+export * from './relationship';

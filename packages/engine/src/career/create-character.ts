@@ -175,5 +175,6 @@ export function createCharacter(input: CreateCharacterInput, rng: RNG): Protagon
     assists: 0,
     titlesWon: [],
     activeInjury: null,
+    relationshipStatus: 'single',
   };
 }

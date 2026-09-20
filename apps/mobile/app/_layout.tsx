@@ -119,6 +119,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Patrimonio',
           }}
         />
+        <Stack.Screen
+          name="relationship"
+          options={{
+            title: 'Relación',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

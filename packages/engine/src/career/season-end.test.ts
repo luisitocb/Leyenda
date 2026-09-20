@@ -55,6 +55,7 @@ function baseProtagonist(overrides: Partial<ProtagonistPlayer> = {}): Protagonis
     assists: 0,
     titlesWon: [],
     activeInjury: null,
+    relationshipStatus: 'single',
     ...overrides,
   };
 }
