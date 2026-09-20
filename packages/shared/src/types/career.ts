@@ -95,3 +95,25 @@ export interface PurchasableAsset {
   price: number;
   relationsDelta: Partial<Record<RelationKey, number>>;
 }
+
+/**
+ * Acuerdo de marca (GDD §4.10): a diferencia de un evento de decisión (un
+ * solo uso), tiene duración — cobras mientras dura y romperlo implica
+ * penalización económica.
+ */
+export interface BrandDeal {
+  id: string;
+  name: string;
+  description: string;
+  signingBonus: number;
+  weeklyIncome: number;
+  weeklyRelationsDelta: Partial<Record<RelationKey, number>>;
+  durationWeeks: number;
+  breachPenalty: number;
+}
+
+/** Acuerdo de marca en curso del protagonista. */
+export interface ActiveBrandDeal {
+  dealId: string;
+  weeksRemaining: number;
+}

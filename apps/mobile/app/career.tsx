@@ -13,7 +13,7 @@ import {
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { countries, injuries } from '@/content';
+import { brandDeals, countries, injuries } from '@/content';
 import { FOOT_LABELS, POSITION_LABELS, RELATION_LABELS, TRAIT_LABELS } from '@/labels';
 import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave } from '@/persistence/protagonists.repository';
@@ -91,6 +91,15 @@ export default function CareerScreen(): JSX.Element {
             Lesionado: {injuries.find((i) => i.id === protagonist.activeInjury?.typeId)?.name ?? ''}{' '}
             ({protagonist.activeInjury.weeksRemaining}{' '}
             {protagonist.activeInjury.weeksRemaining === 1 ? 'semana' : 'semanas'})
+          </Text>
+        )}
+
+        {protagonist.activeBrandDeal && (
+          <Text variant="body" color="accent" style={styles.sectionLabel}>
+            Acuerdo de marca:{' '}
+            {brandDeals.find((b) => b.id === protagonist.activeBrandDeal?.dealId)?.name ?? ''} (
+            {protagonist.activeBrandDeal.weeksRemaining}{' '}
+            {protagonist.activeBrandDeal.weeksRemaining === 1 ? 'semana' : 'semanas'})
           </Text>
         )}
 

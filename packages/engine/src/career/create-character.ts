@@ -176,5 +176,6 @@ export function createCharacter(input: CreateCharacterInput, rng: RNG): Protagon
     titlesWon: [],
     activeInjury: null,
     relationshipStatus: 'single',
+    activeBrandDeal: null,
   };
 }

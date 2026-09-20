@@ -8,6 +8,7 @@
 
 import {
   loadAssets,
+  loadBrandDeals,
   loadEvents,
   loadInjuries,
   loadKeyMoments,
@@ -83,6 +84,14 @@ function validateContent(): void {
   } catch (error) {
     errors++;
     console.error('❌ Error validando patrimonio comprable:', error);
+  }
+
+  try {
+    const brandDeals = loadBrandDeals();
+    console.log(`📁 Acuerdos de marca (carrera): ${brandDeals.length} válidos`);
+  } catch (error) {
+    errors++;
+    console.error('❌ Error validando acuerdos de marca:', error);
   }
 
   // TODO: Eventos de entrenador (Fase 4) y traducciones (Fase 6) cuando existan

@@ -3,9 +3,16 @@ import { join } from 'node:path';
 
 import { z } from 'zod';
 
-import type { DecisionEvent, InjuryType, KeyMoment, PurchasableAsset } from '@leyenda/shared';
+import type {
+  BrandDeal,
+  DecisionEvent,
+  InjuryType,
+  KeyMoment,
+  PurchasableAsset,
+} from '@leyenda/shared';
 
 import {
+  BrandDealSchema,
   DecisionEventSchema,
   InjurySchema,
   KeyMomentSchema,
@@ -50,4 +57,9 @@ export function loadInjuries(): InjuryType[] {
 export function loadAssets(): PurchasableAsset[] {
   const raw = readJson(join(DATA_ROOT, 'assets.json'));
   return z.array(PurchasableAssetSchema).parse(raw) as PurchasableAsset[];
+}
+
+export function loadBrandDeals(): BrandDeal[] {
+  const raw = readJson(join(DATA_ROOT, 'brand-deals.json'));
+  return z.array(BrandDealSchema).parse(raw) as BrandDeal[];
 }

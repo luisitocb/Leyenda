@@ -6,6 +6,7 @@ import type { WeeklyAction } from '@leyenda/content';
 import type { ProtagonistPlayer } from '@leyenda/shared';
 import {
   RNG,
+  advanceBrandDeal,
   advanceInjuryRest,
   advanceWeek,
   applyAgeDecline,
@@ -19,6 +20,7 @@ import {
   rollInjuryChance,
   selectEvent,
   shouldForceRetirement,
+  shouldReceiveBrandDealOffer,
   shouldReceiveTransferOffer,
   WEEKLY_ENERGY_RESET,
   type EarlyReturnResult,
@@ -26,7 +28,7 @@ import {
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { countries, events, injuries, weeklyActions } from '@/content';
+import { brandDeals, countries, events, injuries, weeklyActions } from '@/content';
 import { RELATION_LABELS } from '@/labels';
 import { getLatestSave, updateSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
@@ -125,7 +127,8 @@ export default function WeekScreen(): JSX.Element {
     const injuryType = injuries.find((i) => i.id === activeInjury.typeId);
 
     const finishInjuryWeek = (updated: ProtagonistPlayer): void => {
-      updateProtagonist(protagonistRow.id, { ...paySalary(updated), energy: WEEKLY_ENERGY_RESET });
+      const resolved = advanceBrandDeal(paySalary(updated), brandDeals);
+      updateProtagonist(protagonistRow.id, { ...resolved, energy: WEEKLY_ENERGY_RESET });
       updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
       router.replace('/career');
     };
@@ -210,6 +213,15 @@ export default function WeekScreen(): JSX.Element {
     }
     const matchAvailable = match !== null && !injuryJustOccurred;
 
+    updated = advanceBrandDeal(updated, brandDeals);
+    const brandDealOfferWeek =
+      !seasonJustEnded &&
+      !renewalWeek &&
+      !transferOfferWeek &&
+      !updated.activeBrandDeal &&
+      !updated.traits.includes('controversial') &&
+      shouldReceiveBrandDealOffer(new RNG(createRandomSeed()));
+
     updateProtagonist(protagonistRow.id, { ...updated, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
 
@@ -221,6 +233,8 @@ export default function WeekScreen(): JSX.Element {
       router.replace('/contract-offer');
     } else if (transferOfferWeek) {
       router.replace({ pathname: '/contract-offer', params: { type: 'transfer' } });
+    } else if (brandDealOfferWeek) {
+      router.replace('/brand-deal-offer');
     } else if (event) {
       router.replace({
         pathname: '/event',

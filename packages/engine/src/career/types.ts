@@ -190,3 +190,6 @@ export const FORCED_RETIREMENT_AGE = 38;
 
 /** Puntos que baja cada atributo físico por cada cumpleaños a partir de `DECLINE_START_AGE`. */
 export const AGE_DECLINE_PER_YEAR = 2;
+
+/** Probabilidad de recibir una oferta de acuerdo de marca en una semana cualquiera (GDD §4.10). */
+export const BRAND_DEAL_CHANCE_PER_WEEK = 0.08;

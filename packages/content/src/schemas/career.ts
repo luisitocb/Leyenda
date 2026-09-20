@@ -217,3 +217,22 @@ export const PurchasableAssetSchema = z.object({
 
 // Sin `export type PurchasableAsset = z.infer<...>`: mismo motivo que
 // DecisionEvent/Injury — la forma canónica vive en @leyenda/shared.
+
+/**
+ * Esquema de un acuerdo de marca (GDD §4.10): a diferencia de un evento de
+ * decisión (un solo uso), tiene duración — cobras mientras dura y romperlo
+ * (volverte `controversial`) implica penalización económica.
+ */
+export const BrandDealSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().min(1),
+  signingBonus: z.number().int().min(0),
+  weeklyIncome: z.number().int().min(0),
+  weeklyRelationsDelta: z.record(z.enum(RELATION_KEYS), z.number().int()),
+  durationWeeks: z.number().int().min(1),
+  breachPenalty: z.number().int().min(0),
+});
+
+// Sin `export type BrandDeal = z.infer<...>`: mismo motivo que
+// PurchasableAsset/Injury — la forma canónica vive en @leyenda/shared.

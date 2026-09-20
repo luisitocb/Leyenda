@@ -12,3 +12,4 @@ export * from './injury';
 export * from './decline';
 export * from './assets';
 export * from './relationship';
+export * from './brand-deal';

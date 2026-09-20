@@ -125,6 +125,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Relación',
           }}
         />
+        <Stack.Screen
+          name="brand-deal-offer"
+          options={{
+            title: 'Oferta de marca',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

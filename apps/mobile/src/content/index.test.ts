@@ -1,4 +1,5 @@
 import {
+  brandDeals,
   clubNamePool,
   countries,
   events,
@@ -53,5 +54,10 @@ describe('content adapter (import estático, sin fs)', () => {
   it('carga los 6 artículos de patrimonio', () => {
     expect(purchasableAssets).toHaveLength(6);
     expect(purchasableAssets.map((a) => a.id)).toContain('coche-deportivo');
+  });
+
+  it('carga los 5 acuerdos de marca', () => {
+    expect(brandDeals).toHaveLength(5);
+    expect(brandDeals.map((b) => b.id)).toContain('campana-benefica');
   });
 });

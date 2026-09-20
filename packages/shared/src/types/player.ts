@@ -1,5 +1,5 @@
 import type { AttributeValue, CountryCode, EntityId, Foot, ISODate, Position } from './common';
-import type { PlayerInjury } from './career';
+import type { ActiveBrandDeal, PlayerInjury } from './career';
 
 /**
  * Atributos físicos de un jugador
@@ -137,4 +137,7 @@ export interface ProtagonistPlayer extends BasePlayer {
 
   // Lesión activa, si la hay
   activeInjury: PlayerInjury | null;
+
+  // Acuerdo de marca en curso, si lo hay
+  activeBrandDeal: ActiveBrandDeal | null;
 }

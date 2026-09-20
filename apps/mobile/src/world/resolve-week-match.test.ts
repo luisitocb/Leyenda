@@ -61,6 +61,7 @@ function makeProtagonist(overrides: Partial<ProtagonistPlayer> = {}): Protagonis
     titlesWon: [],
     activeInjury: null,
     relationshipStatus: 'single',
+    activeBrandDeal: null,
     ...overrides,
   };
 }

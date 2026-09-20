@@ -1,0 +1,52 @@
+[
+  {
+    "id": "patrocinador-ropa-local",
+    "name": "Patrocinador de ropa local",
+    "description": "Una tienda de ropa deportiva de tu ciudad quiere tu imagen.",
+    "signingBonus": 500,
+    "weeklyIncome": 50,
+    "weeklyRelationsDelta": {},
+    "durationWeeks": 8,
+    "breachPenalty": 300
+  },
+  {
+    "id": "marca-bebidas-energeticas",
+    "name": "Marca de bebidas energéticas",
+    "description": "Patrocinio con presencia en redes y en el estadio.",
+    "signingBonus": 1500,
+    "weeklyIncome": 150,
+    "weeklyRelationsDelta": { "fans": 1 },
+    "durationWeeks": 12,
+    "breachPenalty": 1000
+  },
+  {
+    "id": "marca-videojuegos",
+    "name": "Marca de videojuegos",
+    "description": "Apareces en su próximo videojuego de fútbol.",
+    "signingBonus": 2000,
+    "weeklyIncome": 200,
+    "weeklyRelationsDelta": { "fans": 2 },
+    "durationWeeks": 10,
+    "breachPenalty": 1200
+  },
+  {
+    "id": "marca-lujo-relojes",
+    "name": "Marca de relojes de lujo",
+    "description": "Un contrato de imagen de alto nivel, con mucho que perder si sale mal.",
+    "signingBonus": 5000,
+    "weeklyIncome": 400,
+    "weeklyRelationsDelta": { "press": 2 },
+    "durationWeeks": 16,
+    "breachPenalty": 3000
+  },
+  {
+    "id": "campana-benefica",
+    "name": "Campaña benéfica",
+    "description": "Colaboras con una fundación durante varias semanas.",
+    "signingBonus": 0,
+    "weeklyIncome": 0,
+    "weeklyRelationsDelta": { "fans": 3, "press": 3 },
+    "durationWeeks": 6,
+    "breachPenalty": 200
+  }
+]
