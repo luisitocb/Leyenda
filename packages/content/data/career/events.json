@@ -244,5 +244,473 @@
         "grantsTrait": null
       }
     ]
+  },
+  {
+    "id": "oferta-otro-club",
+    "category": "career",
+    "text": "Un ojeador de otro club se ha fijado en ti.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "escuchar",
+        "label": "Escuchar lo que propone",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "agent": 5 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "ignorar",
+        "label": "Ignorar, sigues centrado en tu club",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "professionalism": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "coach": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "entrevista-television",
+    "category": "press",
+    "text": "Un canal de televisión te pide una entrevista en directo.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "aceptar",
+        "label": "Aceptar",
+        "check": { "determinedBy": "charisma", "baseSuccessChance": 0.5 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": 6, "fans": 4 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -4 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "declinar",
+        "label": "Declinar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -1 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "criticas-redes-sociales",
+    "category": "press",
+    "text": "Unos comentarios tuyos se han hecho virales y te están criticando en redes.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "ignorar-con-calma",
+        "label": "No entrar al trapo",
+        "check": { "determinedBy": "temperament", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 2, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -3, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -2 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "responder",
+        "label": "Responder en redes",
+        "check": { "determinedBy": "temperament", "baseSuccessChance": 0.35 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 3 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": { "ego": 3 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": -4, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -8, "board": -3 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": { "trait": "hothead", "chance": 0.5 }
+      }
+    ]
+  },
+  {
+    "id": "companero-pide-consejo",
+    "category": "social",
+    "text": "Un compañero más joven te pide consejo tras una mala racha.",
+    "weight": 3,
+    "choices": [
+      {
+        "id": "ayudar",
+        "label": "Ayudarle de verdad",
+        "check": { "determinedBy": "leadership", "baseSuccessChance": 0.55 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": 7 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": 1 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": { "trait": "leader", "chance": 0.25 }
+      },
+      {
+        "id": "no-tengo-tiempo",
+        "label": "No tienes tiempo ahora",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": -2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "evento-benefico",
+    "category": "image",
+    "text": "Una fundación te invita a un evento benéfico de tu club.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "asistir",
+        "label": "Asistir",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 5, "press": 3 },
+          "moneyDelta": -100
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "disculparse",
+        "label": "Disculparte, prefieres descansar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "oportunidad-inversion",
+    "category": "business",
+    "text": "Un conocido te propone invertir tus ahorros en un negocio nuevo.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "invertir",
+        "label": "Invertir",
+        "check": { "determinedBy": "composure", "baseSuccessChance": 0.45 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 400
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -2, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": -300
+        },
+        "grantsTrait": null
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, prefieres no arriesgar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "professionalism": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "familia-pide-ayuda",
+    "category": "personal",
+    "text": "Tu familia pasa un apuro económico y te pide ayuda.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "ayudar",
+        "label": "Ayudar económicamente",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 3, "form": 0, "fitness": 0 },
+          "relationsDelta": { "family": 8 },
+          "moneyDelta": -200
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "no-puedo-ahora",
+        "label": "No puedes ahora mismo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -2, "form": 0, "fitness": 0 },
+          "relationsDelta": { "family": -5 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "molestia-en-entrenamiento",
+    "category": "health",
+    "text": "Terminas el entrenamiento con una molestia muscular.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "parar",
+        "label": "Parar y aplicar hielo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 2, "mentalHealth": 0, "form": 0, "fitness": -2 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "seguir",
+        "label": "Seguir como si nada",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": -6, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "coach": 2 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "rumor-de-fichaje",
+    "category": "press",
+    "text": "La prensa especula con un fichaje millonario sobre ti que tú no has confirmado.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "desmentir",
+        "label": "Desmentirlo públicamente",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "professionalism": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "board": 3 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "dejar-correr",
+        "label": "Dejar que corra el rumor",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "ego": 3 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "press": -2, "board": -3 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "tension-en-el-vestuario",
+    "category": "social",
+    "text": "Dos compañeros discuten en el vestuario y el ambiente se enrarece.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "mediar",
+        "label": "Mediar entre los dos",
+        "check": { "determinedBy": "temperament", "baseSuccessChance": 0.5 },
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": 6 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "squad": -6 },
+          "moneyDelta": 0
+        },
+        "grantsTrait": { "trait": "hothead", "chance": 0.3 }
+      },
+      {
+        "id": "no-meterse",
+        "label": "No meterte",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
+  },
+  {
+    "id": "patrocinio-videojuego",
+    "category": "business",
+    "text": "Una marca de videojuegos te propone salir en un anuncio.",
+    "weight": 2,
+    "choices": [
+      {
+        "id": "aceptar",
+        "label": "Aceptar",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": { "charisma": 1 },
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": { "fans": 3 },
+          "moneyDelta": 300
+        },
+        "onFailEffects": null,
+        "grantsTrait": { "trait": "media-friendly", "chance": 0.35 }
+      },
+      {
+        "id": "rechazar",
+        "label": "Rechazar, prefieres discreción",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 0, "form": 0, "fitness": 0 },
+          "relationsDelta": {},
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": { "trait": "discreet", "chance": 0.2 }
+      }
+    ]
+  },
+  {
+    "id": "dia-libre-en-familia",
+    "category": "personal",
+    "text": "Tienes un día libre: tu familia quiere pasarlo contigo.",
+    "weight": 3,
+    "choices": [
+      {
+        "id": "pasarlo-con-familia",
+        "label": "Pasarlo con la familia",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": 5, "form": 0, "fitness": 0 },
+          "relationsDelta": { "family": 8, "squad": -1 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      },
+      {
+        "id": "quedarte-con-el-equipo",
+        "label": "Quedarte entrenando con el equipo",
+        "check": null,
+        "effects": {
+          "attributeGroup": null,
+          "personalityDelta": {},
+          "vitalStateDelta": { "health": 0, "mentalHealth": -2, "form": 0, "fitness": 0 },
+          "relationsDelta": { "family": -3, "squad": 3 },
+          "moneyDelta": 0
+        },
+        "onFailEffects": null,
+        "grantsTrait": null
+      }
+    ]
   }
 ]
