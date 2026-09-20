@@ -7,6 +7,7 @@
  */
 
 import {
+  loadAssets,
   loadEvents,
   loadInjuries,
   loadKeyMoments,
@@ -74,6 +75,14 @@ function validateContent(): void {
   } catch (error) {
     errors++;
     console.error('❌ Error validando tipos de lesión:', error);
+  }
+
+  try {
+    const assets = loadAssets();
+    console.log(`📁 Patrimonio comprable (carrera): ${assets.length} válidos`);
+  } catch (error) {
+    errors++;
+    console.error('❌ Error validando patrimonio comprable:', error);
   }
 
   // TODO: Eventos de entrenador (Fase 4) y traducciones (Fase 6) cuando existan

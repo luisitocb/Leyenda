@@ -1,0 +1,50 @@
+[
+  {
+    "id": "apartamento-modesto",
+    "name": "Apartamento modesto",
+    "description": "Un piso sencillo, lejos del centro pero tuyo.",
+    "category": "house",
+    "price": 5000,
+    "relationsDelta": { "family": 5 }
+  },
+  {
+    "id": "casa-familiar",
+    "name": "Casa familiar",
+    "description": "Espacio de sobra para toda la familia.",
+    "category": "house",
+    "price": 15000,
+    "relationsDelta": { "family": 10 }
+  },
+  {
+    "id": "mansion-de-lujo",
+    "name": "Mansión de lujo",
+    "description": "La prensa ya está hablando de tu nueva casa.",
+    "category": "house",
+    "price": 60000,
+    "relationsDelta": { "fans": 8, "press": 5 }
+  },
+  {
+    "id": "coche-utilitario",
+    "name": "Coche utilitario",
+    "description": "Nada llamativo, pero cómodo para el día a día.",
+    "category": "car",
+    "price": 3000,
+    "relationsDelta": {}
+  },
+  {
+    "id": "coche-deportivo",
+    "name": "Coche deportivo",
+    "description": "Da que hablar cada vez que llegas al entrenamiento.",
+    "category": "car",
+    "price": 20000,
+    "relationsDelta": { "fans": 6, "press": 3 }
+  },
+  {
+    "id": "negocio-pequeno",
+    "name": "Negocio pequeño",
+    "description": "Una inversión en un negocio local, con el respaldo de la directiva.",
+    "category": "business",
+    "price": 10000,
+    "relationsDelta": { "board": 5 }
+  }
+]

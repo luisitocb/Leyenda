@@ -199,3 +199,21 @@ export const InjurySchema = z
 
 // Sin `export type Injury = z.infer<...>`: mismo motivo que DecisionEvent
 // — la forma canónica (`InjuryType`) vive en @leyenda/shared.
+
+/**
+ * Esquema de un artículo de patrimonio comprable (GDD §4.9: "casas, coches,
+ * ... negocios propios"). Comprarlo convierte `money` en `assets` al precio
+ * indicado, sin ingresos recurrentes todavía (fuera de alcance de este
+ * slice).
+ */
+export const PurchasableAssetSchema = z.object({
+  id: z.string().min(1),
+  name: z.string().min(1),
+  description: z.string().min(1),
+  category: z.enum(['house', 'car', 'business']),
+  price: z.number().int().positive(),
+  relationsDelta: z.record(z.enum(RELATION_KEYS), z.number().int()),
+});
+
+// Sin `export type PurchasableAsset = z.infer<...>`: mismo motivo que
+// DecisionEvent/Injury — la forma canónica vive en @leyenda/shared.

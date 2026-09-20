@@ -82,3 +82,16 @@ export interface PlayerInjury {
   typeId: string;
   weeksRemaining: number;
 }
+
+/**
+ * Artículo de patrimonio comprable (GDD §4.9: "casas, coches, ... negocios
+ * propios"). Comprarlo convierte `money` en `assets` al precio indicado.
+ */
+export interface PurchasableAsset {
+  id: string;
+  name: string;
+  description: string;
+  category: 'house' | 'car' | 'business';
+  price: number;
+  relationsDelta: Partial<Record<RelationKey, number>>;
+}

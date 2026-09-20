@@ -113,6 +113,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Fin de carrera',
           }}
         />
+        <Stack.Screen
+          name="assets"
+          options={{
+            title: 'Patrimonio',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

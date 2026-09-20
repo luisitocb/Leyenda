@@ -96,6 +96,7 @@ export default function CareerScreen(): JSX.Element {
 
         <Button label="Semana" onPress={() => router.push('/week')} />
         <Button label="Clasificación" onPress={() => router.push('/standings')} />
+        <Button label="Patrimonio" onPress={() => router.push('/assets')} />
         {calculateAge(protagonist.dateOfBirth, save.gameDate) >= DECLINE_START_AGE && (
           <Button label="Retirarte" onPress={() => router.push('/retirement')} />
         )}

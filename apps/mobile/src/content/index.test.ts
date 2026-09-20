@@ -6,6 +6,7 @@ import {
   keyMoments,
   namePools,
   origins,
+  purchasableAssets,
   weeklyActions,
 } from './index';
 
@@ -47,5 +48,10 @@ describe('content adapter (import estático, sin fs)', () => {
   it('carga los 5 tipos de lesión', () => {
     expect(injuries).toHaveLength(5);
     expect(injuries.map((i) => i.id)).toContain('esguince-tobillo');
+  });
+
+  it('carga los 6 artículos de patrimonio', () => {
+    expect(purchasableAssets).toHaveLength(6);
+    expect(purchasableAssets.map((a) => a.id)).toContain('coche-deportivo');
   });
 });
