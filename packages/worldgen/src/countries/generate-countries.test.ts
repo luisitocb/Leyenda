@@ -3,9 +3,9 @@ import { describe, expect, it } from 'vitest';
 import { generateCountries } from './generate-countries';
 
 describe('generateCountries', () => {
-  it('carga exactamente 11 países', () => {
-    // 10 ficticios + España (ADR-004: primer país con plantilla real de club).
-    expect(generateCountries()).toHaveLength(11);
+  it('carga exactamente 15 países', () => {
+    // 10 ficticios + España, Inglaterra, Alemania, Italia, Francia (ADR-004).
+    expect(generateCountries()).toHaveLength(15);
   });
 
   it('todos los países tienen código de 2 letras mayúsculas y reputationBase 1-20', () => {

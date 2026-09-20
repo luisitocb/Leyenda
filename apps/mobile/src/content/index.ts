@@ -46,7 +46,15 @@ import namesXH from '@leyenda/content/data/worldgen/person-names/XH.json';
 import namesXI from '@leyenda/content/data/worldgen/person-names/XI.json';
 import namesXJ from '@leyenda/content/data/worldgen/person-names/XJ.json';
 import namesES from '@leyenda/content/data/worldgen/person-names/ES.json';
+import namesGB from '@leyenda/content/data/worldgen/person-names/GB.json';
+import namesIT from '@leyenda/content/data/worldgen/person-names/IT.json';
+import namesDE from '@leyenda/content/data/worldgen/person-names/DE.json';
+import namesFR from '@leyenda/content/data/worldgen/person-names/FR.json';
 import realClubsES from '@leyenda/content/data/worldgen/real-clubs/ES.json';
+import realClubsGB from '@leyenda/content/data/worldgen/real-clubs/GB.json';
+import realClubsIT from '@leyenda/content/data/worldgen/real-clubs/IT.json';
+import realClubsDE from '@leyenda/content/data/worldgen/real-clubs/DE.json';
+import realClubsFR from '@leyenda/content/data/worldgen/real-clubs/FR.json';
 
 export const countries = countriesData as Country[];
 export const clubNamePool = clubNamePoolData as ClubNamePool;
@@ -71,6 +79,10 @@ export const namePools: Record<CountryCode, PersonNamePool> = {
   XI: namesXI as PersonNamePool,
   XJ: namesXJ as PersonNamePool,
   ES: namesES as PersonNamePool,
+  GB: namesGB as PersonNamePool,
+  IT: namesIT as PersonNamePool,
+  DE: namesDE as PersonNamePool,
+  FR: namesFR as PersonNamePool,
 };
 
 /**
@@ -81,4 +93,8 @@ export const namePools: Record<CountryCode, PersonNamePool> = {
  */
 export const realClubRosters: Partial<Record<CountryCode, RealClubRoster>> = {
   ES: realClubsES as RealClubRoster,
+  GB: realClubsGB as RealClubRoster,
+  IT: realClubsIT as RealClubRoster,
+  DE: realClubsDE as RealClubRoster,
+  FR: realClubsFR as RealClubRoster,
 };

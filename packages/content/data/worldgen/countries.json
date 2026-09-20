@@ -9,5 +9,9 @@
   { "code": "XH", "name": "Halvoria", "reputationBase": 10 },
   { "code": "XI", "name": "Ithalia", "reputationBase": 9 },
   { "code": "XJ", "name": "Jarumba", "reputationBase": 8 },
-  { "code": "ES", "name": "España", "reputationBase": 19 }
+  { "code": "ES", "name": "España", "reputationBase": 19 },
+  { "code": "GB", "name": "Inglaterra", "reputationBase": 20 },
+  { "code": "DE", "name": "Alemania", "reputationBase": 17 },
+  { "code": "IT", "name": "Italia", "reputationBase": 16 },
+  { "code": "FR", "name": "Francia", "reputationBase": 15 }
 ]

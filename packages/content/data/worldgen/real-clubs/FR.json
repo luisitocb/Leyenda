@@ -1,0 +1,42 @@
+{
+  "1": [
+    { "name": "Paris Saint-Germain", "shortName": "PSG", "reputation": 19 },
+    { "name": "AS Monaco", "shortName": "Monaco", "reputation": 15 },
+    { "name": "Olympique de Marseille", "shortName": "Marseille", "reputation": 14 },
+    { "name": "Lille OSC", "shortName": "Lille", "reputation": 13 },
+    { "name": "Olympique Lyonnais", "shortName": "Lyon", "reputation": 12 },
+    { "name": "Stade Rennais", "shortName": "Rennes", "reputation": 11 },
+    { "name": "OGC Nice", "shortName": "Nice", "reputation": 11 },
+    { "name": "RC Lens", "shortName": "Lens", "reputation": 11 },
+    { "name": "Stade de Reims", "shortName": "Reims", "reputation": 9 },
+    { "name": "RC Strasbourg", "shortName": "Strasbourg", "reputation": 9 },
+    { "name": "FC Nantes", "shortName": "Nantes", "reputation": 8 },
+    { "name": "Toulouse FC", "shortName": "Toulouse", "reputation": 8 },
+    { "name": "Montpellier HSC", "shortName": "Montpellier", "reputation": 8 },
+    { "name": "Stade Brestois", "shortName": "Brest", "reputation": 8 },
+    { "name": "AS Saint-Étienne", "shortName": "Saint-Étienne", "reputation": 7 },
+    { "name": "Le Havre AC", "shortName": "Le Havre", "reputation": 7 },
+    { "name": "AJ Auxerre", "shortName": "Auxerre", "reputation": 7 },
+    { "name": "Angers SCO", "shortName": "Angers", "reputation": 6 }
+  ],
+  "2": [
+    { "name": "Girondins de Bordeaux", "shortName": "Bordeaux", "reputation": 8 },
+    { "name": "FC Metz", "shortName": "Metz", "reputation": 7 },
+    { "name": "FC Lorient", "shortName": "Lorient", "reputation": 7 },
+    { "name": "Paris FC", "shortName": "Paris FC", "reputation": 6 },
+    { "name": "EA Guingamp", "shortName": "Guingamp", "reputation": 6 },
+    { "name": "Clermont Foot", "shortName": "Clermont", "reputation": 6 },
+    { "name": "Grenoble Foot 38", "shortName": "Grenoble", "reputation": 5 },
+    { "name": "Amiens SC", "shortName": "Amiens", "reputation": 5 },
+    { "name": "Troyes AC", "shortName": "Troyes", "reputation": 5 },
+    { "name": "SC Bastia", "shortName": "Bastia", "reputation": 5 },
+    { "name": "AC Ajaccio", "shortName": "Ajaccio", "reputation": 5 },
+    { "name": "Rodez AF", "shortName": "Rodez", "reputation": 4 },
+    { "name": "US Concarneau", "shortName": "Concarneau", "reputation": 4 },
+    { "name": "Red Star FC", "shortName": "Red Star", "reputation": 4 },
+    { "name": "Pau FC", "shortName": "Pau", "reputation": 4 },
+    { "name": "Martigues", "shortName": "Martigues", "reputation": 4 },
+    { "name": "Annecy FC", "shortName": "Annecy", "reputation": 4 },
+    { "name": "USL Dunkerque", "shortName": "Dunkerque", "reputation": 4 }
+  ]
+}

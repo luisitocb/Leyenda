@@ -1,0 +1,42 @@
+{
+  "1": [
+    { "name": "Bayern Munich", "shortName": "Bayern", "reputation": 20 },
+    { "name": "Bayer Leverkusen", "shortName": "Leverkusen", "reputation": 17 },
+    { "name": "Borussia Dortmund", "shortName": "Dortmund", "reputation": 16 },
+    { "name": "RB Leipzig", "shortName": "Leipzig", "reputation": 15 },
+    { "name": "VfB Stuttgart", "shortName": "Stuttgart", "reputation": 13 },
+    { "name": "Eintracht Frankfurt", "shortName": "Frankfurt", "reputation": 12 },
+    { "name": "Borussia Mönchengladbach", "shortName": "Gladbach", "reputation": 11 },
+    { "name": "SC Freiburg", "shortName": "Freiburg", "reputation": 11 },
+    { "name": "VfL Wolfsburg", "shortName": "Wolfsburg", "reputation": 10 },
+    { "name": "Werder Bremen", "shortName": "Bremen", "reputation": 10 },
+    { "name": "FSV Mainz 05", "shortName": "Mainz", "reputation": 9 },
+    { "name": "Union Berlin", "shortName": "Union Berlin", "reputation": 9 },
+    { "name": "TSG Hoffenheim", "shortName": "Hoffenheim", "reputation": 9 },
+    { "name": "FC Augsburg", "shortName": "Augsburg", "reputation": 8 },
+    { "name": "VfL Bochum", "shortName": "Bochum", "reputation": 7 },
+    { "name": "1. FC Heidenheim", "shortName": "Heidenheim", "reputation": 7 },
+    { "name": "FC St. Pauli", "shortName": "St. Pauli", "reputation": 6 },
+    { "name": "Holstein Kiel", "shortName": "Kiel", "reputation": 6 }
+  ],
+  "2": [
+    { "name": "Hamburger SV", "shortName": "Hamburg", "reputation": 9 },
+    { "name": "FC Schalke 04", "shortName": "Schalke", "reputation": 8 },
+    { "name": "1. FC Köln", "shortName": "Köln", "reputation": 8 },
+    { "name": "Fortuna Düsseldorf", "shortName": "Düsseldorf", "reputation": 7 },
+    { "name": "Hertha BSC", "shortName": "Hertha", "reputation": 7 },
+    { "name": "FC Kaiserslautern", "shortName": "Kaiserslautern", "reputation": 6 },
+    { "name": "SV Darmstadt 98", "shortName": "Darmstadt", "reputation": 6 },
+    { "name": "Hannover 96", "shortName": "Hannover", "reputation": 6 },
+    { "name": "Karlsruher SC", "shortName": "Karlsruhe", "reputation": 5 },
+    { "name": "SC Paderborn", "shortName": "Paderborn", "reputation": 5 },
+    { "name": "Eintracht Braunschweig", "shortName": "Braunschweig", "reputation": 5 },
+    { "name": "1. FC Magdeburg", "shortName": "Magdeburg", "reputation": 5 },
+    { "name": "Greuther Fürth", "shortName": "Fürth", "reputation": 5 },
+    { "name": "Arminia Bielefeld", "shortName": "Bielefeld", "reputation": 5 },
+    { "name": "SSV Ulm 1846", "shortName": "Ulm", "reputation": 4 },
+    { "name": "Preußen Münster", "shortName": "Münster", "reputation": 4 },
+    { "name": "SV Elversberg", "shortName": "Elversberg", "reputation": 4 },
+    { "name": "Jahn Regensburg", "shortName": "Regensburg", "reputation": 4 }
+  ]
+}

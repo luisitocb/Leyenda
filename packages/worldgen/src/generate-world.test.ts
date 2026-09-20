@@ -60,12 +60,13 @@ describe('generateWorld', () => {
     expect(other.clubs[0]?.name).not.toBe(world.clubs[0]?.name);
   });
 
-  it('genera exactamente 11 países, 302 clubes, 22 competiciones y 8456 jugadores', () => {
-    // 10 países ficticios (260 clubes) + España con plantilla real (ADR-004: 20+22=42 clubes).
-    expect(world.countries).toHaveLength(11);
-    expect(world.clubs).toHaveLength(302);
-    expect(world.competitions).toHaveLength(22);
-    expect(world.players).toHaveLength(8456);
+  it('genera exactamente 15 países, 458 clubes, 30 competiciones y 12824 jugadores', () => {
+    // 10 países ficticios (260 clubes) + 5 con plantilla real (ADR-004):
+    // España 42, Inglaterra 44, Italia 40, Alemania 36, Francia 36 = 198 clubes reales.
+    expect(world.countries).toHaveLength(15);
+    expect(world.clubs).toHaveLength(458);
+    expect(world.competitions).toHaveLength(30);
+    expect(world.players).toHaveLength(12824);
   });
 
   it('cada club tiene exactamente 28 jugadores', () => {
