@@ -62,3 +62,23 @@ export interface ContractOffer {
   durationYears: number;
   signingBonus: number;
 }
+
+/**
+ * Tipo de lesión (GDD §4.8): duración en semanas expresada como rango
+ * (`minWeeks`-`maxWeeks`) y penalización de salud al ocurrir.
+ */
+export interface InjuryType {
+  id: string;
+  name: string;
+  description: string;
+  minWeeks: number;
+  maxWeeks: number;
+  weight: number;
+  healthPenalty: number;
+}
+
+/** Lesión activa del protagonista: qué tipo y cuántas semanas de baja quedan. */
+export interface PlayerInjury {
+  typeId: string;
+  weeksRemaining: number;
+}

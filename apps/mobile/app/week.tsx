@@ -6,19 +6,24 @@ import type { WeeklyAction } from '@leyenda/content';
 import type { ProtagonistPlayer } from '@leyenda/shared';
 import {
   RNG,
+  advanceInjuryRest,
   advanceWeek,
+  applyInjuryOnset,
   applyWeeklyAction,
+  attemptEarlyReturn,
   createRandomSeed,
   isContractRenewalWeek,
   paySalary,
+  rollInjuryChance,
   selectEvent,
   shouldReceiveTransferOffer,
   WEEKLY_ENERGY_RESET,
+  type EarlyReturnResult,
 } from '@leyenda/engine';
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { countries, events, weeklyActions } from '@/content';
+import { countries, events, injuries, weeklyActions } from '@/content';
 import { RELATION_LABELS } from '@/labels';
 import { getLatestSave, updateSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
@@ -86,6 +91,7 @@ export default function WeekScreen(): JSX.Element {
   const router = useRouter();
   const [seed] = useState(() => createRandomSeed());
   const [chosenActionIds, setChosenActionIds] = useState<string[]>([]);
+  const [earlyReturnResult, setEarlyReturnResult] = useState<EarlyReturnResult | null>(null);
 
   const save = useMemo(() => getLatestSave(), []);
   const protagonistRow = useMemo(() => (save ? getProtagonistBySave(save.id) : undefined), [save]);
@@ -107,6 +113,60 @@ export default function WeekScreen(): JSX.Element {
           Todavía no tienes ninguna carrera
         </Text>
         <Button label="Nueva carrera" onPress={() => router.push('/create-character')} />
+      </Screen>
+    );
+  }
+
+  if (protagonist.activeInjury) {
+    const { activeInjury } = protagonist;
+    const injuryType = injuries.find((i) => i.id === activeInjury.typeId);
+
+    const finishInjuryWeek = (updated: ProtagonistPlayer): void => {
+      updateProtagonist(protagonistRow.id, { ...paySalary(updated), energy: WEEKLY_ENERGY_RESET });
+      updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
+      router.replace('/career');
+    };
+
+    const handleRest = (): void => finishInjuryWeek(advanceInjuryRest(protagonist));
+
+    const handleEarlyReturn = (): void => {
+      setEarlyReturnResult(attemptEarlyReturn(protagonist, injuries, new RNG(createRandomSeed())));
+    };
+
+    return (
+      <Screen style={styles.screen}>
+        <View style={styles.card}>
+          <Text variant="title">Lesionado</Text>
+          <Text variant="body" style={styles.text}>
+            {injuryType?.name ?? 'Lesión'} — {activeInjury.weeksRemaining}{' '}
+            {activeInjury.weeksRemaining === 1 ? 'semana restante' : 'semanas restantes'}
+          </Text>
+
+          {!earlyReturnResult ? (
+            <>
+              <Button label="Reposo completo" onPress={handleRest} />
+              {activeInjury.weeksRemaining > 1 && (
+                <Button label="Volver antes de tiempo" onPress={handleEarlyReturn} />
+              )}
+            </>
+          ) : (
+            <>
+              <Text
+                variant="body"
+                color={earlyReturnResult.success ? 'accent' : 'error'}
+                style={styles.text}
+              >
+                {earlyReturnResult.success
+                  ? 'Has vuelto sin problemas.'
+                  : 'Recaída: la lesión se alarga.'}
+              </Text>
+              <Button
+                label="Continuar"
+                onPress={() => finishInjuryWeek(earlyReturnResult.protagonist)}
+              />
+            </>
+          )}
+        </View>
       </Screen>
     );
   }
@@ -133,10 +193,14 @@ export default function WeekScreen(): JSX.Element {
     const transferOfferWeek =
       !seasonJustEnded && !renewalWeek && shouldReceiveTransferOffer(new RNG(createRandomSeed()));
 
-    updateProtagonist(protagonistRow.id, {
-      ...paySalary(workingProtagonist),
-      energy: WEEKLY_ENERGY_RESET,
-    });
+    let updated = paySalary(workingProtagonist);
+    const injuryJustOccurred = rollInjuryChance(updated, new RNG(createRandomSeed()));
+    if (injuryJustOccurred) {
+      updated = applyInjuryOnset(updated, injuries, new RNG(createRandomSeed()));
+    }
+    const matchAvailable = match !== null && !injuryJustOccurred;
+
+    updateProtagonist(protagonistRow.id, { ...updated, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
 
     if (seasonJustEnded) {
@@ -148,11 +212,11 @@ export default function WeekScreen(): JSX.Element {
     } else if (event) {
       router.replace({
         pathname: '/event',
-        params: match
+        params: matchAvailable
           ? { eventId: event.id, nextPath: '/match', date: thisWeekDate }
           : { eventId: event.id, nextPath: '/career' },
       });
-    } else if (match) {
+    } else if (matchAvailable) {
       router.replace({ pathname: '/match', params: { date: thisWeekDate } });
     } else {
       router.replace('/career');
@@ -191,6 +255,12 @@ const styles = StyleSheet.create({
   },
   scroll: {
     width: '100%',
+  },
+  card: {
+    marginTop: theme.spacing.lg,
+  },
+  text: {
+    marginBottom: theme.spacing.md,
   },
   scrollContent: {
     paddingBottom: theme.spacing.xl,

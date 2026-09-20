@@ -3,10 +3,11 @@ import { join } from 'node:path';
 
 import { z } from 'zod';
 
-import type { DecisionEvent, KeyMoment } from '@leyenda/shared';
+import type { DecisionEvent, InjuryType, KeyMoment } from '@leyenda/shared';
 
 import {
   DecisionEventSchema,
+  InjurySchema,
   KeyMomentSchema,
   OriginSchema,
   WeeklyActionSchema,
@@ -38,4 +39,9 @@ export function loadKeyMoments(): KeyMoment[] {
 export function loadEvents(): DecisionEvent[] {
   const raw = readJson(join(DATA_ROOT, 'events.json'));
   return z.array(DecisionEventSchema).parse(raw) as DecisionEvent[];
+}
+
+export function loadInjuries(): InjuryType[] {
+  const raw = readJson(join(DATA_ROOT, 'injuries.json'));
+  return z.array(InjurySchema).parse(raw) as InjuryType[];
 }

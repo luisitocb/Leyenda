@@ -10,7 +10,7 @@
  * revalidar con Zod en cada dispositivo.
  */
 import type { ClubNamePool, Origin, PersonNamePool, WeeklyAction } from '@leyenda/content';
-import type { Country, CountryCode, DecisionEvent, KeyMoment } from '@leyenda/shared';
+import type { Country, CountryCode, DecisionEvent, InjuryType, KeyMoment } from '@leyenda/shared';
 
 import countriesData from '@leyenda/content/data/worldgen/countries.json';
 import clubNamePoolData from '@leyenda/content/data/worldgen/club-names.json';
@@ -18,6 +18,7 @@ import originsData from '@leyenda/content/data/career/origins.json';
 import weeklyActionsData from '@leyenda/content/data/career/weekly-actions.json';
 import keyMomentsData from '@leyenda/content/data/career/key-moments.json';
 import eventsData from '@leyenda/content/data/career/events.json';
+import injuriesData from '@leyenda/content/data/career/injuries.json';
 import namesXA from '@leyenda/content/data/worldgen/person-names/XA.json';
 import namesXB from '@leyenda/content/data/worldgen/person-names/XB.json';
 import namesXC from '@leyenda/content/data/worldgen/person-names/XC.json';
@@ -35,6 +36,7 @@ export const origins = originsData as Origin[];
 export const weeklyActions = weeklyActionsData as WeeklyAction[];
 export const keyMoments = keyMomentsData as KeyMoment[];
 export const events = eventsData as DecisionEvent[];
+export const injuries = injuriesData as InjuryType[];
 
 /** Necesario porque `generateSquad` (worldgen) puede elegir nacionalidad extranjera para un jugador. */
 export const namePools: Record<CountryCode, PersonNamePool> = {

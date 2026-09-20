@@ -166,3 +166,18 @@ export const LIVE_PLAY_OUTCOME_EFFECTS: Record<
   miss: { ratingDelta: -2, fanRelationDelta: -5 },
   foul: { ratingDelta: -1, fanRelationDelta: -2 },
 };
+
+/** Probabilidad base de lesionarse en una semana cualquiera (GDD §4.8). */
+export const INJURY_BASE_CHANCE = 0.02;
+
+/** Cuánto pesa tener la forma física (fitness) baja sobre el riesgo de lesión: por debajo de 70 sube el riesgo. */
+export const INJURY_FITNESS_WEIGHT = 500;
+
+/** Tope de probabilidad de lesión en una semana, aunque la forma física esté muy baja. */
+export const INJURY_CHANCE_MAX = 0.15;
+
+/** Penalización de forma por volver antes de tiempo con éxito (GDD §4.8: "riesgo de recaída"). */
+export const EARLY_RETURN_FORM_PENALTY = 3;
+
+/** Penalización de salud extra si la vuelta anticipada sale mal (recaída). */
+export const RELAPSE_HEALTH_PENALTY = 10;

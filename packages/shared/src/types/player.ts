@@ -1,4 +1,5 @@
 import type { AttributeValue, CountryCode, EntityId, Foot, ISODate, Position } from './common';
+import type { PlayerInjury } from './career';
 
 /**
  * Atributos físicos de un jugador
@@ -130,4 +131,7 @@ export interface ProtagonistPlayer extends BasePlayer {
   goalsScored: number;
   assists: number;
   titlesWon: string[]; // IDs de títulos
+
+  // Lesión activa, si la hay
+  activeInjury: PlayerInjury | null;
 }

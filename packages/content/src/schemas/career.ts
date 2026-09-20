@@ -177,3 +177,25 @@ export const DecisionEventSchema = z.object({
 
 // Sin `export type DecisionEvent = z.infer<...>`: mismo motivo que KeyMoment
 // — la forma canónica vive en @leyenda/shared.
+
+/**
+ * Esquema de un tipo de lesión (GDD §4.8): duración en semanas (rango) y
+ * penalización de salud al ocurrir. `weight` decreciente = más grave, más
+ * rara.
+ */
+export const InjurySchema = z
+  .object({
+    id: z.string().min(1),
+    name: z.string().min(1),
+    description: z.string().min(1),
+    minWeeks: z.number().int().min(1),
+    maxWeeks: z.number().int().min(1),
+    weight: z.number().positive(),
+    healthPenalty: z.number().int().max(0),
+  })
+  .refine((injury) => injury.maxWeeks >= injury.minWeeks, {
+    message: 'maxWeeks debe ser mayor o igual que minWeeks',
+  });
+
+// Sin `export type Injury = z.infer<...>`: mismo motivo que DecisionEvent
+// — la forma canónica (`InjuryType`) vive en @leyenda/shared.

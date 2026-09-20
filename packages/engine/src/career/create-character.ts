@@ -174,5 +174,6 @@ export function createCharacter(input: CreateCharacterInput, rng: RNG): Protagon
     goalsScored: 0,
     assists: 0,
     titlesWon: [],
+    activeInjury: null,
   };
 }

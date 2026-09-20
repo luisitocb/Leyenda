@@ -1,0 +1,47 @@
+[
+  {
+    "id": "contusion-leve",
+    "name": "Contusión leve",
+    "description": "Un golpe sin mayor importancia, pero necesitas unos días de precaución.",
+    "minWeeks": 1,
+    "maxWeeks": 2,
+    "weight": 4,
+    "healthPenalty": -5
+  },
+  {
+    "id": "sobrecarga-muscular",
+    "name": "Sobrecarga muscular",
+    "description": "El exceso de carga ha pasado factura a la musculatura.",
+    "minWeeks": 2,
+    "maxWeeks": 3,
+    "weight": 3,
+    "healthPenalty": -8
+  },
+  {
+    "id": "esguince-tobillo",
+    "name": "Esguince de tobillo",
+    "description": "Un mal apoyo te ha dejado el tobillo resentido.",
+    "minWeeks": 3,
+    "maxWeeks": 5,
+    "weight": 3,
+    "healthPenalty": -12
+  },
+  {
+    "id": "rotura-fibrilar",
+    "name": "Rotura fibrilar",
+    "description": "Rotura de fibras que requiere varias semanas de recuperación seria.",
+    "minWeeks": 5,
+    "maxWeeks": 8,
+    "weight": 2,
+    "healthPenalty": -18
+  },
+  {
+    "id": "lesion-grave-rodilla",
+    "name": "Lesión grave de rodilla",
+    "description": "Una lesión seria que te aparta del terreno de juego durante meses.",
+    "minWeeks": 10,
+    "maxWeeks": 16,
+    "weight": 1,
+    "healthPenalty": -30
+  }
+]

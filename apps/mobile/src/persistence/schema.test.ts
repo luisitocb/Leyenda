@@ -117,6 +117,7 @@ function makeProtagonist(): ProtagonistPlayer {
     goalsScored: 0,
     assists: 0,
     titlesWon: [],
+    activeInjury: null,
   };
 }
 

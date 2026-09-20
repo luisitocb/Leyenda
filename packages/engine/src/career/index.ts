@@ -8,3 +8,4 @@ export * from './live-play-trigger';
 export * from './season-end';
 export * from './contract';
 export * from './contract-negotiation';
+export * from './injury';

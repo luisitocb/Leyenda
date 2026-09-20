@@ -6,7 +6,13 @@
  * Valida que todos los eventos y textos cumplan con los esquemas Zod
  */
 
-import { loadEvents, loadKeyMoments, loadOrigins, loadWeeklyActions } from './career/load';
+import {
+  loadEvents,
+  loadInjuries,
+  loadKeyMoments,
+  loadOrigins,
+  loadWeeklyActions,
+} from './career/load';
 import { loadClubNamePool, loadCountries, loadPersonNamePool } from './worldgen/load';
 
 function validateContent(): void {
@@ -60,6 +66,14 @@ function validateContent(): void {
   } catch (error) {
     errors++;
     console.error('❌ Error validando eventos de decisión:', error);
+  }
+
+  try {
+    const injuries = loadInjuries();
+    console.log(`📁 Tipos de lesión (carrera): ${injuries.length} válidos`);
+  } catch (error) {
+    errors++;
+    console.error('❌ Error validando tipos de lesión:', error);
   }
 
   // TODO: Eventos de entrenador (Fase 4) y traducciones (Fase 6) cuando existan

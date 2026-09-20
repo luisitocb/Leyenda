@@ -2,6 +2,7 @@ import {
   clubNamePool,
   countries,
   events,
+  injuries,
   keyMoments,
   namePools,
   origins,
@@ -41,5 +42,10 @@ describe('content adapter (import estático, sin fs)', () => {
   it('carga los 30 eventos de decisión', () => {
     expect(events).toHaveLength(30);
     expect(events.map((e) => e.id)).toContain('fiesta-antes-del-partido');
+  });
+
+  it('carga los 5 tipos de lesión', () => {
+    expect(injuries).toHaveLength(5);
+    expect(injuries.map((i) => i.id)).toContain('esguince-tobillo');
   });
 });

@@ -59,6 +59,7 @@ function makeProtagonist(overrides: Partial<ProtagonistPlayer> = {}): Protagonis
     goalsScored: 0,
     assists: 0,
     titlesWon: [],
+    activeInjury: null,
     ...overrides,
   };
 }

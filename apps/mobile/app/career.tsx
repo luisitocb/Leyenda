@@ -7,7 +7,7 @@ import { addDays, DAYS_PER_WEEK, isContractExpiringSoon } from '@leyenda/engine'
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { countries } from '@/content';
+import { countries, injuries } from '@/content';
 import { FOOT_LABELS, POSITION_LABELS, RELATION_LABELS, TRAIT_LABELS } from '@/labels';
 import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave } from '@/persistence/protagonists.repository';
@@ -79,6 +79,14 @@ export default function CareerScreen(): JSX.Element {
         <Text variant="body" color="accent">
           {club?.name ?? 'Sin club'}
         </Text>
+
+        {protagonist.activeInjury && (
+          <Text variant="body" color="error" style={styles.sectionLabel}>
+            Lesionado: {injuries.find((i) => i.id === protagonist.activeInjury?.typeId)?.name ?? ''}{' '}
+            ({protagonist.activeInjury.weeksRemaining}{' '}
+            {protagonist.activeInjury.weeksRemaining === 1 ? 'semana' : 'semanas'})
+          </Text>
+        )}
 
         <Button label="Semana" onPress={() => router.push('/week')} />
         <Button label="Clasificación" onPress={() => router.push('/standings')} />
