@@ -107,6 +107,12 @@ export default function RootLayout(): JSX.Element {
             title: 'Oferta de contrato',
           }}
         />
+        <Stack.Screen
+          name="retirement"
+          options={{
+            title: 'Fin de carrera',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );

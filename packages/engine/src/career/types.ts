@@ -181,3 +181,12 @@ export const EARLY_RETURN_FORM_PENALTY = 3;
 
 /** Penalización de salud extra si la vuelta anticipada sale mal (recaída). */
 export const RELAPSE_HEALTH_PENALTY = 10;
+
+/** Edad a partir de la que empieza el declive físico (GDD §4.8: "~31-34 años"). */
+export const DECLINE_START_AGE = 31;
+
+/** Edad a partir de la que la retirada es forzosa. */
+export const FORCED_RETIREMENT_AGE = 38;
+
+/** Puntos que baja cada atributo físico por cada cumpleaños a partir de `DECLINE_START_AGE`. */
+export const AGE_DECLINE_PER_YEAR = 2;

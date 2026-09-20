@@ -8,14 +8,17 @@ import {
   RNG,
   advanceInjuryRest,
   advanceWeek,
+  applyAgeDecline,
   applyInjuryOnset,
   applyWeeklyAction,
   attemptEarlyReturn,
   createRandomSeed,
+  isBirthdayWeek,
   isContractRenewalWeek,
   paySalary,
   rollInjuryChance,
   selectEvent,
+  shouldForceRetirement,
   shouldReceiveTransferOffer,
   WEEKLY_ENERGY_RESET,
   type EarlyReturnResult,
@@ -194,7 +197,14 @@ export default function WeekScreen(): JSX.Element {
       !seasonJustEnded && !renewalWeek && shouldReceiveTransferOffer(new RNG(createRandomSeed()));
 
     let updated = paySalary(workingProtagonist);
-    const injuryJustOccurred = rollInjuryChance(updated, new RNG(createRandomSeed()));
+    const birthdayWeek = isBirthdayWeek(updated.dateOfBirth, thisWeekDate);
+    if (birthdayWeek) {
+      updated = applyAgeDecline(updated, thisWeekDate);
+    }
+    const forcedRetirement = birthdayWeek && shouldForceRetirement(updated, thisWeekDate);
+
+    const injuryJustOccurred =
+      !forcedRetirement && rollInjuryChance(updated, new RNG(createRandomSeed()));
     if (injuryJustOccurred) {
       updated = applyInjuryOnset(updated, injuries, new RNG(createRandomSeed()));
     }
@@ -203,7 +213,9 @@ export default function WeekScreen(): JSX.Element {
     updateProtagonist(protagonistRow.id, { ...updated, energy: WEEKLY_ENERGY_RESET });
     updateSave(save.id, { gameDate: advanceWeek(save.gameDate) });
 
-    if (seasonJustEnded) {
+    if (forcedRetirement) {
+      router.replace('/retirement');
+    } else if (seasonJustEnded) {
       router.replace('/season-end');
     } else if (renewalWeek) {
       router.replace('/contract-offer');

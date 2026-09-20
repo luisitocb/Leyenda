@@ -3,7 +3,13 @@ import { View, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import type { ProtagonistPlayer } from '@leyenda/shared';
-import { addDays, DAYS_PER_WEEK, isContractExpiringSoon } from '@leyenda/engine';
+import {
+  addDays,
+  calculateAge,
+  DAYS_PER_WEEK,
+  DECLINE_START_AGE,
+  isContractExpiringSoon,
+} from '@leyenda/engine';
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
@@ -90,6 +96,9 @@ export default function CareerScreen(): JSX.Element {
 
         <Button label="Semana" onPress={() => router.push('/week')} />
         <Button label="Clasificación" onPress={() => router.push('/standings')} />
+        {calculateAge(protagonist.dateOfBirth, save.gameDate) >= DECLINE_START_AGE && (
+          <Button label="Retirarte" onPress={() => router.push('/retirement')} />
+        )}
 
         {lastMatch && (
           <>

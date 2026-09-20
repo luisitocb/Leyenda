@@ -9,3 +9,4 @@ export * from './season-end';
 export * from './contract';
 export * from './contract-negotiation';
 export * from './injury';
+export * from './decline';
