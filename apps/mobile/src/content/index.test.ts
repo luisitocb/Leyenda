@@ -61,8 +61,8 @@ describe('content adapter (import estático, sin fs)', () => {
     expect(keyMoments.map((m) => m.id)).toContain('intervencion-portero');
   });
 
-  it('carga los 100 eventos de decisión', () => {
-    expect(events).toHaveLength(100);
+  it('carga los 150 eventos de decisión', () => {
+    expect(events).toHaveLength(150);
     expect(events.map((e) => e.id)).toContain('fiesta-antes-del-partido');
   });
 
