@@ -1,33 +1,59 @@
+import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 
 import initSqlJs from 'sql.js';
+import { eq } from 'drizzle-orm';
 import { drizzle, type SQLJsDatabase } from 'drizzle-orm/sql-js';
 import { migrate } from 'drizzle-orm/sql-js/migrator';
 
-import type { ProtagonistPlayer } from '@leyenda/shared';
+import type { CoachCareer, ProtagonistPlayer } from '@leyenda/shared';
 
-import { protagonists, saves } from './schema';
+import { coaches, protagonists, saves } from './schema';
 
 /**
- * Pauta para futuras migraciones (regla 8 de CLAUDE.md): cuando exista una
- * migración v2, añadir un fixture con una fila real en formato v1, crear una
- * DB, correr solo la migración v1, insertar el fixture, correr la v2 encima
- * y comprobar que la fila sigue siendo legible. Esta es la prueba real de
- * "carga de partidas antiguas". Con una única migración (v1) todavía no hay
- * ninguna partida antigua que cargar, así que este test cubre el patrón:
- * migrar una DB en limpio, escribir y releer.
- *
  * Usa drizzle-orm/sql-js (SQLite real vía WASM, sin compilación nativa) en
  * vez de expo-sqlite porque jest-expo mockea los módulos nativos: schema.ts
  * no importa expo-sqlite precisamente para poder reutilizarse aquí.
  */
+const DRIZZLE_FOLDER = path.join(__dirname, '../../drizzle');
 
 async function createMigratedDb(): Promise<SQLJsDatabase<Record<string, never>>> {
   const SQL = await initSqlJs();
   const client = new SQL.Database();
   const db = drizzle(client);
-  migrate(db, { migrationsFolder: path.join(__dirname, '../../drizzle') });
+  migrate(db, { migrationsFolder: DRIZZLE_FOLDER });
   return db;
+}
+
+/**
+ * Carpeta temporal con solo las 2 primeras migraciones (v1: saves +
+ * protagonists), copiando los `.sql` reales y recortando `_journal.json` a
+ * esas 2 entradas. El identificador de cada migración para drizzle es el
+ * hash de su `.sql` + el timestamp `when` del journal, así que copiar el
+ * archivo real byte a byte y conservar su `when` hace que, al migrar luego
+ * esta misma DB contra la carpeta `drizzle/` completa, la 0000 y la 0001 se
+ * reconozcan como ya aplicadas y solo se ejecute la migración nueva.
+ */
+function createV1OnlyMigrationsFolder(): string {
+  const journal = JSON.parse(
+    fs.readFileSync(path.join(DRIZZLE_FOLDER, 'meta/_journal.json'), 'utf-8')
+  ) as { version: string; dialect: string; entries: { tag: string }[] };
+  const v1Entries = journal.entries.slice(0, 2);
+
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'leyenda-migrations-v1-'));
+  fs.mkdirSync(path.join(tempDir, 'meta'));
+  fs.writeFileSync(
+    path.join(tempDir, 'meta/_journal.json'),
+    JSON.stringify({ ...journal, entries: v1Entries })
+  );
+  for (const entry of v1Entries) {
+    fs.copyFileSync(
+      path.join(DRIZZLE_FOLDER, `${entry.tag}.sql`),
+      path.join(tempDir, `${entry.tag}.sql`)
+    );
+  }
+  return tempDir;
 }
 
 describe('saves schema', () => {
@@ -155,5 +181,96 @@ describe('protagonists schema', () => {
     expect(row).toBeDefined();
     expect(row?.saveId).toBe('save-1');
     expect(row?.data).toEqual(protagonist);
+  });
+});
+
+function makeCoachCareer(): CoachCareer {
+  return { id: 'coach-1', clubId: 'club-1', reputation: 10 };
+}
+
+describe('coaches schema', () => {
+  it('persiste y relee una carrera de entrenador con su CoachCareer completo como JSON', async () => {
+    const db = await createMigratedDb();
+    const createdAt = new Date('2026-09-21T12:00:00.000Z');
+
+    await db.insert(saves).values({
+      id: 'save-1',
+      schemaVersion: 1,
+      seed: 1,
+      gameDate: '2026-08-01',
+      currentMode: 'coach',
+      createdAt,
+      updatedAt: createdAt,
+    });
+
+    const coach = makeCoachCareer();
+    await db.insert(coaches).values({
+      id: 'coach-1',
+      saveId: 'save-1',
+      data: coach,
+      createdAt,
+      updatedAt: createdAt,
+    });
+
+    const [row] = await db.select().from(coaches);
+
+    expect(row).toBeDefined();
+    expect(row?.saveId).toBe('save-1');
+    expect(row?.data).toEqual(coach);
+  });
+});
+
+describe('carga de partidas antiguas (regla 8 de CLAUDE.md)', () => {
+  it('una partida guardada solo con el esquema v1 (saves+protagonists) se sigue leyendo bien tras aplicar la migración que añade "coaches"', async () => {
+    const v1Folder = createV1OnlyMigrationsFolder();
+    try {
+      const SQL = await initSqlJs();
+      const client = new SQL.Database();
+      const db = drizzle(client);
+      migrate(db, { migrationsFolder: v1Folder });
+
+      const createdAt = new Date('2026-09-19T12:00:00.000Z');
+      await db.insert(saves).values({
+        id: 'save-old',
+        schemaVersion: 1,
+        seed: 42,
+        gameDate: '2026-08-01',
+        currentMode: 'player',
+        createdAt,
+        updatedAt: createdAt,
+      });
+      const protagonist = makeProtagonist();
+      await db.insert(protagonists).values({
+        id: 'protagonist-old',
+        saveId: 'save-old',
+        data: protagonist,
+        createdAt,
+        updatedAt: createdAt,
+      });
+
+      migrate(db, { migrationsFolder: DRIZZLE_FOLDER });
+
+      const [saveRow] = await db.select().from(saves).where(eq(saves.id, 'save-old'));
+      expect(saveRow?.seed).toBe(42);
+
+      const [protagonistRow] = await db
+        .select()
+        .from(protagonists)
+        .where(eq(protagonists.id, 'protagonist-old'));
+      expect(protagonistRow?.data).toEqual(protagonist);
+
+      const coachCreatedAt = new Date('2026-09-21T12:00:00.000Z');
+      await db.insert(coaches).values({
+        id: 'coach-new',
+        saveId: 'save-old',
+        data: makeCoachCareer(),
+        createdAt: coachCreatedAt,
+        updatedAt: coachCreatedAt,
+      });
+      const [coachRow] = await db.select().from(coaches).where(eq(coaches.id, 'coach-new'));
+      expect(coachRow?.data).toEqual(makeCoachCareer());
+    } finally {
+      fs.rmSync(v1Folder, { recursive: true, force: true });
+    }
   });
 });

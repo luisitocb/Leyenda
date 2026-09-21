@@ -15,6 +15,13 @@
       "when": 1789779129262,
       "tag": "0001_add_protagonists",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1789952959990,
+      "tag": "0002_add_coaches",
+      "breakpoints": true
     }
   ]
 }

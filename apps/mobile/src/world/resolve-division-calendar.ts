@@ -15,7 +15,8 @@ import { generateClubsForCountry } from './generate-clubs-for-country';
 /**
  * Registro de offsets de seed reservados sobre la seed del save (mismo
  * patrón que create-character.tsx: `seed` = clubes candidatos, `seed+1` =
- * personaje, `seed+2` = elección de club). El siguiente offset libre es 4.
+ * personaje, `seed+2` = elección de club, `seed+4` = ofertas de trabajo de
+ * entrenador en coach-job-offers.tsx). El siguiente offset libre es 5.
  */
 export const CALENDAR_SEED_OFFSET = 3;
 

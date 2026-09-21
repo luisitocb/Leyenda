@@ -1,6 +1,6 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
-import type { ProtagonistPlayer } from '@leyenda/shared';
+import type { CoachCareer, ProtagonistPlayer } from '@leyenda/shared';
 
 /**
  * GDD §14 — entidad Save: id, versión de esquema, semilla, fecha de juego, modo actual.
@@ -38,3 +38,21 @@ export const protagonists = sqliteTable('protagonists', {
 
 export type ProtagonistRow = typeof protagonists.$inferSelect;
 export type NewProtagonistRow = typeof protagonists.$inferInsert;
+
+/**
+ * GDD §6.1/§14 — carrera de entrenador (Modo Entrenador). Mismo patrón que
+ * `protagonists`: `data` guarda la `CoachCareer` entera como JSON, sin
+ * normalizar columna a columna.
+ */
+export const coaches = sqliteTable('coaches', {
+  id: text('id').primaryKey(),
+  saveId: text('save_id')
+    .notNull()
+    .references(() => saves.id),
+  data: text('data', { mode: 'json' }).$type<CoachCareer>().notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
+});
+
+export type CoachRow = typeof coaches.$inferSelect;
+export type NewCoachRow = typeof coaches.$inferInsert;
