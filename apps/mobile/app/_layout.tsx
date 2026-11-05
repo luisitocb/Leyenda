@@ -56,7 +56,7 @@ export default function RootLayout(): JSX.Element {
         <Stack.Screen
           name="live-play-demo"
           options={{
-            title: 'Jugadas en Vivo',
+            title: 'Campo de entrenamiento',
           }}
         />
         <Stack.Screen
@@ -137,6 +137,72 @@ export default function RootLayout(): JSX.Element {
             title: 'Selección nacional',
           }}
         />
+        <Stack.Screen
+          name="coach-career"
+          options={{
+            title: 'Modo Entrenador',
+          }}
+        />
+        <Stack.Screen
+          name="coach-job-offers"
+          options={{
+            title: 'Ofertas de trabajo',
+          }}
+        />
+        <Stack.Screen
+          name="coach-week"
+          options={{
+            title: 'Semana',
+          }}
+        />
+        <Stack.Screen
+          name="coach-tactics"
+          options={{
+            title: 'Tácticas',
+          }}
+        />
+        <Stack.Screen
+          name="coach-squad"
+          options={{
+            title: 'Plantilla',
+          }}
+        />
+        <Stack.Screen
+          name="coach-press"
+          options={{
+            title: 'Rueda de prensa',
+          }}
+        />
+        <Stack.Screen
+          name="coach-match"
+          options={{
+            title: 'Partido',
+          }}
+        />
+        <Stack.Screen
+          name="coach-season-end"
+          options={{
+            title: 'Fin de temporada',
+          }}
+        />
+        <Stack.Screen
+          name="coach-history"
+          options={{
+            title: 'Historial',
+          }}
+        />
+        <Stack.Screen
+          name="life-end"
+          options={{
+            title: 'Fin de la vida deportiva',
+          }}
+        />
+        <Stack.Screen
+          name="hall-of-fame"
+          options={{
+            title: 'Salón de la Fama',
+          }}
+        />
       </Stack>
     </GestureHandlerRootView>
   );
@@ -154,6 +220,6 @@ const styles = StyleSheet.create({
   },
   errorScreen: {
     flex: 1,
-    backgroundColor: theme.colors.error,
+    backgroundColor: theme.colors.errorBackground,
   },
 });
