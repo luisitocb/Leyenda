@@ -1,6 +1,6 @@
 # Documento Maestro — Juego móvil de fútbol: de jugador a entrenador
 
-_Título provisional: **"Leyenda: De Crack a Míster"** · Versión 0.2 (añadidas las Jugadas en Vivo) · Autor: Luis_
+_Título provisional: **"Leyenda: De Crack a Míster"** · Versión 0.3 (temporadas sucesivas y Modo Entrenador base, ver ADR-005) · Autor: Luis_
 
 > Este documento es la fuente de verdad del proyecto. Claude Code debe leerlo antes de implementar cualquier funcionalidad. Cualquier cambio de diseño se refleja aquí primero y luego en código.
 
@@ -226,6 +226,15 @@ Al retirarte se calcula tu **Puntuación de Legado** (títulos, partidos, premio
 - **Dimisión**, fichaje por otro club, **selección nacional** (compatible o exclusiva según el nivel).
 - **Ruedas de prensa** con decisiones (afectan a la moral, la afición y la directiva).
 
+**Versión base implementada (Fase 4, ADR-005):**
+
+- **Entrevista:** al aceptar una oferta eliges qué prometes — _ambición_ (objetivo 2 puestos más exigente, confianza inicial 70), _realismo_ (objetivo = puesto esperado por reputación, 60) o _prudencia_ (2 puestos menos, 50).
+- **Objetivo** de cada temporada a partir del puesto esperado por reputación dentro de la división: ganar la liga, ascender, puestos altos, mitad alta, mitad de tabla o evitar el descenso.
+- **Confianza (0-100):** tras cada partido sube o baja `2,5 × (puntos − puntos esperados)`; los puntos esperados van de 1,95 (objetivo campeón) a 0,85 (último), medidos sobre el motor real. Por debajo de 30 → ultimátum (una vez por temporada); por debajo de 12 → despido. Al final de temporada: objetivo cumplido +20, fallado −15; fallarlo por más de 3 puestos con confianza < 50 → despido.
+- **Reputación de entrenador (1-20):** liga +2, ascenso +2, objetivo cumplido +1 / fallado −1, descenso −2, despido −2.
+- **Ruedas de prensa:** 40 % de las semanas con partido, con preguntas data-driven según el último resultado (previa, tras victoria, tras derrota); cada respuesta muestra su efecto en moral del vestuario, confianza y reputación.
+- Puedes **dimitir** (sin castigo de reputación) y buscar club en cualquier momento; te **jubilas** cuando quieras o a los 70 años.
+
 ### 6.2 Plantilla y jugadores
 
 **Atributos de cada jugador:** como en el Modo Jugador, más:
@@ -251,6 +260,8 @@ Al retirarte se calcula tu **Puntuación de Legado** (títulos, partidos, premio
 - **Staff:** segundo entrenador, preparador físico, entrenador de porteros, médicos, psicólogo. Su calidad afecta a la mejora y a las lesiones.
 - **Cantera:** llegada anual de juveniles; su calidad depende de las instalaciones y del director de cantera. Opciones: subir al primer equipo, ceder o vender.
 
+**Versión base implementada (Fase 4):** foco semanal del grupo — _físico_, _técnico_ (el mejor para los jóvenes), _táctico_ (sube la forma) o _descanso activo_ (máxima recuperación). Condición, forma y moral tienden cada semana a un valor objetivo, calibrado para que con el foco técnico los titulares queden al nivel de las plantillas de la IA (la gestión da ventajas pequeñas, no gratuitas). Los menores de 24 años con margen mejoran hasta su potencial (más con buena Profesionalidad); desde los 30 (33 los porteros) se pierden 1-3 puntos por temporada y hay retiradas desde los 35 (37). Cada verano suben 3 juveniles de 17 años cuya calidad depende del nivel del club. Instalaciones, staff, cesiones y ventas quedan para Fase 5.
+
 ### 6.5 Mercado de fichajes
 
 - **Ventanas** de verano e invierno, más agentes libres todo el año.
@@ -267,6 +278,7 @@ Al retirarte se calcula tu **Puntuación de Legado** (títulos, partidos, premio
 - Roles por posición (p. ej. lateral ofensivo, mediocentro organizador, delantero de área).
 - Instrucciones específicas simples; el modo experto permite más detalle.
 - Cambios en directo durante el partido.
+- **Versión base implementada (Fase 4):** 5 formaciones (4-4-2, 4-3-3, 4-2-3-1, 5-3-2, 3-5-2), cada una reparte la fuerza entre defensa, medio y ataque sin sumar en total, y 3 mentalidades (_defensiva_: menos ocasiones en ambas porterías; _ofensiva_: más a favor y en contra). El XI se elige solo (los mejores disponibles por puesto, sin lesionados). La IA juega siempre 4-4-2 equilibrado; sin tácticas el motor da exactamente los mismos resultados que antes.
 - **Jugadas en Vivo** (sección 7B): varias por partido, en ataque y en defensa; controlas a todo el equipo en la jugada, como en World Soccer Champs.
 
 ### 6.7 Club y finanzas
@@ -326,6 +338,8 @@ El partido avanza minuto a minuto. En ciertos momentos **el reloj se detiene** y
 | Consecuencias extra   | Nota del partido, afición, prensa, fama, "momento histórico" en tu Legado                          | Moral del equipo, confianza de la directiva            |
 | Si no quieres jugarla | Resolución automática según atributos                                                              | Resolución automática según atributos                  |
 
+> **Estado (Fase 4, versión base):** en Modo Entrenador hay una Jugada en Vivo por equipo y partido: la tuya (penalti u ocasión de tu mejor rematador) la juegas con el dedo o en automático; la del rival se resuelve sola contra tu portero. Un gol suma al marcador simulado. El control de todo el equipo y las 3-6 jugadas por partido siguen pendientes.
+
 ### 7B.3 Tipos de jugada y controles
 
 - **Ataque (pase y tiro):** mantén pulsado el balón y **dibuja la trayectoria** hacia un compañero para pasar; desliza rápido hacia la portería para **chutar**. La velocidad del gesto marca la potencia y la curva del deslizamiento marca el efecto.
@@ -384,6 +398,7 @@ La lógica de físicas, IA y cálculo de errores se escribe en un módulo **puro
 - **Volumen orientativo:** ~250 clubes × ~28 jugadores ≈ 7.000 jugadores más regenerados cada año.
 - **Regeneración:** los jugadores que se retiran se sustituyen por juveniles nuevos para que el mundo no se degrade.
 - **Calendario** con fechas, ventanas de fichajes, parones de selecciones y pretemporada.
+  - **Implementado (ADR-005):** cada temporada empieza la primera semana de agosto y sus jornadas se reparten en 42 semanas (hasta finales de mayo), con ~10 semanas de pretemporada. Al acabar la liga se cierran todas las divisiones del país: campeones, y 2 ascensos/descensos (3 si ambas divisiones tienen 18 clubes o más). Las plantillas de la IA todavía no envejecen ni se regeneran (Fase 5).
 - **Editor de datos** (futuro, posible funcionalidad premium o comunitaria): permitir que los usuarios renombren equipos (así lo hacen legalmente otros juegos).
 
 ---
@@ -669,6 +684,8 @@ Beneficios: escribir cientos de eventos rápidamente (Claude puede ayudar a reda
 | **10. Post-lanzamiento**               | Crecimiento                                      | Selecciones ampliadas, ligas entre amigos, Dinastía, nuevas salidas tras la retirada                                                            | —                                                               |
 
 **MVP publicable = Fases 0–3 + 6 parcial + 7 básica.** El Modo Entrenador puede llegar como gran actualización, lo que además da un motivo para volver.
+
+**Estado a 2026-11-05:** Fases 0–3 completas (con temporadas sucesivas, ascensos y descensos). Fase 4 en versión base: ofertas y entrevista, plantilla, tácticas, entrenamiento, cantera, directiva con ultimátum y despido, ruedas de prensa, Jugada en Vivo simplificada; una vida completa (jugador → entrenador → jubilación) termina en la puntuación final y el **Salón de la Fama** (parte de Fase 6). Pendiente: Jugadas en Vivo de equipo completo, selección como entrenador, Fase 5 (mercado, ojeadores, finanzas, regeneración del mundo), resto de Fase 6 (logros, tutorial, i18n en/es, sonido) y Fases 7–10, que requieren cuentas y servicios externos (Supabase, RevenueCat, AdMob, tiendas).
 
 ---
 

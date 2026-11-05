@@ -4,24 +4,24 @@ Juego móvil de fútbol donde vives una carrera completa: desde jugador profesio
 
 ## 🎯 Estado del Proyecto
 
-**Fase actual:** 0 - Fundamentos (en progreso)
+Una vida deportiva completa es jugable de principio a fin: **crear personaje → carrera de jugador (temporada tras temporada, con ascensos y descensos) → retirada y Legado → carrera de entrenador → jubilación → puntuación final y Salón de la Fama**.
 
 ### Completado
 
-- ✅ Monorepo con pnpm + Turborepo
-- ✅ TypeScript estricto configurado
-- ✅ ESLint + Prettier
-- ✅ Package `@leyenda/shared` con tipos base
-- ✅ Package `@leyenda/engine` con RNG determinista
-- ✅ Package `@leyenda/content` con schemas Zod
-- ✅ Pruebas con Vitest (engine)
-- ✅ Repositorio en GitHub
+- ✅ **Fase 0 — Fundamentos:** monorepo pnpm + Turborepo, TypeScript estricto, CI, Expo + Expo Router, SQLite + Drizzle con migraciones, design system básico.
+- ✅ **Fase 0.5 — Prototipo de Jugadas en Vivo:** penalti y ocasión de gol con gestos (Skia + Gesture Handler).
+- ✅ **Fase 1 — Mundo y motor:** worldgen (países ficticios + España, Inglaterra, Italia, Alemania y Francia con clubes reales, ADR-004), calendario, motor de partidos y `balance-sim`.
+- ✅ **Fase 2 y 3 — Modo Jugador completo:** creación de personaje, ciclo semanal, 200 eventos de decisión, momentos clave, Jugadas en Vivo, contratos, fichajes, lesiones, selección, pareja, patrimonio, marcas, declive y retirada.
+- ✅ **Temporadas sucesivas** (ADR-005): calendario anual agosto-mayo con pretemporada, ascensos/descensos e historial de campeones.
+- ✅ **Fase 4 — Modo Entrenador (versión base):** ofertas de trabajo y entrevista con la directiva, plantilla, tácticas (5 formaciones × 3 mentalidades), entrenamiento semanal, cantera, envejecimiento y retiradas, directiva con objetivos, ultimátum y despidos, ruedas de prensa, Jugada en Vivo simplificada, historial.
+- ✅ **Cierre del ciclo:** puntuación final, Salón de la Fama y menú principal con "Continuar".
 
-### En progreso
+### Pendiente
 
-- 🚧 App Expo con Expo Router
-- 🚧 GitHub Actions CI
-- 🚧 Configuración de Claude Code (subagentes y skills)
+- 🚧 Jugadas en Vivo de equipo completo y selección nacional como entrenador (resto de Fase 4).
+- 🚧 Fase 5: mercado de fichajes, ojeadores y niebla de guerra, finanzas, regeneración del mundo.
+- 🚧 Fase 6: logros, tutorial, i18n en/es (los textos siguen en el código), sonido y animaciones.
+- 🚧 Fases 7-9: cuentas, nube, compras, anuncios y publicación (requieren cuentas de Supabase, RevenueCat, AdMob y de las tiendas).
 
 ## 📋 Prerrequisitos
 
@@ -89,11 +89,13 @@ Si todos los comandos pasan sin errores, ¡el setup está completo!
 ```
 leyenda/
 ├── apps/
-│   └── mobile/              # App Expo (próximamente)
+│   └── mobile/              # App Expo (Expo Router, SQLite + Drizzle)
 ├── packages/
 │   ├── shared/              # Tipos compartidos
 │   ├── engine/              # Motor de simulación puro
-│   └── content/             # Eventos y traducciones
+│   ├── worldgen/            # Generador procedural del mundo
+│   ├── balance-sim/         # Simulador de balanceo
+│   └── content/             # Eventos, ruedas de prensa y datos del mundo
 ├── docs/
 │   ├── GDD.md               # Game Design Document
 │   ├── adr/                 # Architecture Decision Records
@@ -107,12 +109,13 @@ leyenda/
 ### Root (desde la raíz del proyecto)
 
 ```bash
-pnpm dev              # Iniciar app en modo desarrollo (cuando esté lista)
+pnpm dev              # Iniciar app en modo desarrollo
 pnpm test             # Ejecutar todas las pruebas
 pnpm typecheck        # Verificar tipos en todos los packages
 pnpm lint             # Ejecutar linter
 pnpm format           # Formatear código con Prettier
-pnpm content:validate # Validar eventos y traducciones
+pnpm content:validate # Validar eventos y contenido
+pnpm balance          # Simulación masiva de balanceo (--quick para la versión corta)
 pnpm clean            # Limpiar build artifacts
 ```
 
@@ -143,7 +146,7 @@ pnpm test:coverage   # Generar reporte de cobertura
 4. Commit: `git commit -m "feat: descripción"`
 5. Push y crear PR
 
-## 📱 Desarrollo Móvil (próximamente)
+## 📱 Desarrollo Móvil
 
 Para desarrollar la app móvil necesitarás:
 
@@ -159,7 +162,7 @@ Puedes compilar para iOS usando **EAS Build** en la nube, sin necesidad de Mac.
 
 - **[GDD.md](docs/GDD.md)** - Game Design Document completo
 - **[CLAUDE.md](CLAUDE.md)** - Reglas y convenciones del proyecto
-- **[ADRs](docs/adr/)** - Decisiones de arquitectura (próximamente)
+- **[ADRs](docs/adr/)** - Decisiones de arquitectura
 
 ## 🎮 Sobre el Juego
 
