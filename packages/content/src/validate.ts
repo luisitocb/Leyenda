@@ -15,6 +15,7 @@ import {
   loadOrigins,
   loadWeeklyActions,
 } from './career/load';
+import { loadPressConferences } from './coach/load';
 import {
   loadClubNamePool,
   loadCountries,
@@ -104,8 +105,15 @@ function validateContent(): void {
     console.error('❌ Error validando acuerdos de marca:', error);
   }
 
-  // TODO: Eventos de entrenador (Fase 4) y traducciones (Fase 6) cuando existan
-  console.log('📁 Eventos de entrenador: 0 archivos');
+  try {
+    const pressConferences = loadPressConferences();
+    console.log(`📁 Ruedas de prensa (entrenador): ${pressConferences.length} válidas`);
+  } catch (error) {
+    errors++;
+    console.error('❌ Error validando ruedas de prensa:', error);
+  }
+
+  // TODO: traducciones (Fase 6) cuando exista i18n
   console.log('📁 Traducciones ES: 0 claves');
   console.log('📁 Traducciones EN: 0 claves\n');
 

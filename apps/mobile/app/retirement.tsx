@@ -67,7 +67,10 @@ export default function RetirementScreen(): JSX.Element {
           label="Empezar como entrenador"
           onPress={() => router.replace('/coach-job-offers')}
         />
-        <Button label="Nueva carrera" onPress={() => router.replace('/create-character')} />
+        <Button
+          label="Terminar partida (Salón de la Fama)"
+          onPress={() => router.replace('/life-end')}
+        />
       </View>
     </Screen>
   );

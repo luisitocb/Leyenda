@@ -1,8 +1,9 @@
-import type { BasePlayer, EntityId, Match, MatchEvent } from '@leyenda/shared';
+import type { BasePlayer, EntityId, Match, MatchEvent, Tactics } from '@leyenda/shared';
 import { RNG } from '../rng';
 
 import { clamp, pickWeighted } from './math';
 import { resolveCards, resolveInjuries } from './secondary-events';
+import { applyFormationModifiers, chanceFactor, DEFAULT_TACTICS, FORMATIONS } from './tactics';
 import { computeTeamStrength, selectStartingXI } from './team-strength';
 import { MATCH_TUNING, type StartingXI, type TeamStrength } from './types';
 
@@ -47,11 +48,17 @@ function resolveGoal(
   return events;
 }
 
-function chunkChanceProbability(attack: number, defense: number, hasPossession: boolean): number {
+function chunkChanceProbability(
+  attack: number,
+  defense: number,
+  hasPossession: boolean,
+  tacticsFactor: number
+): number {
   return clamp(
-    MATCH_TUNING.baseChancePerChunk +
+    (MATCH_TUNING.baseChancePerChunk +
       (attack - defense) / MATCH_TUNING.chanceZoneDivisor +
-      (hasPossession ? MATCH_TUNING.possessionChanceBonus : 0),
+      (hasPossession ? MATCH_TUNING.possessionChanceBonus : 0)) *
+      tacticsFactor,
     MATCH_TUNING.chanceClampMin,
     MATCH_TUNING.chanceClampMax
   );
@@ -66,6 +73,16 @@ function conversionProbability(attack: number, goalkeeping: number): number {
 }
 
 /**
+ * Tácticas de cada equipo (GDD §6.6). Omitidas = `DEFAULT_TACTICS`, con
+ * las que la simulación es idéntica (mismos números y misma secuencia del
+ * RNG) a la de antes de existir las tácticas.
+ */
+export interface SimulateMatchOptions {
+  homeTactics?: Tactics;
+  awayTactics?: Tactics;
+}
+
+/**
  * Simula un partido completo en tramos de 5 minutos (GDD §7): posesión →
  * ocasión → conversión, más eventos secundarios (tarjetas, lesiones).
  * Función pura y determinista dado el mismo (match, plantillas, rng).
@@ -77,10 +94,13 @@ export function simulateMatch(
   match: Match,
   homeSquad: BasePlayer[],
   awaySquad: BasePlayer[],
-  rng: RNG
+  rng: RNG,
+  options: SimulateMatchOptions = {}
 ): Match {
-  const homeXI = selectStartingXI(match.homeTeamId, homeSquad);
-  const awayXI = selectStartingXI(match.awayTeamId, awaySquad);
+  const homeTactics = options.homeTactics ?? DEFAULT_TACTICS;
+  const awayTactics = options.awayTactics ?? DEFAULT_TACTICS;
+  const homeXI = selectStartingXI(match.homeTeamId, homeSquad, FORMATIONS[homeTactics.formation]);
+  const awayXI = selectStartingXI(match.awayTeamId, awaySquad, FORMATIONS[awayTactics.formation]);
 
   // "El día de cada equipo": promediar 11 jugadores reduce mucho la
   // varianza de la fuerza calculada, así que sin este factor una
@@ -89,8 +109,16 @@ export function simulateMatch(
   // >70% de las temporadas). Ruido multiplicativo por partido y por
   // equipo, simétrico alrededor de 1.0 así que no mueve la media de
   // goles, solo añade variabilidad entre partidos.
-  const home = applyDayFactor(computeTeamStrength(homeXI, true), rng);
-  const away = applyDayFactor(computeTeamStrength(awayXI, false), rng);
+  const home = applyDayFactor(
+    applyFormationModifiers(computeTeamStrength(homeXI, true), homeTactics),
+    rng
+  );
+  const away = applyDayFactor(
+    applyFormationModifiers(computeTeamStrength(awayXI, false), awayTactics),
+    rng
+  );
+  const homeChanceFactor = chanceFactor(homeTactics, awayTactics);
+  const awayChanceFactor = chanceFactor(awayTactics, homeTactics);
 
   const events: MatchEvent[] = [];
   const cautionedHome = new Set<string>();
@@ -109,14 +137,22 @@ export function simulateMatch(
     );
     const homeHasPossession = rng.chance(possessionHome);
 
-    if (rng.chance(chunkChanceProbability(home.attack, away.defense, homeHasPossession))) {
+    if (
+      rng.chance(
+        chunkChanceProbability(home.attack, away.defense, homeHasPossession, homeChanceFactor)
+      )
+    ) {
       if (rng.chance(conversionProbability(home.attack, away.goalkeeping))) {
         homeGoals++;
         events.push(...resolveGoal(homeXI, 'home', chunkStartMinute + rng.nextInt(1, 5), rng));
       }
     }
 
-    if (rng.chance(chunkChanceProbability(away.attack, home.defense, !homeHasPossession))) {
+    if (
+      rng.chance(
+        chunkChanceProbability(away.attack, home.defense, !homeHasPossession, awayChanceFactor)
+      )
+    ) {
       if (rng.chance(conversionProbability(away.attack, home.goalkeeping))) {
         awayGoals++;
         events.push(...resolveGoal(awayXI, 'away', chunkStartMinute + rng.nextInt(1, 5), rng));

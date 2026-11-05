@@ -18,6 +18,7 @@ import { countries } from '@/content';
 import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
 import { resolveDivisionCalendar } from '@/world/resolve-division-calendar';
+import { loadWorldState, playerSeasonQuery } from '@/world/season-transition';
 
 /**
  * Oferta de contrato (GDD §4.8): renovación con el club actual (disparada
@@ -38,7 +39,12 @@ export default function ContractOfferScreen(): JSX.Element {
 
   const division = useMemo(() => {
     if (!save || !protagonist) return null;
-    return resolveDivisionCalendar(save.seed, protagonist, countries);
+    const worldState = loadWorldState(save, protagonist.nationality);
+    return resolveDivisionCalendar(
+      playerSeasonQuery(save, protagonist, worldState),
+      save.gameDate,
+      countries
+    );
   }, [save, protagonist]);
 
   const initialOffer = useMemo(() => {

@@ -1,0 +1,527 @@
+[
+  {
+    "id": "pre_objective",
+    "context": "pre_match",
+    "question": "¿Cuál es el objetivo real de este equipo esta temporada?",
+    "weight": 3,
+    "answers": [
+      {
+        "id": "ambitious",
+        "label": "«Vamos a por todas, este equipo puede soñar.»",
+        "effects": {
+          "squadMorale": 4,
+          "boardConfidence": 3,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "prudent",
+        "label": "«Partido a partido; el objetivo es el que marca el club.»",
+        "effects": {
+          "squadMorale": 0,
+          "boardConfidence": 2,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "lower",
+        "label": "«Hay que ser realistas: la plantilla es corta.»",
+        "effects": {
+          "squadMorale": -5,
+          "boardConfidence": -3,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "pre_rival_star",
+    "context": "pre_match",
+    "question": "El rival tiene al máximo goleador de la liga. ¿Os preocupa?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "respect",
+        "label": "«Le respetamos, pero tenemos un plan para él.»",
+        "effects": {
+          "squadMorale": 2,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "dismiss",
+        "label": "«Nos preocupa más lo que hagamos nosotros.»",
+        "effects": {
+          "squadMorale": 3,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "provoke",
+        "label": "«Contra nosotros no va a marcar. Lo prometo.»",
+        "effects": {
+          "squadMorale": 5,
+          "boardConfidence": -2,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "pre_rotation",
+    "context": "pre_match",
+    "question": "Se habla de rotaciones. ¿Habrá cambios en el once?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "rotate",
+        "label": "«Todos son importantes; jugará quien esté mejor.»",
+        "effects": {
+          "squadMorale": 3,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "same",
+        "label": "«El equipo que gana no se toca.»",
+        "effects": {
+          "squadMorale": -2,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "secret",
+        "label": "«Eso lo sabrán mis jugadores antes que vosotros.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "pre_referee",
+    "context": "pre_match",
+    "question": "¿Le preocupa el arbitraje tras la polémica de la última jornada?",
+    "weight": 1,
+    "answers": [
+      {
+        "id": "calm",
+        "label": "«Confío en los árbitros; no es tema nuestro.»",
+        "effects": {
+          "squadMorale": 0,
+          "boardConfidence": 2,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "pressure",
+        "label": "«Esperamos el mismo criterio para todos...»",
+        "effects": {
+          "squadMorale": 2,
+          "boardConfidence": -3,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "ignore",
+        "label": "«Prefiero hablar de fútbol.»",
+        "effects": {
+          "squadMorale": 0,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "pre_youth",
+    "context": "pre_match",
+    "question": "La afición pide minutos para los chicos de la cantera.",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "promise",
+        "label": "«Van a tener su oportunidad, la merecen.»",
+        "effects": {
+          "squadMorale": 3,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "patience",
+        "label": "«Hay que tener paciencia con ellos.»",
+        "effects": {
+          "squadMorale": 0,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "not_ready",
+        "label": "«Todavía no están preparados para este nivel.»",
+        "effects": {
+          "squadMorale": -3,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "pre_future",
+    "context": "pre_match",
+    "question": "Se rumorea que otro club le quiere. ¿Seguirá aquí?",
+    "weight": 1,
+    "answers": [
+      {
+        "id": "loyal",
+        "label": "«Estoy centrado en este proyecto, nada más.»",
+        "effects": {
+          "squadMorale": 2,
+          "boardConfidence": 4,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "open",
+        "label": "«En el fútbol nunca se sabe.»",
+        "effects": {
+          "squadMorale": -2,
+          "boardConfidence": -6,
+          "reputation": 1
+        }
+      },
+      {
+        "id": "joke",
+        "label": "«Primero que me echen, ¿no?»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "win_praise",
+    "context": "after_win",
+    "question": "Gran victoria. ¿Qué destaca del equipo hoy?",
+    "weight": 3,
+    "answers": [
+      {
+        "id": "group",
+        "label": "«El trabajo del grupo; aquí no hay estrellas.»",
+        "effects": {
+          "squadMorale": 4,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "tactics",
+        "label": "«El plan salió como lo preparamos.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 2,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "self",
+        "label": "«Se ha notado la mano del entrenador.»",
+        "effects": {
+          "squadMorale": -4,
+          "boardConfidence": 0,
+          "reputation": 1
+        }
+      }
+    ]
+  },
+  {
+    "id": "win_title_talk",
+    "context": "after_win",
+    "question": "Con esta racha, ¿se atreve a hablar de títulos?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "humble",
+        "label": "«Aún queda mucho; los pies en el suelo.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 2,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "dream",
+        "label": "«¿Por qué no? Este equipo puede con todo.»",
+        "effects": {
+          "squadMorale": 5,
+          "boardConfidence": -1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "deflect",
+        "label": "«Pregúntenme en mayo.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "win_criticism",
+    "context": "after_win",
+    "question": "Hace semanas le criticaban. ¿Algo que decir a sus críticos?",
+    "weight": 1,
+    "answers": [
+      {
+        "id": "revenge",
+        "label": "«Que ahora vengan a hablar.»",
+        "effects": {
+          "squadMorale": 2,
+          "boardConfidence": -3,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "grateful",
+        "label": "«La crítica forma parte de esto; seguimos.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 3,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "ignore",
+        "label": "«No leo la prensa.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "win_player_highlight",
+    "context": "after_win",
+    "question": "¿Su jugador más en forma merece ir con la selección?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "support",
+        "label": "«Sin duda, se lo ha ganado.»",
+        "effects": {
+          "squadMorale": 4,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "neutral",
+        "label": "«Eso lo decide el seleccionador.»",
+        "effects": {
+          "squadMorale": 0,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "protect",
+        "label": "«Prefiero que descanse y siga creciendo aquí.»",
+        "effects": {
+          "squadMorale": -1,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "loss_responsibility",
+    "context": "after_loss",
+    "question": "Derrota dolorosa. ¿Quién es el responsable?",
+    "weight": 3,
+    "answers": [
+      {
+        "id": "self",
+        "label": "«El responsable soy yo. Asumo el error.»",
+        "effects": {
+          "squadMorale": 4,
+          "boardConfidence": -1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "players",
+        "label": "«Algunos no han estado a la altura.»",
+        "effects": {
+          "squadMorale": -6,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "luck",
+        "label": "«Hemos tenido mala suerte, nada más.»",
+        "effects": {
+          "squadMorale": 0,
+          "boardConfidence": -3,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "loss_crisis",
+    "context": "after_loss",
+    "question": "¿Está el equipo en crisis?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "calm",
+        "label": "«Una mala tarde no es una crisis.»",
+        "effects": {
+          "squadMorale": 2,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "alarm",
+        "label": "«Hay que reaccionar ya o lo pagaremos.»",
+        "effects": {
+          "squadMorale": -2,
+          "boardConfidence": 2,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "angry",
+        "label": "«Crisis es la que tenéis vosotros inventando titulares.»",
+        "effects": {
+          "squadMorale": 3,
+          "boardConfidence": -4,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "loss_board",
+    "context": "after_loss",
+    "question": "¿Siente el respaldo de la directiva?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "trust",
+        "label": "«Total. Hablamos a diario.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 2,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "results",
+        "label": "«El respaldo se gana con resultados.»",
+        "effects": {
+          "squadMorale": 0,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "demand",
+        "label": "«Necesito refuerzos para competir.»",
+        "effects": {
+          "squadMorale": -1,
+          "boardConfidence": -5,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "loss_fans",
+    "context": "after_loss",
+    "question": "La afición ha pitado al equipo. ¿Lo entiende?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "understand",
+        "label": "«Lo entiendo; están en su derecho.»",
+        "effects": {
+          "squadMorale": -1,
+          "boardConfidence": 2,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "defend",
+        "label": "«Pido a la gente que esté con los chicos.»",
+        "effects": {
+          "squadMorale": 4,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "criticise",
+        "label": "«Así no se ayuda al equipo.»",
+        "effects": {
+          "squadMorale": 2,
+          "boardConfidence": -4,
+          "reputation": 0
+        }
+      }
+    ]
+  },
+  {
+    "id": "loss_tactics",
+    "context": "after_loss",
+    "question": "¿Fue un error el planteamiento de hoy?",
+    "weight": 2,
+    "answers": [
+      {
+        "id": "admit",
+        "label": "«Me equivoqué y lo corregiré.»",
+        "effects": {
+          "squadMorale": 2,
+          "boardConfidence": 0,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "defend",
+        "label": "«El plan era bueno; faltó ejecución.»",
+        "effects": {
+          "squadMorale": -3,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      },
+      {
+        "id": "change",
+        "label": "«Esta semana vamos a cambiar cosas.»",
+        "effects": {
+          "squadMorale": 1,
+          "boardConfidence": 1,
+          "reputation": 0
+        }
+      }
+    ]
+  }
+]

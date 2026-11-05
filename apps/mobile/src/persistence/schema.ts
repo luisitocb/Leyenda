@@ -1,6 +1,12 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core';
 
-import type { CoachCareer, ProtagonistPlayer } from '@leyenda/shared';
+import type {
+  CoachCareer,
+  HallOfFameEntry,
+  LegacyCoachCareerV1,
+  ProtagonistPlayer,
+  WorldState,
+} from '@leyenda/shared';
 
 /**
  * GDD §14 — entidad Save: id, versión de esquema, semilla, fecha de juego, modo actual.
@@ -12,7 +18,7 @@ export const saves = sqliteTable('saves', {
   schemaVersion: integer('schema_version').notNull(),
   seed: integer('seed').notNull(),
   gameDate: text('game_date').notNull(),
-  currentMode: text('current_mode', { enum: ['player', 'coach'] }).notNull(),
+  currentMode: text('current_mode', { enum: ['player', 'coach', 'finished'] }).notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
 });
@@ -49,10 +55,42 @@ export const coaches = sqliteTable('coaches', {
   saveId: text('save_id')
     .notNull()
     .references(() => saves.id),
-  data: text('data', { mode: 'json' }).$type<CoachCareer>().notNull(),
+  /**
+   * Las partidas de la primera historia de Fase 4 guardaron la forma
+   * `LegacyCoachCareerV1`; `coaches.repository` la actualiza al leerla.
+   */
+  data: text('data', { mode: 'json' }).$type<CoachCareer | LegacyCoachCareerV1>().notNull(),
   createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
   updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
 });
 
 export type CoachRow = typeof coaches.$inferSelect;
 export type NewCoachRow = typeof coaches.$inferInsert;
+
+/**
+ * Parte dinámica del mundo (ADR-005): divisiones por temporada (ascensos y
+ * descensos) e historial de campeones. Una fila por save, `data` como JSON.
+ */
+export const worldStates = sqliteTable('world_states', {
+  id: text('id').primaryKey(),
+  saveId: text('save_id')
+    .notNull()
+    .references(() => saves.id),
+  data: text('data', { mode: 'json' }).$type<WorldState>().notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+  updatedAt: integer('updated_at', { mode: 'timestamp' }).notNull(),
+});
+
+export type WorldStateRow = typeof worldStates.$inferSelect;
+
+/**
+ * Salón de la Fama (GDD §9, RF-17): vidas deportivas terminadas. No
+ * depende de ningún save — sobrevive aunque se borre la partida.
+ */
+export const hallOfFame = sqliteTable('hall_of_fame', {
+  id: text('id').primaryKey(),
+  data: text('data', { mode: 'json' }).$type<HallOfFameEntry>().notNull(),
+  createdAt: integer('created_at', { mode: 'timestamp' }).notNull(),
+});
+
+export type HallOfFameRow = typeof hallOfFame.$inferSelect;

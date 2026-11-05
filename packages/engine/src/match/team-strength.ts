@@ -5,21 +5,27 @@ import type { StartingXI, TeamStrength } from './types';
 
 function compatiblePositions(slot: Position): Position[] {
   if (slot === 'CMF') return ['CMF', 'DMF', 'AMF'];
+  if (slot === 'DMF') return ['DMF', 'CMF'];
+  if (slot === 'AMF') return ['AMF', 'CMF'];
   return [slot];
 }
 
 /**
- * Selecciona el XI titular con la formación fija 4-4-2: para cada hueco,
- * el jugador disponible de mayor currentAbility en una posición
- * compatible (DMF/AMF pueden cubrir un hueco de CMF). Sin sistema de
- * tácticas todavía.
+ * Selecciona el XI titular para una formación (4-4-2 por defecto, la de
+ * todos los clubes de la IA): para cada hueco, el jugador disponible de
+ * mayor currentAbility en una posición compatible (DMF/AMF pueden cubrir
+ * un hueco de CMF y viceversa); si no hay ninguno, el mejor que quede.
  */
-export function selectStartingXI(clubId: EntityId, squad: BasePlayer[]): StartingXI {
+export function selectStartingXI(
+  clubId: EntityId,
+  squad: BasePlayer[],
+  formation: readonly Position[] = FORMATION_4_4_2
+): StartingXI {
   const used = new Set<string>();
   const outfield: BasePlayer[] = [];
   let goalkeeper: BasePlayer | undefined;
 
-  for (const slot of FORMATION_4_4_2) {
+  for (const slot of formation) {
     const compatible = compatiblePositions(slot);
     const candidates = squad
       .filter((p) => !used.has(p.id) && compatible.includes(p.position))

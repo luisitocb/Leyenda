@@ -1,46 +1,38 @@
-import type { JSX } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { useRouter } from 'expo-router';
-import { RNG } from '@leyenda/engine';
+import { useCallback, useState, type JSX } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
 
 import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
-import { createSave, listSaves } from '@/persistence/saves.repository';
+import { getLatestSave } from '@/persistence/saves.repository';
+import { getProtagonistBySave } from '@/persistence/protagonists.repository';
+import type { Save } from '@/persistence/schema';
 
-/**
- * Pantalla inicial - Demo básico del RNG
- */
+interface ContinueInfo {
+  path: '/career' | '/coach-career';
+  label: string;
+}
+
+function continueInfo(save: Save | undefined): ContinueInfo | null {
+  if (!save) return null;
+  const protagonist = getProtagonistBySave(save.id)?.data;
+  if (!protagonist) return null;
+  const name = `${protagonist.firstName} ${protagonist.lastName}`;
+  if (save.currentMode === 'player') return { path: '/career', label: `${name} · jugador` };
+  if (save.currentMode === 'coach') return { path: '/coach-career', label: `${name} · entrenador` };
+  return null;
+}
+
+/** Menú principal (GDD §3, §9): continuar la partida, empezar otra o ver el Salón de la Fama. */
 export default function HomeScreen(): JSX.Element {
   const router = useRouter();
+  const [info, setInfo] = useState<ContinueInfo | null>(() => continueInfo(getLatestSave()));
 
-  const testRNG = (): void => {
-    const rng = new RNG(Date.now());
-    const randomValue = rng.next();
-    const randomInt = rng.nextInt(1, 100);
-
-    alert(`RNG Test:\n\nFloat: ${randomValue.toFixed(4)}\nInt (1-100): ${randomInt}`);
-  };
-
-  const testCreateSave = (): void => {
-    try {
-      const save = createSave({ seed: Date.now(), gameDate: '2026-08-01', currentMode: 'player' });
-      Alert.alert('Guardado creado', `id: ${save.id}\nseed: ${save.seed}`);
-    } catch (error) {
-      Alert.alert('Error al crear guardado', String(error));
-    }
-  };
-
-  const testListSaves = (): void => {
-    try {
-      const all = listSaves();
-      Alert.alert(
-        `Guardados: ${all.length}`,
-        all.map((save) => `${save.id} · seed ${save.seed}`).join('\n') || '(vacío)'
-      );
-    } catch (error) {
-      Alert.alert('Error al leer guardados', String(error));
-    }
-  };
+  useFocusEffect(
+    useCallback(() => {
+      setInfo(continueInfo(getLatestSave()));
+    }, [])
+  );
 
   return (
     <Screen>
@@ -51,29 +43,17 @@ export default function HomeScreen(): JSX.Element {
         De Crack a Míster
       </Text>
 
-      <View style={styles.info}>
-        <Text variant="body" color="accent" style={styles.infoText}>
-          ✅ Monorepo configurado
-        </Text>
-        <Text variant="body" color="accent" style={styles.infoText}>
-          ✅ TypeScript estricto
-        </Text>
-        <Text variant="body" color="accent" style={styles.infoText}>
-          ✅ Engine funcionando
-        </Text>
-        <Text variant="body" color="accent" style={styles.infoText}>
-          ✅ Expo + Router
-        </Text>
-      </View>
-
-      <Button label="Probar RNG" onPress={testRNG} />
-      <Button label="Crear guardado de prueba" onPress={testCreateSave} />
-      <Button label="Ver guardados" onPress={testListSaves} />
-      <Button label="Jugadas en Vivo (demo)" onPress={() => router.push('/live-play-demo')} />
+      {info && (
+        <View style={styles.continueBlock}>
+          <Button label="Continuar" onPress={() => router.push(info.path)} />
+          <Text variant="caption" style={styles.caption}>
+            {info.label}
+          </Text>
+        </View>
+      )}
       <Button label="Nueva carrera" onPress={() => router.push('/create-character')} />
-      <Button label="Mi carrera" onPress={() => router.push('/career')} />
-
-      <Text variant="caption">Fase 0: Fundamentos</Text>
+      <Button label="Salón de la Fama" onPress={() => router.push('/hall-of-fame')} />
+      <Button label="Campo de entrenamiento" onPress={() => router.push('/live-play-demo')} />
     </Screen>
   );
 }
@@ -85,14 +65,11 @@ const styles = StyleSheet.create({
   subtitle: {
     marginBottom: theme.spacing.xl,
   },
-  info: {
-    backgroundColor: theme.colors.surface,
-    padding: theme.spacing.md,
-    borderRadius: theme.radii.md,
-    marginBottom: theme.spacing.lg,
-    width: '100%',
+  continueBlock: {
+    alignItems: 'center',
   },
-  infoText: {
-    marginBottom: theme.spacing.xs,
+  caption: {
+    marginTop: -theme.spacing.md,
+    marginBottom: theme.spacing.lg,
   },
 });

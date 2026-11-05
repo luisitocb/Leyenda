@@ -82,6 +82,23 @@ export interface GenerateSeasonCalendarInput {
   year: number;
   seasonStartDate: string;
   rng: RNG;
+  /**
+   * Semanas sobre las que repartir las jornadas (GDD §8: parones y
+   * pretemporada). Si se omite, o no hay hueco para repartir, una jornada
+   * por semana (comportamiento original, el que usa `balance-sim`).
+   */
+  seasonLengthWeeks?: number;
+}
+
+/**
+ * Semana (desde el inicio de temporada) en la que se juega cada jornada:
+ * reparto uniforme entre la primera y la última semana de la temporada.
+ */
+export function roundWeekOffsets(roundCount: number, seasonLengthWeeks?: number): number[] {
+  const rounds = Array.from({ length: roundCount }, (_, i) => i);
+  if (!seasonLengthWeeks || seasonLengthWeeks <= roundCount || roundCount < 2) return rounds;
+  const span = seasonLengthWeeks - 1;
+  return rounds.map((r) => Math.round((r * span) / (roundCount - 1)));
 }
 
 /**
@@ -98,6 +115,7 @@ export function generateSeasonCalendar({
   year,
   seasonStartDate,
   rng,
+  seasonLengthWeeks,
 }: GenerateSeasonCalendarInput): SeasonCalendar {
   const orderedClubs = [...clubs].sort((a, b) => a.id.localeCompare(b.id));
   rng.shuffle(orderedClubs);
@@ -107,13 +125,14 @@ export function generateSeasonCalendar({
     round.map(({ home, away }) => ({ home: away, away: home }))
   );
   const allRounds = [...firstLeg, ...secondLeg];
+  const weekOffsets = roundWeekOffsets(allRounds.length, seasonLengthWeeks);
 
   const season: Season = {
     id: `season-${competition.id}-${year}`,
     competitionId: competition.id,
     year,
     startDate: seasonStartDate,
-    endDate: addDays(seasonStartDate, (allRounds.length - 1) * 7),
+    endDate: addDays(seasonStartDate, (weekOffsets[weekOffsets.length - 1] ?? 0) * 7),
   };
 
   const fixtures: Fixture[] = [];
@@ -121,7 +140,7 @@ export function generateSeasonCalendar({
 
   allRounds.forEach((pairings, roundIndex) => {
     const round = roundIndex + 1;
-    const date = addDays(seasonStartDate, roundIndex * 7);
+    const date = addDays(seasonStartDate, (weekOffsets[roundIndex] ?? roundIndex) * 7);
     const matchIds: string[] = [];
 
     for (const { home, away } of pairings) {

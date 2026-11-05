@@ -11,6 +11,7 @@ import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
 import { resolveDivisionCalendar } from '@/world/resolve-division-calendar';
 import { resolveStandings } from '@/world/resolve-standings';
+import { closeSeasonIfNeeded, loadWorldState, playerSeasonQuery } from '@/world/season-transition';
 
 interface StatRowProps {
   label: string;
@@ -28,7 +29,10 @@ function StatRow({ label, value }: StatRowProps): JSX.Element {
   );
 }
 
-/** Reconocimiento único de fin de temporada (GDD §4): clasificación final y estadísticas personales. */
+/**
+ * Reconocimiento único de fin de temporada (GDD §4): clasificación final,
+ * estadísticas personales y ascenso/descenso del club (GDD §8, RF-08).
+ */
 export default function SeasonEndScreen(): JSX.Element {
   const router = useRouter();
 
@@ -36,22 +40,27 @@ export default function SeasonEndScreen(): JSX.Element {
   const protagonistRow = useMemo(() => (save ? getProtagonistBySave(save.id) : undefined), [save]);
   const protagonist = protagonistRow?.data;
 
-  const division = useMemo(() => {
+  const context = useMemo(() => {
     if (!save || !protagonist) return null;
-    return resolveDivisionCalendar(save.seed, protagonist, countries);
-  }, [save, protagonist]);
-
-  const resolution = useMemo(() => {
-    if (!save || !protagonist) return null;
-    return resolveStandings(save.seed, protagonist, save.gameDate, countries);
+    const worldState = loadWorldState(save, protagonist.nationality);
+    const query = playerSeasonQuery(save, protagonist, worldState);
+    const division = resolveDivisionCalendar(query, save.gameDate, countries);
+    if (!division) return null;
+    const closedWorld = closeSeasonIfNeeded(save, worldState, division.seasonIndex);
+    const resolution = resolveStandings(query, save.gameDate, {}, countries);
+    const summary = closedWorld.seasonHistory.find((s) => s.seasonIndex === division.seasonIndex);
+    return { division, resolution, summary };
   }, [save, protagonist]);
 
   const myStanding = useMemo(
-    () => resolution?.standings.find((s) => s.clubId === protagonist?.clubId),
-    [resolution, protagonist]
+    () => context?.resolution?.standings.find((s) => s.clubId === protagonist?.clubId),
+    [context, protagonist]
   );
   const champion = myStanding?.position === 1;
-  const seasonId = division?.calendar.season.id ?? null;
+  const seasonId = context?.division.calendar.season.id ?? null;
+  const clubId = protagonist?.clubId ?? '';
+  const promoted = context?.summary?.promoted.includes(clubId) ?? false;
+  const relegated = context?.summary?.relegated.includes(clubId) ?? false;
 
   useEffect(() => {
     if (!champion || !seasonId || !protagonist || !protagonistRow) return;
@@ -59,7 +68,7 @@ export default function SeasonEndScreen(): JSX.Element {
     updateProtagonist(protagonistRow.id, applySeasonEndResult(protagonist, seasonId));
   }, [champion, seasonId, protagonist, protagonistRow]);
 
-  if (!save || !protagonist || !resolution || !myStanding) {
+  if (!save || !protagonist || !context?.resolution || !myStanding) {
     return (
       <Screen>
         <Text variant="subtitle" style={styles.emptyText}>
@@ -73,7 +82,7 @@ export default function SeasonEndScreen(): JSX.Element {
   return (
     <Screen style={styles.screen}>
       <View style={styles.scrollContent}>
-        <Text variant="title">Fin de temporada</Text>
+        <Text variant="title">Fin de temporada {context.division.calendar.season.year}</Text>
 
         {champion ? (
           <Text variant="subtitle" color="accent" style={styles.sectionLabel}>
@@ -84,13 +93,28 @@ export default function SeasonEndScreen(): JSX.Element {
             Terminaste {myStanding.position}º en la clasificación
           </Text>
         )}
+        {promoted && (
+          <Text variant="body" color="accent">
+            ¡Tu club asciende de división!
+          </Text>
+        )}
+        {relegated && (
+          <Text variant="body" color="textSecondary">
+            Tu club desciende de división.
+          </Text>
+        )}
 
         <Text variant="subtitle" style={styles.sectionLabel}>
-          Tu temporada
+          Tu carrera hasta ahora
         </Text>
         <StatRow label="Partidos jugados" value={protagonist.gamesPlayed} />
         <StatRow label="Goles" value={protagonist.goalsScored} />
         <StatRow label="Asistencias" value={protagonist.assists} />
+        <StatRow label="Títulos" value={protagonist.titlesWon.length} />
+
+        <Text variant="body" color="textSecondary" style={styles.sectionLabel}>
+          Empieza la pretemporada: la próxima liga arranca en agosto.
+        </Text>
 
         <Button label="Ver clasificación completa" onPress={() => router.push('/standings')} />
         <Button label="Continuar" onPress={() => router.replace('/career')} />

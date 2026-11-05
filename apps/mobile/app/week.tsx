@@ -35,6 +35,7 @@ import { getLatestSave, updateSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
 import { resolveWeekMatch } from '@/world/resolve-week-match';
 import { isSeasonJustEnded, resolveDivisionCalendar } from '@/world/resolve-division-calendar';
+import { closeSeasonIfNeeded, loadWorldState, playerSeasonQuery } from '@/world/season-transition';
 
 function describeEffects(action: WeeklyAction): string {
   const parts: string[] = [];
@@ -192,10 +193,15 @@ export default function WeekScreen(): JSX.Element {
 
   const handleAdvanceWeek = (): void => {
     const thisWeekDate = save.gameDate;
-    const match = resolveWeekMatch(save.seed, workingProtagonist, thisWeekDate, countries);
+    const worldState = loadWorldState(save, workingProtagonist.nationality);
+    const query = playerSeasonQuery(save, workingProtagonist, worldState);
+    const match = resolveWeekMatch(query, thisWeekDate, countries);
     const event = selectEvent(events, new RNG(createRandomSeed()));
-    const division = resolveDivisionCalendar(save.seed, workingProtagonist, countries);
+    const division = resolveDivisionCalendar(query, thisWeekDate, countries);
     const seasonJustEnded = division !== null && isSeasonJustEnded(division.calendar, thisWeekDate);
+    if (seasonJustEnded && division) {
+      closeSeasonIfNeeded(save, worldState, division.seasonIndex);
+    }
     const renewalWeek = isContractRenewalWeek(workingProtagonist.contractExpiry, thisWeekDate);
     const transferOfferWeek =
       !seasonJustEnded && !renewalWeek && shouldReceiveTransferOffer(new RNG(createRandomSeed()));

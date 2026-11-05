@@ -19,6 +19,7 @@ import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave } from '@/persistence/protagonists.repository';
 import { generateClubsForCountry } from '@/world/generate-clubs-for-country';
 import { resolveWeekMatch } from '@/world/resolve-week-match';
+import { loadWorldState, playerSeasonQuery } from '@/world/season-transition';
 
 interface StatRowProps {
   label: string;
@@ -58,7 +59,11 @@ export default function CareerScreen(): JSX.Element {
 
   const lastMatch = useMemo(() => {
     if (!save || !protagonist) return null;
-    return resolveWeekMatch(save.seed, protagonist, addDays(save.gameDate, -DAYS_PER_WEEK));
+    const worldState = loadWorldState(save, protagonist.nationality);
+    return resolveWeekMatch(
+      playerSeasonQuery(save, protagonist, worldState),
+      addDays(save.gameDate, -DAYS_PER_WEEK)
+    );
   }, [save, protagonist]);
 
   if (!save || !protagonist) {

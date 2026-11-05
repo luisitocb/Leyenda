@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { Club, Competition } from '@leyenda/shared';
 import { RNG } from '../rng';
 
-import { generateSeasonCalendar } from './generate-calendar';
+import { generateSeasonCalendar, roundWeekOffsets } from './generate-calendar';
 
 const COMPETITION: Competition = {
   id: 'league-XA-1',
@@ -177,5 +177,80 @@ describe('generateSeasonCalendar', () => {
       }
       expect(maxStreak).toBeLessThanOrEqual(4);
     }
+  });
+});
+
+describe('generateSeasonCalendar con seasonLengthWeeks', () => {
+  const competition = {
+    id: 'league-XA-1',
+    name: 'Primera de Aurelia',
+    type: 'league' as const,
+    countryCode: 'XA',
+    level: 1,
+  };
+  const clubs = Array.from({ length: 14 }, (_, i) => ({
+    id: `club-XA-1-${i + 1}`,
+    name: `Club ${i + 1}`,
+    shortName: `C${i + 1}`,
+    countryCode: 'XA',
+    reputation: 15,
+    divisionLevel: 1,
+    money: 1_000_000,
+  }));
+
+  it('reparte las jornadas en la temporada: primera el día de inicio, última en la semana final', () => {
+    const calendar = generateSeasonCalendar({
+      competition,
+      clubs,
+      year: 2026,
+      seasonStartDate: '2026-08-01',
+      rng: new RNG(1),
+      seasonLengthWeeks: 42,
+    });
+    const dates = calendar.fixtures.map((f) => f.date);
+    expect(dates[0]).toBe('2026-08-01');
+    expect(calendar.season.endDate).toBe(dates[dates.length - 1]);
+    const days = (Date.parse(calendar.season.endDate) - Date.parse('2026-08-01')) / 86_400_000;
+    expect(days).toBe(41 * 7);
+    expect(new Set(dates).size).toBe(dates.length);
+  });
+
+  it('no cambia los partidos ni sus seeds, solo las fechas', () => {
+    const weekly = generateSeasonCalendar({
+      competition,
+      clubs,
+      year: 2026,
+      seasonStartDate: '2026-08-01',
+      rng: new RNG(7),
+    });
+    const spread = generateSeasonCalendar({
+      competition,
+      clubs,
+      year: 2026,
+      seasonStartDate: '2026-08-01',
+      rng: new RNG(7),
+      seasonLengthWeeks: 42,
+    });
+    expect(spread.matches.map((m) => [m.id, m.seed])).toEqual(
+      weekly.matches.map((m) => [m.id, m.seed])
+    );
+  });
+});
+
+describe('roundWeekOffsets', () => {
+  it('sin longitud de temporada es una jornada por semana', () => {
+    expect(roundWeekOffsets(4)).toEqual([0, 1, 2, 3]);
+  });
+
+  it('si hay más jornadas que semanas, una por semana', () => {
+    expect(roundWeekOffsets(42, 40)).toEqual(Array.from({ length: 42 }, (_, i) => i));
+  });
+
+  it('reparto estrictamente creciente', () => {
+    const offsets = roundWeekOffsets(22, 42);
+    for (let i = 1; i < offsets.length; i++) {
+      expect(offsets[i]!).toBeGreaterThan(offsets[i - 1]!);
+    }
+    expect(offsets[offsets.length - 1]).toBe(41);
   });
 });

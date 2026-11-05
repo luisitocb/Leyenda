@@ -32,6 +32,11 @@ export function createCoach(input: CreateCoachInput): CoachRow {
   return created;
 }
 
+/**
+ * Fila cruda: `data` puede tener todavía la forma de la primera historia
+ * de Fase 4 (`LegacyCoachCareerV1`). Usa `loadCoachContext` para obtener
+ * una `CoachCareer` actualizada.
+ */
 export function getCoachBySave(saveId: string): CoachRow | undefined {
   return db.select().from(coaches).where(eq(coaches.saveId, saveId)).get();
 }

@@ -23,6 +23,7 @@ import { ChanceMinigame, LivePlayResultOverlay, PenaltyMinigame } from '@/featur
 import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave, updateProtagonist } from '@/persistence/protagonists.repository';
 import { resolveWeekMatch } from '@/world/resolve-week-match';
+import { loadWorldState, playerSeasonQuery } from '@/world/season-transition';
 
 /**
  * Registro de offsets de seed locales a esta pantalla (no relacionados con
@@ -52,7 +53,8 @@ export default function MatchScreen(): JSX.Element {
 
   const teamMatch = useMemo(() => {
     if (!save || !protagonist || !date) return null;
-    return resolveWeekMatch(save.seed, protagonist, date, countries);
+    const worldState = loadWorldState(save, protagonist.nationality);
+    return resolveWeekMatch(playerSeasonQuery(save, protagonist, worldState), date, countries);
   }, [save, protagonist, date]);
 
   const moments = useMemo(() => {

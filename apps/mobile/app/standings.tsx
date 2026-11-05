@@ -6,9 +6,15 @@ import { Screen, Button, Text } from '@/components';
 import { theme } from '@/theme';
 import { getLatestSave } from '@/persistence/saves.repository';
 import { getProtagonistBySave } from '@/persistence/protagonists.repository';
+import { coachSeasonQuery, loadCoachContext } from '@/coach/coach-context';
 import { resolveStandings } from '@/world/resolve-standings';
+import { loadWorldState, playerSeasonQuery } from '@/world/season-transition';
 
-/** Clasificación de la división del club del protagonista, recalculada siempre desde la seed del save. */
+/**
+ * Clasificación de la división del club del protagonista (Modo Jugador)
+ * o del entrenador (Modo Entrenador, con los resultados que de verdad se
+ * jugaron), recalculada desde la seed del save.
+ */
 export default function StandingsScreen(): JSX.Element {
   const router = useRouter();
 
@@ -18,10 +24,24 @@ export default function StandingsScreen(): JSX.Element {
     [save]
   );
 
-  const resolution = useMemo(() => {
+  const view = useMemo(() => {
     if (!save || !protagonist) return null;
-    return resolveStandings(save.seed, protagonist, save.gameDate);
+    if (save.currentMode === 'coach') {
+      const context = loadCoachContext();
+      if (!context) return null;
+      const resolution = resolveStandings(coachSeasonQuery(context), save.gameDate, {
+        fixedResults: context.coach.results,
+      });
+      return resolution ? { resolution, myClubId: context.coach.clubId } : null;
+    }
+    const worldState = loadWorldState(save, protagonist.nationality);
+    const resolution = resolveStandings(
+      playerSeasonQuery(save, protagonist, worldState),
+      save.gameDate
+    );
+    return resolution ? { resolution, myClubId: protagonist.clubId } : null;
   }, [save, protagonist]);
+  const resolution = view?.resolution;
 
   if (!save || !protagonist || !resolution) {
     return (
@@ -29,7 +49,7 @@ export default function StandingsScreen(): JSX.Element {
         <Text variant="subtitle" style={styles.emptyText}>
           Todavía no hay clasificación que mostrar
         </Text>
-        <Button label="Volver" onPress={() => router.replace('/career')} />
+        <Button label="Volver" onPress={() => router.back()} />
       </Screen>
     );
   }
@@ -67,7 +87,7 @@ export default function StandingsScreen(): JSX.Element {
 
         {standings.map((standing) => {
           const club = divisionClubs.find((c) => c.id === standing.clubId);
-          const isMyClub = standing.clubId === protagonist.clubId;
+          const isMyClub = standing.clubId === view?.myClubId;
           return (
             <View key={standing.clubId} style={styles.row}>
               <Text

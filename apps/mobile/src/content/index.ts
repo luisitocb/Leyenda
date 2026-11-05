@@ -23,6 +23,7 @@ import type {
   DecisionEvent,
   InjuryType,
   KeyMoment,
+  PressConference,
   PurchasableAsset,
 } from '@leyenda/shared';
 
@@ -35,6 +36,7 @@ import eventsData from '@leyenda/content/data/career/events.json';
 import injuriesData from '@leyenda/content/data/career/injuries.json';
 import assetsData from '@leyenda/content/data/career/assets.json';
 import brandDealsData from '@leyenda/content/data/career/brand-deals.json';
+import pressConferencesData from '@leyenda/content/data/coach/press-conferences.json';
 import namesXA from '@leyenda/content/data/worldgen/person-names/XA.json';
 import namesXB from '@leyenda/content/data/worldgen/person-names/XB.json';
 import namesXC from '@leyenda/content/data/worldgen/person-names/XC.json';
@@ -65,6 +67,7 @@ export const events = eventsData as DecisionEvent[];
 export const injuries = injuriesData as InjuryType[];
 export const purchasableAssets = assetsData as PurchasableAsset[];
 export const brandDeals = brandDealsData as BrandDeal[];
+export const pressConferences = pressConferencesData as PressConference[];
 
 /** Necesario porque `generateSquad` (worldgen) puede elegir nacionalidad extranjera para un jugador. */
 export const namePools: Record<CountryCode, PersonNamePool> = {

@@ -1,9 +1,19 @@
 import { RNG, simulateMatch } from '@leyenda/engine';
-import type { Club, Country, ISODate, MatchResult, ProtagonistPlayer } from '@leyenda/shared';
+import type { Club, Country, ISODate, Match, MatchResult } from '@leyenda/shared';
 
 import { countries } from '@/content';
-import { resolveDivisionCalendar } from './resolve-division-calendar';
+import { resolveDivisionCalendar, type ClubSeasonQuery } from './resolve-division-calendar';
 import { generateSquadForClub } from './generate-squad-for-club';
+
+/** Partido programado del club en una fecha (todavía sin simular). */
+export interface ScheduledWeekMatch {
+  match: Match;
+  homeClub: Club;
+  awayClub: Club;
+  isHome: boolean;
+  divisionClubs: Club[];
+  seasonIndex: number;
+}
 
 export interface WeekMatchResolution {
   homeClub: Club;
@@ -12,21 +22,15 @@ export interface WeekMatchResolution {
   isHome: boolean;
 }
 
-/**
- * Resuelve (y simula) el partido del club del protagonista en una fecha
- * dada, si lo hay. Nada de esto se persiste: calendario y plantillas
- * rivales se regeneran siempre a partir de la seed del save, igual que el
- * resto del `World` (nunca guardado).
- */
-export function resolveWeekMatch(
-  seed: number,
-  protagonist: ProtagonistPlayer,
+/** Busca el partido del club en una fecha, si lo hay. */
+export function findWeekMatch(
+  query: ClubSeasonQuery,
   date: ISODate,
   allCountries: Country[] = countries
-): WeekMatchResolution | null {
-  const resolved = resolveDivisionCalendar(seed, protagonist, allCountries);
+): ScheduledWeekMatch | null {
+  const resolved = resolveDivisionCalendar(query, date, allCountries);
   if (!resolved) return null;
-  const { myClub, divisionClubs, calendar } = resolved;
+  const { myClub, divisionClubs, calendar, seasonIndex } = resolved;
 
   const match = calendar.matches.find(
     (m) => m.date === date && (m.homeTeamId === myClub.id || m.awayTeamId === myClub.id)
@@ -37,14 +41,32 @@ export function resolveWeekMatch(
   const awayClub = divisionClubs.find((c) => c.id === match.awayTeamId);
   if (!homeClub || !awayClub) return null;
 
-  const homeSquad = generateSquadForClub(seed, homeClub, allCountries);
-  const awaySquad = generateSquadForClub(seed, awayClub, allCountries);
-  const simulated = simulateMatch(match, homeSquad, awaySquad, new RNG(match.seed));
-
   return {
+    match,
     homeClub,
     awayClub,
-    result: simulated.result,
     isHome: match.homeTeamId === myClub.id,
+    divisionClubs,
+    seasonIndex,
   };
+}
+
+/**
+ * Resuelve (y simula con las plantillas generadas) el partido del club en
+ * una fecha, si lo hay — Modo Jugador. Nada de esto se persiste.
+ */
+export function resolveWeekMatch(
+  query: ClubSeasonQuery,
+  date: ISODate,
+  allCountries: Country[] = countries
+): WeekMatchResolution | null {
+  const scheduled = findWeekMatch(query, date, allCountries);
+  if (!scheduled) return null;
+  const { match, homeClub, awayClub, isHome } = scheduled;
+
+  const homeSquad = generateSquadForClub(query.seed, homeClub, allCountries);
+  const awaySquad = generateSquadForClub(query.seed, awayClub, allCountries);
+  const simulated = simulateMatch(match, homeSquad, awaySquad, new RNG(match.seed));
+
+  return { homeClub, awayClub, result: simulated.result, isHome };
 }
